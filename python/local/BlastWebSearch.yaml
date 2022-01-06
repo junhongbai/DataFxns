@@ -1,0 +1,167 @@
+id: 2ae35da5-dcb6-4661-8749-d0781b4d278e
+name: Blast Web Search
+serviceName: BlastWebSearch
+executorId: Glysade.CPythonDataFxn
+serviceUri: LOCAL:glysade.python
+version: 1.0.0
+input_fields: |
+  [
+    {
+      "control": {
+        "id": "query",
+        "label": "Enter query sequence",
+        "type": "textarea",
+        "rows": 5,
+        "validationRules": [
+          {
+            "type": "sequence"
+          },
+          {
+            "type": "required"
+          }
+        ]
+      },
+      "request": {
+        "id": "query",
+        "dataType": "string",
+        "contentType": "chemical/x-sequence"
+      }
+    },
+    {
+      "control": {
+        "id": "databaseName",
+        "label": "Select database to search",
+        "type": "select",
+        "options": [
+          {
+            "text": "envnr",
+            "value": "envnr"
+          },
+          {
+            "text": "nr",
+            "value": "nr"
+          },
+          {
+            "text": "pataa",
+            "value": "pataa"
+          },
+          {
+            "text": "pdb",
+            "value": "pdb"
+          },
+          {
+            "text": "env_nt",
+            "value": "env_nt"
+          },
+          {
+            "text": "nt",
+            "value": "nt"
+          },
+          {
+            "text": "est",
+            "value": "est"
+          },
+          {
+            "text": "other_genomic",
+            "value": "other_genomic"
+          },
+          {
+            "text": "refseq_genomic",
+            "value": "refseq_genomic"
+          }
+        ],
+        "validationRules": [
+          {
+            "type": "required"
+          }
+        ]
+      },
+      "request": {
+        "id": "databaseName",
+        "dataType": "string"
+      }
+    } ,
+    {
+      "control": {
+        "id": "maxHits",
+        "label": "Max hits",
+        "type": "text",
+        "validationRules": [
+          {
+            "type": "required",
+            "message": "Must enter a value between 1 and 5000"
+          },
+          {
+            "type": "range",
+            "min": 1,
+            "max": 5000,
+            "message": "Max hits must be a value between 1 and 5000"
+          }
+        ]
+      },
+      "request": {
+        "id": "maxHits",
+        "dataType": "integer",
+        "data": 100
+      }
+    }
+  ]
+description: Pairwise sequence alignment service, aligning a set of sequences to a query sequence
+category: python-local.bio.sequence
+comments: ""
+iron_python: |
+  ############################################
+  #  Copyright 2017, 2018, 2019 Glysade LLC  #
+  ############################################
+
+  import sys,clr
+  from Spotfire.Dxp.Data import DataTable, DataManager
+  from Spotfire.Dxp.Application import PanelTypeIdentifiers
+  from Spotfire.Dxp.Application import Panel
+  import Spotfire.Dxp.Application.PanelCollection
+
+  from System import AppDomain
+  for asm in AppDomain.CurrentDomain.GetAssemblies():
+    if asm.FullName.StartsWith('Charts,'):
+        clr.AddReference(asm.FullName)
+
+  from Charts import ChartsModel
+  model_type = ChartsModel
+
+  #tableId pass in args
+  dataTable = None
+
+  for table in Document.Data.Tables:
+      if str(table.Id) == tableId:
+          dataTable = table
+
+  if not dataTable:
+      raise Exception('target table not found')
+
+  page = Document.Pages.AddNew('Blast Results')
+  panelsToHide = [PanelTypeIdentifiers.DataPanel, PanelTypeIdentifiers.DetailsOnDemandPanel, PanelTypeIdentifiers.FilterPanel]
+
+  for panel in page.Panels:
+      if panel.TypeId in panelsToHide:
+          if panel.Visible:
+              panel.Visible = False
+          
+
+  filteringScheme = Document.FilteringSchemes[0]
+  page.FilterPanel.FilteringSchemeReference = filteringScheme
+  # dataTable = Document.ActiveDataTableReference
+  # filterCollection = filteringScheme[dataTable]
+
+  tableVis = page.Visuals.AddNew[model_type]()
+  tableVis.SetKeyValue('visualization','table-visualization')
+  tableVis.DataTable = dataTable
+  tableVis.ConfigureColumns()
+  tableVis.Marking = Document.Data.Markings.DefaultMarkingReference
+
+  threeDVis = page.Visuals.AddNew[model_type]()
+  threeDVis.SetKeyValue('visualization','molviewer-visualization')
+  threeDVis.DataTable = dataTable
+  threeDVis.ConfigureColumns()
+  threeDVis.Marking = Document.Data.Markings.DefaultMarkingReference
+
+  tableVis.SetActiveVisual()

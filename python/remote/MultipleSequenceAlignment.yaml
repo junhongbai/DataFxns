@@ -1,0 +1,169 @@
+id: ddf729d3-f21b-4a42-9919-22d8eb3e007c
+name: Multiple Sequence Alignment
+serviceName: MultipleSequenceAlignment
+executorId: Glysade.CPythonDataFxn
+serviceUri: PYRO:glysade.pyserver@localhost:9101
+version: 0.0.3
+input_fields: |
+    [
+        {
+            "control": {
+                "id": "sequenceColumn",
+                "label": "Select sequence column",
+                "type": "columnselect",
+                "filters": [
+                    {
+                        "dataType": "string",
+                        "contentType": "chemical/x-sequence"
+                    },
+                    {
+                        "dataType": "binary",
+                        "contentType": "chemical/x-genbank"
+                    }
+                ],
+                "validationRules": [
+                    {
+                        "type": "required"
+                    }
+                ]
+            },
+            "request": {
+                "id": "sequenceColumn",
+                "dataType": "string",
+                "selectorType": "column"
+            }
+        },
+        {
+            "control": {
+                "id": "alignmentMethod",
+                "label": "Alignment method",
+                "type": "radiogroup",
+                "radios": [
+                    {
+                        "text": "Clustal Omega",
+                        "value": "CLUSTALO"
+                    },
+                    {
+                        "text": "MUSCLE",
+                        "value": "MUSCLE"
+                    }
+                ],
+                "validationRules": [
+                    {
+                        "type": "required",
+                        "message": "Must select something from 'Alignment method'"
+                    }
+                ]
+            },
+            "request": {
+                "field": "alignmentMethod",
+                "id": "alignmentMethod",
+                "dataType": "string",
+                "data": "CLUSTALO"
+            }
+        },
+        {
+            "control": {
+                "id": "rowSelection",
+                "label": "Submit data from",
+                "type": "radiogroup",
+                "radios": [
+                    {
+                        "text": "All data",
+                        "value": "all"
+                    },
+                    {
+                        "text": "Data after filters",
+                        "value": "filtered"
+                    },
+                    {
+                        "text": "Marked data",
+                        "value": "marked"
+                    }
+                ],
+                "validationRules": [
+                    {
+                        "type": "required",
+                        "message": "Must select something from 'Submit data from'"
+                    }
+                ]
+            },
+            "request": {
+                "field": "rowSelection",
+                "id": "rowSelection",
+                "dataType": "string",
+                "data": "filtered"
+            }
+        }
+    ]
+description: Performs multiple sequence alignment using a variety of algorithms
+category: python-remote.bio.sequence
+comments: ''
+iron_python: |
+    ############################################
+    #  Copyright 2017, 2018, 2019 Glysade LLC  #
+    ############################################
+
+    import sys,clr
+    import json
+    from Spotfire.Dxp.Data import DataTable, DataManager, DataType, DataPropertyClass,DataProperty
+    from Spotfire.Dxp.Application import PanelTypeIdentifiers
+    from Spotfire.Dxp.Application import Panel
+    import Spotfire.Dxp.Application.PanelCollection
+
+    from System import AppDomain
+    for asm in AppDomain.CurrentDomain.GetAssemblies():
+        if asm.FullName.StartsWith('Charts,'):
+            clr.AddReference(asm.FullName)
+
+    from Charts import ChartsModel
+    model_type = ChartsModel
+
+    def getDataFxnTables(dataFxnId):
+        tables = []
+        for table in Document.Data.Tables:
+            for column in table.Columns:
+                if column.Properties.HasPropertyValue('ChemCharts.DFResult'):
+                    dfJson = json.loads(str(column.Properties.GetProperty('ChemCharts.DFResult')))
+                    if dfJson['dataFxnId'] == dataFxnId:
+                        tables.append(table)
+        return tables
+
+    #dataFxnId passed as arg
+    dataTable = getDataFxnTables(dataFxnId)[0]
+
+    if not dataTable:
+        raise Exception('target table not found')
+
+    tableId = dataTable.Id.ToString()
+
+    page = Document.Pages.AddNew('Clustal Results')
+    panelsToHide = [PanelTypeIdentifiers.DataPanel, PanelTypeIdentifiers.DetailsOnDemandPanel]
+
+    for panel in page.Panels:
+        if panel.TypeId in panelsToHide:
+            if panel.Visible:
+                panel.Visible = False
+
+    tableVis = page.Visuals.AddNew[model_type]()
+    tableVis.SetKeyValue('visualization','table-visualization')
+    tableVis.DataTable = dataTable
+    tableVis.ConfigureColumns()
+    tableVis.Marking = Document.Data.Markings.DefaultMarkingReference
+
+    dendroVis = page.Visuals.AddNew[model_type]()
+    dendroVis.SetKeyValue('visualization','dendrogram-visualization')
+    dendroVis.SetKeyValue(tableId+'.dendrogram-visualization.dendrogram.style','0')
+    dendroVis.DataTable = dataTable
+    dendroVis.ConfigureColumns()
+    dendroVis.Marking = Document.Data.Markings.DefaultMarkingReference
+    for columnRef in dendroVis.DataColumnCollection.ColumnReferences:
+        column = columnRef.DataColumn
+        if column.Properties.DataType == DataType.String and column.Properties.HasPropertyValue('tree') and column.Properties.HasPropertyValue('ChemCharts.DFResult'):
+            dfJson = json.loads(str(column.Properties.GetProperty('ChemCharts.DFResult')))
+            if dfJson['dataFxnId'] == dataFxnId:
+                dendroVis.SetKeyValue(tableId+'.dendrogram-visualization.dendrogram.dendrogramColumnId',str(columnRef.Id))
+                break
+
+    tableVis.SetActiveVisual()
+    page.AutoConfigure()

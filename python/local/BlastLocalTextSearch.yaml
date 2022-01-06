@@ -1,0 +1,201 @@
+id: 099f6c94-7e66-4150-b751-88fbe2b9053a
+name: Blast Local Text Search
+serviceName: BlastLocalTextSearch
+executorId: Glysade.CPythonDataFxn
+serviceUri: LOCAL:glysade.python
+version: 1.0.0
+input_fields: |
+  [
+    {
+          "control": {
+              "id": "query",
+              "label": "Enter query sequence",
+              "type": "textarea",
+              "rows": 5,
+              "validationRules": [
+                  {
+                      "type": "sequence"
+                  },
+                  {
+                      "type": "required"
+                  }
+              ]
+          },
+          "request": {
+              "id": "query",
+              "dataType": "string",
+              "contentType": "chemical/x-sequence"
+          }
+      },
+      {
+          "control": {
+              "id": "method",
+              "label": "Select method",
+              "type": "select",
+              "options": [
+                  {
+                      "text": "BLASTP: protein(q)-protein(d)",
+                      "value": "BLASTP"
+                  },
+                  {
+                      "text": "BLASTN: nucleotide(q)-nucleotide(d)",
+                      "value": "BLASTN"
+                  },
+                  {
+                      "text": "BLASTX: nucleotide(q)-protein(d)",
+                      "value": "BLASTX"
+                  },
+                  {
+                      "text": "TBLASTN: protein(q)-nucleotide(d)+translation",
+                      "value": "TBLASTN"
+                  },
+                  {
+                      "text": "TBLASTX: nucleotide(q)-nucleotide(d)+translation",
+                      "value": "TBLASTX"
+                  }
+              ],
+              "validationRules": [
+                  {
+                      "type": "required"
+                  }
+              ]
+          },
+          "request": {
+              "id": "method",
+              "dataType": "string",
+              "data": [
+                  "BLASTP"
+              ]
+          }
+      },
+      {
+          "control": {
+              "id": "databaseName",
+              "label": "Select database",
+              "type": "select",
+              "options": [
+                  {
+                      "text": "Human NCBI NR",
+                      "value": "human_nr"
+                  },
+                  {
+                      "text": "Human Uniprot SwissProt",
+                      "value": "up_sp_human"
+                  },
+                  {
+                      "text": "Human Uniprot Trembl",
+                      "value": "up_tbl_human"
+                  },
+                  {
+                      "text": "Human NCBI NT",
+                      "value": "human_nt"
+                  },
+                  {
+                      "text": "Human EBI ENA",
+                      "value": "ena_cd_human"
+                  },
+                  {
+                      "text": "Mouse NCBI NR",
+                      "value": "mouse_nr"
+                  },
+                  {
+                      "text": "Mouse NCBI NT",
+                      "value": "mouse_nt"
+                  },
+                  {
+                      "text": "Rat NCBI NR",
+                      "value": "rat_nr"
+                  },
+                  {
+                      "text": "Rat NCBI NT",
+                      "value": "rat_nt"
+                  }
+              ],
+              "validationRules": [
+                  {
+                      "type": "required"
+                  }
+              ]
+          },
+          "request": {
+              "id": "databaseName",
+              "dataType": "string"
+          }
+      },
+      {
+          "control": {
+              "id": "maxHits",
+              "label": "Max hits",
+              "type": "text",
+              "validationRules": [
+                  {
+                      "type": "required",
+                      "message": "Must enter a value between 1 and 5000"
+                  },
+                  {
+                      "type": "range",
+                      "min": 1,
+                      "max": 5000,
+                      "message": "Max hits must be a value between 1 and 5000"
+                  }
+              ]
+          },
+          "request": {
+              "id": "maxHits",
+              "dataType": "integer",
+              "data": 100
+          }
+      }
+  ]
+description: Performs a BLAST search of user selected databases using a query entered as text
+category: python-local.bio.sequence
+comments: ''
+iron_python: |
+  ############################################
+  #  Copyright 2019 Glysade LLC             #
+  ############################################
+
+  import sys,clr
+  from Spotfire.Dxp.Data import DataTable, DataManager
+  from Spotfire.Dxp.Application import PanelTypeIdentifiers
+  from Spotfire.Dxp.Application import Panel
+  import Spotfire.Dxp.Application.PanelCollection
+
+  from System import AppDomain
+  for asm in AppDomain.CurrentDomain.GetAssemblies():
+      if asm.GetName().Name == 'Charts':
+          clr.AddReference(asm.FullName)
+
+  from Charts import ChartsModel
+  model_type = ChartsModel
+
+  #tableId pass in args
+  dataTable = None
+
+  for table in Document.Data.Tables:
+      if str(table.Id) == tableId:
+          dataTable = table
+
+  if not dataTable:
+      raise Exception('target table not found')
+
+  page = Document.Pages.AddNew('Blast (local) text query Results')
+  panelsToHide = [PanelTypeIdentifiers.DataPanel, PanelTypeIdentifiers.DetailsOnDemandPanel]
+
+  for panel in page.Panels:
+      if panel.TypeId in panelsToHide:
+          if panel.Visible:
+              panel.Visible = False
+          
+
+  filteringScheme = Document.FilteringSchemes[0]
+  page.FilterPanel.FilteringSchemeReference = filteringScheme
+
+  tableVis = page.Visuals.AddNew[model_type]()
+  tableVis.SetKeyValue('visualization','table-visualization')
+  tableVis.DataTable = dataTable
+  tableVis.ConfigureColumns()
+  tableVis.Marking = Document.Data.Markings.DefaultMarkingReference
+
+  tableVis.SetActiveVisual()
+  page.AutoConfigure()
