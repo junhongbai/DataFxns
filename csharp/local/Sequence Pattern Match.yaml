@@ -1,0 +1,105 @@
+id: 0473c160-a492-488b-960f-eba70557785c
+name: Sequence Pattern Match
+serviceName: SequencePatternMatch
+executorId: Glysade.CSharpDataFxn
+serviceUri: LOCAL:glysade.csharp
+version: 0.0.1
+input_fields: |
+  [
+    {
+        "control": {
+            "id": "sequenceColumn",
+            "label": "Select sequence column",
+            "type": "columnselect",
+            "filters": [
+                {
+                    "dataType": "string",
+                    "contentType": "chemical/x-sequence"
+                },
+                {
+                    "dataType": "binary",
+                    "contentType": "chemical/x-genbank"
+                }
+            ],
+            "validationRules": [
+                {
+                    "type": "required"
+                }
+            ]
+        },
+        "request": {
+            "id": "sequenceColumn",
+            "dataType": "integer",
+            "selectorType": "column"
+        }
+    },
+    {
+        "control": {
+            "id": "patterns",
+            "label": "Match patterns",
+            "type": "select",
+            "multi": true,
+            "options": [
+                {
+                    "text": "Cysteine",
+                    "value": "Cysteine,C"
+                },
+                {
+                    "text": "Oxidation",
+                    "value": "Oxidation,M"
+                }
+            ],
+            "validationRules": [
+                {
+                    "type": "required"
+                }
+            ]
+        },
+        "request": {
+            "id": "patterns",
+            "dataType": "list(string)",
+            "data": [
+                "Cysteine,C",
+                "Oxidation,M"
+            ]
+        }
+    },
+    {
+        "control": {
+            "id": "rowSelection",
+            "label": "Include data from",
+            "type": "radiogroup",
+            "radios": [
+                {
+                    "text": "All data",
+                    "value": "all"
+                },
+                {
+                    "text": "Data after filters",
+                    "value": "filtered"
+                },
+                {
+                    "text": "Marked data",
+                    "value": "marked"
+                }
+            ],
+            "validationRules": [
+                {
+                    "type": "required",
+                    "message": "Must select something from ''Include data from''"
+                }
+            ]
+        },
+        "request": {
+            "field": "rowSelection",
+            "id": "rowSelection",
+            "dataType": "string",
+            "data": "filtered"
+        }
+    }
+  ]
+description: Create a set of boolean columns indicating the presence or absence of
+  predefined regular expression patterns.
+category: csharp-local.bio.sequence
+comments: 
+iron_python: ''
