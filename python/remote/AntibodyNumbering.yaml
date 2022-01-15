@@ -61,39 +61,6 @@ input_fields: |
         "dataType": "string",
         "data": "kabat"
       }
-    },
-    {
-      "control": {
-        "id": "rowSelection",
-        "label": "Include data from",
-        "type": "radiogroup",
-        "radios": [
-          {
-            "text": "All data",
-            "value": "all"
-          },
-          {
-            "text": "Data after filters",
-            "value": "filtered"
-          },
-          {
-            "text": "Marked data",
-            "value": "marked"
-          }
-        ],
-        "validationRules": [
-          {
-            "type": "required",
-            "message": "Must select something from 'Include data from'"
-          }
-        ]
-      },
-      "request": {
-        "field": "rowSelection",
-        "id": "rowSelection",
-        "dataType": "string",
-        "data": "filtered"
-      }
     }
   ]
 description: Identifies antibody chain numbering and aligns chains

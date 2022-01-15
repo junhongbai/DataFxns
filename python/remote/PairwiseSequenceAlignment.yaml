@@ -82,39 +82,6 @@ input_fields: |
         "dataType": "string",
         "data": "NEEDLE"
       }
-    },
-    {
-      "control": {
-        "id": "rowSelection",
-        "label": "Submit data from",
-        "type": "radiogroup",
-        "radios": [
-          {
-            "text": "All data",
-            "value": "all"
-          },
-          {
-            "text": "Data after filters",
-            "value": "filtered"
-          },
-          {
-            "text": "Marked data",
-            "value": "marked"
-          }
-        ],
-        "validationRules": [
-          {
-            "type": "required",
-            "message": "Must select something from 'Submit data from'"
-          }
-        ]
-      },
-      "request": {
-        "field": "rowSelection",
-        "id": "rowSelection",
-        "dataType": "string",
-        "data": "filtered"
-      }
     }
   ]
 description: Pairwise sequence alignment service, aligning a set of sequences to a query sequence

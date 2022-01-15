@@ -54,39 +54,6 @@ input_fields: |
                 "dataType": "string",
                 "contentType": "chemical/x-sequence"
             }
-        },
-        {
-            "control": {
-                "id": "rowSelection",
-                "label": "Submit data from",
-                "type": "radiogroup",
-                "radios": [
-                    {
-                        "text": "All data",
-                        "value": "all"
-                    },
-                    {
-                        "text": "Data after filters",
-                        "value": "filtered"
-                    },
-                    {
-                        "text": "Marked data",
-                        "value": "marked"
-                    }
-                ],
-                "validationRules": [
-                    {
-                        "type": "required",
-                        "message": "Must select something from 'Submit data from'"
-                    }
-                ]
-            },
-            "request": {
-                "field": "rowSelection",
-                "id": "rowSelection",
-                "dataType": "string",
-                "data": "filtered"
-            }
         }
     ]
 description: Performs a blast search of the sequences in the provided table using the provided query sequence
