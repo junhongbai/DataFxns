@@ -33,7 +33,7 @@ input_fields: |
         },
         "request": {
           "id": "parentStructureColumn",
-          "dataType": "integer",
+          "dataType": "string",
           "selectorType": "column"
         }
       },
@@ -54,7 +54,7 @@ input_fields: |
         },
         "request": {
           "id": "parentIDColumn",
-          "dataType": "integer",
+          "dataType": "string",
           "selectorType": "column"
         }
       },
@@ -90,7 +90,7 @@ input_fields: |
         },
         "request": {
           "id": "rGroupColumns",
-          "dataType": "list(integer)",
+          "dataType": "list(string)",
           "selectorType": "column"
         }
       },
@@ -119,7 +119,7 @@ input_fields: |
         },
         "request": {
           "id": "dataColumns",
-          "dataType": "list(integer)",
+          "dataType": "list(string)",
           "selectorType": "column"
         }
       }
