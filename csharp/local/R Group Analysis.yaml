@@ -1,6 +1,6 @@
 id: 5fa93572-2809-4eb7-a75f-ce4570a9238e
 name: R Group Analysis
-serviceName: RGroupAnalysis
+serviceName: RGroupDecomposition
 executorId: Glysade.CSharpDataFxn
 serviceUri: LOCAL:glysade.csharp
 version: 0.0.1
