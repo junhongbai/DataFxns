@@ -84,6 +84,35 @@ input_fields: |
     },
     {
       "control": {
+        "label": "Output format",
+        "id": "outputFormat",
+        "type": "radiogroup",
+        "radios": [
+          {
+            "text": "chemical/x-mdl-molfile",
+            "value":  "chemical/x-mdl-molfile"
+          },
+          {
+            "text": "chemical/x-smiles",
+            "value":  "chemical/x-smiles"
+          }
+        ],
+        "validationRules": [
+          {
+            "type": "required",
+            "message": "Must select something from 'Output format'"
+          }
+        ]
+      },
+      "request": {
+        "field": "outputFormat",
+        "id": "outputFormat",
+        "dataType": "string",
+        "data": "chemical/x-mdl-molfile"
+      }
+    },
+    {
+      "control": {
         "id": "prefix",
         "label": "Column prefix",
         "type": "text"
