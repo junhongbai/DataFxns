@@ -1,0 +1,40 @@
+id: 60f4da90-cf62-4d64-9fd6-f84a766da0e2
+name: Translate Sequences
+serviceName: TranslateSequences
+executorId: Glysade.CPythonDataFxn
+serviceUri: LOCAL:glysade.python
+version: 0.0.1
+input_fields: |
+  [
+    {
+      "control": {
+        "id": "sequenceColumn",
+        "label": "Select sequence column",
+        "type": "columnselect",
+        "filters": [
+          {
+            "dataType": "string",
+            "contentType": "chemical/x-sequence"
+          },
+          {
+            "dataType": "binary",
+            "contentType": "chemical/x-genbank"
+          }
+        ],
+        "validationRules": [
+          {
+            "type": "required"
+          }
+        ]
+      },
+      "request": {
+        "id": "sequenceColumn",
+        "dataType": "string",
+        "selectorType": "column"
+      }
+    }
+  ] 
+description: Translates protien sequences to DNA
+category: python-local.bio.sequence
+comments: ''
+iron_python: ''
