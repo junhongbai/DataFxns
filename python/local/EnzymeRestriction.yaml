@@ -1,0 +1,56 @@
+id: a6851a2f-e3f7-49df-bd0d-708fda071850
+name: Identify enzyme restriction sites
+serviceName: EnzymeRestriction
+executorId: Glysade.CPythonDataFxn
+serviceUri: LOCAL:glysade.python
+version: 0.0.1
+input_fields: |
+  [
+    {
+        "control": {
+            "id": "enzymes",
+            "label": "Enter enzyme codes (, separated)",
+            "type": "text",
+            "validationRules": [
+                {
+                    "type": "required"
+                }
+            ]
+        },
+        "request": {
+            "id": "enzymes",
+            "dataType": "string"
+        }
+    },
+    {
+        "control": {
+            "id": "sequenceColumn",
+            "label": "Select sequence column",
+            "type": "columnselect",
+            "filters": [
+                {
+                    "dataType": "string",
+                    "contentType": "chemical/x-sequence"
+                },
+                {
+                    "dataType": "binary",
+                    "contentType": "chemical/x-genbank"
+                }
+            ],
+            "validationRules": [
+                {
+                    "type": "required"
+                }
+            ]
+        },
+        "request": {
+            "id": "sequenceColumn",
+            "dataType": "string",
+            "selectorType": "column"
+        }
+    }
+  ]
+description: Performs restriction analysis using codes from REBASE
+category: python-local.bio.sequence
+comments: ''
+iron_python: ''
