@@ -1,5 +1,5 @@
 id: a6851a2f-e3f7-49df-bd0d-708fda071850
-name: Identify enzyme restriction sites
+name: Identify Enzyme Restriction Sites
 serviceName: EnzymeRestriction
 executorId: Glysade.CPythonDataFxn
 serviceUri: LOCAL:glysade.python
@@ -19,7 +19,8 @@ input_fields: |
         },
         "request": {
             "id": "enzymes",
-            "dataType": "string"
+            "dataType": "string",
+            "data": "common"
         }
     },
     {
