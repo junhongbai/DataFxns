@@ -1,0 +1,62 @@
+id: 224d9521-4c9a-4c37-8e88-f29f467e5ee4
+name: Exact Mass Script
+serviceName: Script
+executorId: Glysade.CPythonDataFxn
+serviceUri: LOCAL:glysade.python
+version: 0.0.1
+script: |
+  from rdkit.Chem.Descriptors import ExactMolWt
+  from df.chem_helper import column_to_molecules
+  from df.data_transfer import DataFunction, DataFunctionRequest, DataFunctionResponse, DataType, ColumnData, \
+      string_input_field
+
+
+  def execute(request: DataFunctionRequest) -> DataFunctionResponse:
+      column_id = string_input_field(request, 'structureColumn')
+      input_column = request.inputColumns[column_id]
+      mols = column_to_molecules(input_column)
+      weights = [None if m is None else ExactMolWt(m) for m in mols]
+      output_column = ColumnData(name=f'{input_column.name} Exact Mass', dataType=DataType.FLOAT, values=weights)
+      response = DataFunctionResponse(outputColumns=[output_column])
+      return response
+
+input_fields: |
+  [
+    {
+      "control": {
+        "id": "structureColumn",
+        "label": "Select structure column",
+        "type": "columnselect",
+        "filters": [
+          {
+            "dataType": "string",
+            "contentType": [
+              "chemical/x-mdl-molfile",
+              "chemical/x-mdl-molfile-v3000",
+              "chemical/x-smiles",
+              "chemical/x-daylight-smiles"
+            ]
+          },
+          {
+            "dataType": "binary",
+            "contentType": ["chemical/x-mdl-molfile","chemical/x-mdl-molfile-v3000"]
+          }
+        ],
+        "validationRules": [
+          {
+            "type": "required",
+            "message": "Must select column of 2D structures"
+          }
+        ]
+      },
+      "request": {
+        "id": "structureColumn",
+        "dataType": "string",
+        "selectorType": "column"
+      }
+    }
+  ]
+description: Performs R group decomposition on the  structures in a data table column
+category: python-local.chem.2D
+comments: ''
+iron_python: ''
