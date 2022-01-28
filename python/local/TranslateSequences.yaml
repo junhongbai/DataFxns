@@ -34,7 +34,7 @@ input_fields: |
       }
     }
   ] 
-description: Translates protien sequences to DNA
+description: Translates DNA To Protein
 category: python-local.bio.sequence
 comments: ''
 iron_python: ''
