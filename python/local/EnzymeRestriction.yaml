@@ -1030,6 +1030,7 @@ input_fields: |
         "request": {
             "id": "enzymes",
             "dataType": "list(string)",
+            "data": ["Common"]
         }
     }
   ]
