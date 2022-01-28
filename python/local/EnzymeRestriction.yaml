@@ -1020,7 +1020,7 @@ input_fields: |
    {"text": "FspI", "value":"FspI"},
    {"text": "SmaI", "value":"SmaI"},
    {"text": "CjeFIII", "value":"CjeFIII"}
-            ]
+            ],
             "validationRules": [
                 {
                     "type": "required"
