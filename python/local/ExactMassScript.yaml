@@ -56,7 +56,7 @@ input_fields: |
       }
     }
   ]
-description: Performs R group decomposition on the  structures in a data table column
+description: Calculates exact mass for structures using Python code in data function definition
 category: python-local.chem.2D
 comments: ''
 iron_python: ''
