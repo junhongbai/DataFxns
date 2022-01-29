@@ -58,10 +58,6 @@ input_fields: |
           {
             "text": "Aho",
             "value": "aho"
-          },
-          {
-            "text": "Wolfguy",
-            "value": "wolfguy"
           }
         ],
         "validationRules": [
