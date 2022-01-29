@@ -46,6 +46,22 @@ input_fields: |
           {
             "text": "Chothia",
             "value": "chothia"
+          },
+          {
+            "text": "IMGT",
+            "value": "imgt"
+          },
+          {
+            "text": "Martin (extended Chothia)",
+            "value": "martin"
+          },
+          {
+            "text": "Aho",
+            "value": "aho"
+          },
+          {
+            "text": "Wolfguy",
+            "value": "wolfguy"
           }
         ],
         "validationRules": [
