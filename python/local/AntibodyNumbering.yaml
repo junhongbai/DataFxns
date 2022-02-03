@@ -4,7 +4,7 @@ serviceName: AntibodyNumbering
 executorId: Glysade.CPythonDataFxn
 serviceUri: LOCAL:glysade.python
 version: 0.0.2
-input_fields: |
+inputFields: |
   [
     {
       "control": {
