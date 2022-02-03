@@ -4,1036 +4,1995 @@ serviceName: EnzymeRestriction
 executorId: Glysade.CPythonDataFxn
 serviceUri: LOCAL:glysade.python
 version: 0.0.1
-input_fields: |
-  [
-    {
-        "control": {
-            "id": "sequenceColumn",
-            "label": "Select sequence column",
-            "type": "columnselect",
-            "filters": [
-                {
-                    "dataType": "string",
-                    "contentType": "chemical/x-sequence"
-                },
-                {
-                    "dataType": "binary",
-                    "contentType": "chemical/x-genbank"
-                }
-            ],
-            "validationRules": [
-                {
-                    "type": "required"
-                }
-            ]
-        },
-        "request": {
-            "id": "sequenceColumn",
-            "dataType": "string",
-            "selectorType": "column"
-        }
-    },
-    {
-        "control": {
-            "id": "enzymes",
-            "label": "Select enzyme codes",
-            "type": "select",
-            "multi": true,
-            "options": [
-   {"text": "All", "value": "All"},
-   {"text": "Common", "value": "Common"},
-   {"text": "AanI", "value":"AanI"},
-   {"text": "AarI", "value":"AarI"},
-   {"text": "AasI", "value":"AasI"},
-   {"text": "AatII", "value":"AatII"},
-   {"text": "Aba6411II", "value":"Aba6411II"},
-   {"text": "AbaB8342IV", "value":"AbaB8342IV"},
-   {"text": "AbaCIII", "value":"AbaCIII"},
-   {"text": "AbaSI", "value":"AbaSI"},
-   {"text": "AbaUMB2I", "value":"AbaUMB2I"},
-   {"text": "Abr4036II", "value":"Abr4036II"},
-   {"text": "AbsI", "value":"AbsI"},
-   {"text": "Acc16I", "value":"Acc16I"},
-   {"text": "Acc36I", "value":"Acc36I"},
-   {"text": "Acc65I", "value":"Acc65I"},
-   {"text": "Acc65V", "value":"Acc65V"},
-   {"text": "AccB1I", "value":"AccB1I"},
-   {"text": "AccB7I", "value":"AccB7I"},
-   {"text": "AccBSI", "value":"AccBSI"},
-   {"text": "AccI", "value":"AccI"},
-   {"text": "AccII", "value":"AccII"},
-   {"text": "AccIII", "value":"AccIII"},
-   {"text": "AceIII", "value":"AceIII"},
-   {"text": "AchA6III", "value":"AchA6III"},
-   {"text": "AciI", "value":"AciI"},
-   {"text": "AclI", "value":"AclI"},
-   {"text": "AclWI", "value":"AclWI"},
-   {"text": "Aco12261II", "value":"Aco12261II"},
-   {"text": "AcoI", "value":"AcoI"},
-   {"text": "AcoY31II", "value":"AcoY31II"},
-   {"text": "AcsI", "value":"AcsI"},
-   {"text": "AcuI", "value":"AcuI"},
-   {"text": "AcvI", "value":"AcvI"},
-   {"text": "AcyI", "value":"AcyI"},
-   {"text": "AdeI", "value":"AdeI"},
-   {"text": "Adh6U21I", "value":"Adh6U21I"},
-   {"text": "AfaI", "value":"AfaI"},
-   {"text": "AfeI", "value":"AfeI"},
-   {"text": "AfiI", "value":"AfiI"},
-   {"text": "AflII", "value":"AflII"},
-   {"text": "AflIII", "value":"AflIII"},
-   {"text": "AgeI", "value":"AgeI"},
-   {"text": "AgsI", "value":"AgsI"},
-   {"text": "AhaIII", "value":"AhaIII"},
-   {"text": "AhdI", "value":"AhdI"},
-   {"text": "AhlI", "value":"AhlI"},
-   {"text": "AhyRBAHI", "value":"AhyRBAHI"},
-   {"text": "AhyYL17I", "value":"AhyYL17I"},
-   {"text": "AjiI", "value":"AjiI"},
-   {"text": "AjnI", "value":"AjnI"},
-   {"text": "AjuI", "value":"AjuI"},
-   {"text": "AleI", "value":"AleI"},
-   {"text": "AlfI", "value":"AlfI"},
-   {"text": "AloI", "value":"AloI"},
-   {"text": "AluBI", "value":"AluBI"},
-   {"text": "AluI", "value":"AluI"},
-   {"text": "Alw21I", "value":"Alw21I"},
-   {"text": "Alw26I", "value":"Alw26I"},
-   {"text": "Alw44I", "value":"Alw44I"},
-   {"text": "AlwFI", "value":"AlwFI"},
-   {"text": "AlwI", "value":"AlwI"},
-   {"text": "AlwNI", "value":"AlwNI"},
-   {"text": "Ama87I", "value":"Ama87I"},
-   {"text": "AmaCSI", "value":"AmaCSI"},
-   {"text": "Aod1I", "value":"Aod1I"},
-   {"text": "Aor13HI", "value":"Aor13HI"},
-   {"text": "Aor51HI", "value":"Aor51HI"},
-   {"text": "AoxI", "value":"AoxI"},
-   {"text": "ApaBI", "value":"ApaBI"},
-   {"text": "ApaI", "value":"ApaI"},
-   {"text": "ApaLI", "value":"ApaLI"},
-   {"text": "ApeKI", "value":"ApeKI"},
-   {"text": "ApoI", "value":"ApoI"},
-   {"text": "ApyPI", "value":"ApyPI"},
-   {"text": "AquII", "value":"AquII"},
-   {"text": "AquIII", "value":"AquIII"},
-   {"text": "AquIV", "value":"AquIV"},
-   {"text": "ArsI", "value":"ArsI"},
-   {"text": "AscI", "value":"AscI"},
-   {"text": "AseI", "value":"AseI"},
-   {"text": "Asi256I", "value":"Asi256I"},
-   {"text": "AsiGI", "value":"AsiGI"},
-   {"text": "AsiSI", "value":"AsiSI"},
-   {"text": "Asp103I", "value":"Asp103I"},
-   {"text": "Asp114pII", "value":"Asp114pII"},
-   {"text": "Asp337I", "value":"Asp337I"},
-   {"text": "Asp700I", "value":"Asp700I"},
-   {"text": "Asp718I", "value":"Asp718I"},
-   {"text": "AspA2I", "value":"AspA2I"},
-   {"text": "AspAMDIV", "value":"AspAMDIV"},
-   {"text": "AspBHI", "value":"AspBHI"},
-   {"text": "AspDUT2V", "value":"AspDUT2V"},
-   {"text": "AspJHL3II", "value":"AspJHL3II"},
-   {"text": "AspLEI", "value":"AspLEI"},
-   {"text": "AspNIH4III", "value":"AspNIH4III"},
-   {"text": "AspS9I", "value":"AspS9I"},
-   {"text": "AspSLV7III", "value":"AspSLV7III"},
-   {"text": "Asu14238IV", "value":"Asu14238IV"},
-   {"text": "AsuC2I", "value":"AsuC2I"},
-   {"text": "AsuHPI", "value":"AsuHPI"},
-   {"text": "AsuI", "value":"AsuI"},
-   {"text": "AsuII", "value":"AsuII"},
-   {"text": "AsuNHI", "value":"AsuNHI"},
-   {"text": "AteTI", "value":"AteTI"},
-   {"text": "AvaI", "value":"AvaI"},
-   {"text": "AvaII", "value":"AvaII"},
-   {"text": "AvaIII", "value":"AvaIII"},
-   {"text": "AvrII", "value":"AvrII"},
-   {"text": "Awo1030IV", "value":"Awo1030IV"},
-   {"text": "AxyI", "value":"AxyI"},
-   {"text": "BaeGI", "value":"BaeGI"},
-   {"text": "BaeI", "value":"BaeI"},
-   {"text": "Bag18758I", "value":"Bag18758I"},
-   {"text": "BalI", "value":"BalI"},
-   {"text": "BamHI", "value":"BamHI"},
-   {"text": "BanI", "value":"BanI"},
-   {"text": "BanII", "value":"BanII"},
-   {"text": "BanLI", "value":"BanLI"},
-   {"text": "BarI", "value":"BarI"},
-   {"text": "Bau1417V", "value":"Bau1417V"},
-   {"text": "BauI", "value":"BauI"},
-   {"text": "Bbr52II", "value":"Bbr52II"},
-   {"text": "Bbr57III", "value":"Bbr57III"},
-   {"text": "Bbr7017II", "value":"Bbr7017II"},
-   {"text": "Bbr7017III", "value":"Bbr7017III"},
-   {"text": "BbrPI", "value":"BbrPI"},
-   {"text": "BbsI", "value":"BbsI"},
-   {"text": "BbuB31I", "value":"BbuB31I"},
-   {"text": "BbuB31II", "value":"BbuB31II"},
-   {"text": "Bbv12I", "value":"Bbv12I"},
-   {"text": "BbvCI", "value":"BbvCI"},
-   {"text": "BbvI", "value":"BbvI"},
-   {"text": "BbvII", "value":"BbvII"},
-   {"text": "BccI", "value":"BccI"},
-   {"text": "Bce3081I", "value":"Bce3081I"},
-   {"text": "Bce83I", "value":"Bce83I"},
-   {"text": "BceAI", "value":"BceAI"},
-   {"text": "BceSIV", "value":"BceSIV"},
-   {"text": "BcefI", "value":"BcefI"},
-   {"text": "BcgI", "value":"BcgI"},
-   {"text": "BciT130I", "value":"BciT130I"},
-   {"text": "BciVI", "value":"BciVI"},
-   {"text": "BclI", "value":"BclI"},
-   {"text": "BcnI", "value":"BcnI"},
-   {"text": "BcoDI", "value":"BcoDI"},
-   {"text": "BcuI", "value":"BcuI"},
-   {"text": "BdaI", "value":"BdaI"},
-   {"text": "BetI", "value":"BetI"},
-   {"text": "BfaI", "value":"BfaI"},
-   {"text": "BfaSII", "value":"BfaSII"},
-   {"text": "BfiI", "value":"BfiI"},
-   {"text": "BfmI", "value":"BfmI"},
-   {"text": "BfoI", "value":"BfoI"},
-   {"text": "BfrI", "value":"BfrI"},
-   {"text": "BfuAI", "value":"BfuAI"},
-   {"text": "BfuI", "value":"BfuI"},
-   {"text": "Bga514I", "value":"Bga514I"},
-   {"text": "BglI", "value":"BglI"},
-   {"text": "BglII", "value":"BglII"},
-   {"text": "BinI", "value":"BinI"},
-   {"text": "BisI", "value":"BisI"},
-   {"text": "BkrAM31DI", "value":"BkrAM31DI"},
-   {"text": "Ble402II", "value":"Ble402II"},
-   {"text": "BlnI", "value":"BlnI"},
-   {"text": "BloAII", "value":"BloAII"},
-   {"text": "BlpI", "value":"BlpI"},
-   {"text": "BlsI", "value":"BlsI"},
-   {"text": "BmcAI", "value":"BmcAI"},
-   {"text": "Bme1390I", "value":"Bme1390I"},
-   {"text": "Bme18I", "value":"Bme18I"},
-   {"text": "BmeDI", "value":"BmeDI"},
-   {"text": "BmeRI", "value":"BmeRI"},
-   {"text": "BmeT110I", "value":"BmeT110I"},
-   {"text": "BmgBI", "value":"BmgBI"},
-   {"text": "BmgI", "value":"BmgI"},
-   {"text": "BmgT120I", "value":"BmgT120I"},
-   {"text": "BmiI", "value":"BmiI"},
-   {"text": "BmrFI", "value":"BmrFI"},
-   {"text": "BmrI", "value":"BmrI"},
-   {"text": "BmsI", "value":"BmsI"},
-   {"text": "BmtI", "value":"BmtI"},
-   {"text": "BmuI", "value":"BmuI"},
-   {"text": "BoxI", "value":"BoxI"},
-   {"text": "BpiI", "value":"BpiI"},
-   {"text": "BplI", "value":"BplI"},
-   {"text": "BpmI", "value":"BpmI"},
-   {"text": "Bpu10I", "value":"Bpu10I"},
-   {"text": "Bpu1102I", "value":"Bpu1102I"},
-   {"text": "Bpu14I", "value":"Bpu14I"},
-   {"text": "BpuEI", "value":"BpuEI"},
-   {"text": "BpuMI", "value":"BpuMI"},
-   {"text": "Bsa29I", "value":"Bsa29I"},
-   {"text": "BsaAI", "value":"BsaAI"},
-   {"text": "BsaBI", "value":"BsaBI"},
-   {"text": "BsaHI", "value":"BsaHI"},
-   {"text": "BsaI", "value":"BsaI"},
-   {"text": "BsaJI", "value":"BsaJI"},
-   {"text": "BsaWI", "value":"BsaWI"},
-   {"text": "BsaXI", "value":"BsaXI"},
-   {"text": "BsbI", "value":"BsbI"},
-   {"text": "Bsc4I", "value":"Bsc4I"},
-   {"text": "BscAI", "value":"BscAI"},
-   {"text": "BscGI", "value":"BscGI"},
-   {"text": "Bse118I", "value":"Bse118I"},
-   {"text": "Bse1I", "value":"Bse1I"},
-   {"text": "Bse21I", "value":"Bse21I"},
-   {"text": "Bse3DI", "value":"Bse3DI"},
-   {"text": "Bse8I", "value":"Bse8I"},
-   {"text": "BseAI", "value":"BseAI"},
-   {"text": "BseBI", "value":"BseBI"},
-   {"text": "BseCI", "value":"BseCI"},
-   {"text": "BseDI", "value":"BseDI"},
-   {"text": "BseGI", "value":"BseGI"},
-   {"text": "BseJI", "value":"BseJI"},
-   {"text": "BseLI", "value":"BseLI"},
-   {"text": "BseMI", "value":"BseMI"},
-   {"text": "BseMII", "value":"BseMII"},
-   {"text": "BseNI", "value":"BseNI"},
-   {"text": "BsePI", "value":"BsePI"},
-   {"text": "BseRI", "value":"BseRI"},
-   {"text": "BseSI", "value":"BseSI"},
-   {"text": "BseX3I", "value":"BseX3I"},
-   {"text": "BseXI", "value":"BseXI"},
-   {"text": "BseYI", "value":"BseYI"},
-   {"text": "BsgI", "value":"BsgI"},
-   {"text": "Bsh1236I", "value":"Bsh1236I"},
-   {"text": "Bsh1285I", "value":"Bsh1285I"},
-   {"text": "BshFI", "value":"BshFI"},
-   {"text": "BshNI", "value":"BshNI"},
-   {"text": "BshTI", "value":"BshTI"},
-   {"text": "BshVI", "value":"BshVI"},
-   {"text": "BsiEI", "value":"BsiEI"},
-   {"text": "BsiHKAI", "value":"BsiHKAI"},
-   {"text": "BsiHKCI", "value":"BsiHKCI"},
-   {"text": "BsiI", "value":"BsiI"},
-   {"text": "BsiSI", "value":"BsiSI"},
-   {"text": "BsiWI", "value":"BsiWI"},
-   {"text": "BsiYI", "value":"BsiYI"},
-   {"text": "BslFI", "value":"BslFI"},
-   {"text": "BslI", "value":"BslI"},
-   {"text": "BsmAI", "value":"BsmAI"},
-   {"text": "BsmBI", "value":"BsmBI"},
-   {"text": "BsmFI", "value":"BsmFI"},
-   {"text": "BsmI", "value":"BsmI"},
-   {"text": "BsnI", "value":"BsnI"},
-   {"text": "Bso31I", "value":"Bso31I"},
-   {"text": "BsoBI", "value":"BsoBI"},
-   {"text": "Bsp119I", "value":"Bsp119I"},
-   {"text": "Bsp120I", "value":"Bsp120I"},
-   {"text": "Bsp1286I", "value":"Bsp1286I"},
-   {"text": "Bsp13I", "value":"Bsp13I"},
-   {"text": "Bsp1407I", "value":"Bsp1407I"},
-   {"text": "Bsp143I", "value":"Bsp143I"},
-   {"text": "Bsp1720I", "value":"Bsp1720I"},
-   {"text": "Bsp19I", "value":"Bsp19I"},
-   {"text": "Bsp24I", "value":"Bsp24I"},
-   {"text": "Bsp3004IV", "value":"Bsp3004IV"},
-   {"text": "Bsp460III", "value":"Bsp460III"},
-   {"text": "Bsp68I", "value":"Bsp68I"},
-   {"text": "BspACI", "value":"BspACI"},
-   {"text": "BspANI", "value":"BspANI"},
-   {"text": "BspCNI", "value":"BspCNI"},
-   {"text": "BspD6I", "value":"BspD6I"},
-   {"text": "BspDI", "value":"BspDI"},
-   {"text": "BspEI", "value":"BspEI"},
-   {"text": "BspFNI", "value":"BspFNI"},
-   {"text": "BspGI", "value":"BspGI"},
-   {"text": "BspHI", "value":"BspHI"},
-   {"text": "BspLI", "value":"BspLI"},
-   {"text": "BspLU11I", "value":"BspLU11I"},
-   {"text": "BspMAI", "value":"BspMAI"},
-   {"text": "BspMI", "value":"BspMI"},
-   {"text": "BspMII", "value":"BspMII"},
-   {"text": "BspNCI", "value":"BspNCI"},
-   {"text": "BspOI", "value":"BspOI"},
-   {"text": "BspPI", "value":"BspPI"},
-   {"text": "BspQI", "value":"BspQI"},
-   {"text": "BspT104I", "value":"BspT104I"},
-   {"text": "BspT107I", "value":"BspT107I"},
-   {"text": "BspTI", "value":"BspTI"},
-   {"text": "BspTNI", "value":"BspTNI"},
-   {"text": "BsrBI", "value":"BsrBI"},
-   {"text": "BsrDI", "value":"BsrDI"},
-   {"text": "BsrFI", "value":"BsrFI"},
-   {"text": "BsrGI", "value":"BsrGI"},
-   {"text": "BsrI", "value":"BsrI"},
-   {"text": "BssAI", "value":"BssAI"},
-   {"text": "BssECI", "value":"BssECI"},
-   {"text": "BssHII", "value":"BssHII"},
-   {"text": "BssMI", "value":"BssMI"},
-   {"text": "BssNAI", "value":"BssNAI"},
-   {"text": "BssNI", "value":"BssNI"},
-   {"text": "BssSI", "value":"BssSI"},
-   {"text": "BssT1I", "value":"BssT1I"},
-   {"text": "Bst1107I", "value":"Bst1107I"},
-   {"text": "Bst2BI", "value":"Bst2BI"},
-   {"text": "Bst2UI", "value":"Bst2UI"},
-   {"text": "Bst4CI", "value":"Bst4CI"},
-   {"text": "Bst6I", "value":"Bst6I"},
-   {"text": "BstACI", "value":"BstACI"},
-   {"text": "BstAFI", "value":"BstAFI"},
-   {"text": "BstAPI", "value":"BstAPI"},
-   {"text": "BstAUI", "value":"BstAUI"},
-   {"text": "BstBAI", "value":"BstBAI"},
-   {"text": "BstBI", "value":"BstBI"},
-   {"text": "BstC8I", "value":"BstC8I"},
-   {"text": "BstDEI", "value":"BstDEI"},
-   {"text": "BstDSI", "value":"BstDSI"},
-   {"text": "BstEII", "value":"BstEII"},
-   {"text": "BstENI", "value":"BstENI"},
-   {"text": "BstF5I", "value":"BstF5I"},
-   {"text": "BstFNI", "value":"BstFNI"},
-   {"text": "BstH2I", "value":"BstH2I"},
-   {"text": "BstHHI", "value":"BstHHI"},
-   {"text": "BstKTI", "value":"BstKTI"},
-   {"text": "BstMAI", "value":"BstMAI"},
-   {"text": "BstMBI", "value":"BstMBI"},
-   {"text": "BstMCI", "value":"BstMCI"},
-   {"text": "BstMWI", "value":"BstMWI"},
-   {"text": "BstNI", "value":"BstNI"},
-   {"text": "BstNSI", "value":"BstNSI"},
-   {"text": "BstPAI", "value":"BstPAI"},
-   {"text": "BstPI", "value":"BstPI"},
-   {"text": "BstSCI", "value":"BstSCI"},
-   {"text": "BstSFI", "value":"BstSFI"},
-   {"text": "BstSLI", "value":"BstSLI"},
-   {"text": "BstSNI", "value":"BstSNI"},
-   {"text": "BstUI", "value":"BstUI"},
-   {"text": "BstV1I", "value":"BstV1I"},
-   {"text": "BstV2I", "value":"BstV2I"},
-   {"text": "BstX2I", "value":"BstX2I"},
-   {"text": "BstXI", "value":"BstXI"},
-   {"text": "BstYI", "value":"BstYI"},
-   {"text": "BstZ17I", "value":"BstZ17I"},
-   {"text": "BstZI", "value":"BstZI"},
-   {"text": "Bsu15I", "value":"Bsu15I"},
-   {"text": "Bsu36I", "value":"Bsu36I"},
-   {"text": "BsuI", "value":"BsuI"},
-   {"text": "BsuRI", "value":"BsuRI"},
-   {"text": "BsuTUI", "value":"BsuTUI"},
-   {"text": "BtgI", "value":"BtgI"},
-   {"text": "BtgZI", "value":"BtgZI"},
-   {"text": "BthCI", "value":"BthCI"},
-   {"text": "BtrI", "value":"BtrI"},
-   {"text": "BtsCI", "value":"BtsCI"},
-   {"text": "BtsI", "value":"BtsI"},
-   {"text": "BtsIMutI", "value":"BtsIMutI"},
-   {"text": "BtuMI", "value":"BtuMI"},
-   {"text": "Bve1B23I", "value":"Bve1B23I"},
-   {"text": "BveI", "value":"BveI"},
-   {"text": "Cac8I", "value":"Cac8I"},
-   {"text": "CaiI", "value":"CaiI"},
-   {"text": "Cal14237I", "value":"Cal14237I"},
-   {"text": "CalB3II", "value":"CalB3II"},
-   {"text": "Cau10061II", "value":"Cau10061II"},
-   {"text": "CauII", "value":"CauII"},
-   {"text": "Cba13II", "value":"Cba13II"},
-   {"text": "Cba16038I", "value":"Cba16038I"},
-   {"text": "Cbo67071IV", "value":"Cbo67071IV"},
-   {"text": "Cch467III", "value":"Cch467III"},
-   {"text": "CchII", "value":"CchII"},
-   {"text": "CchIII", "value":"CchIII"},
-   {"text": "CciI", "value":"CciI"},
-   {"text": "CciNI", "value":"CciNI"},
-   {"text": "Cco14983V", "value":"Cco14983V"},
-   {"text": "Cco14983VI", "value":"Cco14983VI"},
-   {"text": "CcrNAIII", "value":"CcrNAIII"},
-   {"text": "Cdi11397I", "value":"Cdi11397I"},
-   {"text": "CdiI", "value":"CdiI"},
-   {"text": "CdpI", "value":"CdpI"},
-   {"text": "Cdu23823II", "value":"Cdu23823II"},
-   {"text": "CfoI", "value":"CfoI"},
-   {"text": "Cfr10I", "value":"Cfr10I"},
-   {"text": "Cfr13I", "value":"Cfr13I"},
-   {"text": "Cfr42I", "value":"Cfr42I"},
-   {"text": "Cfr9I", "value":"Cfr9I"},
-   {"text": "CfrI", "value":"CfrI"},
-   {"text": "CfrMH13II", "value":"CfrMH13II"},
-   {"text": "CfrMH16VI", "value":"CfrMH16VI"},
-   {"text": "Cfupf3II", "value":"Cfupf3II"},
-   {"text": "Cgl13032I", "value":"Cgl13032I"},
-   {"text": "Cgl13032II", "value":"Cgl13032II"},
-   {"text": "ChaI", "value":"ChaI"},
-   {"text": "Cje265V", "value":"Cje265V"},
-   {"text": "Cje54107III", "value":"Cje54107III"},
-   {"text": "CjeFIII", "value":"CjeFIII"},
-   {"text": "CjeFV", "value":"CjeFV"},
-   {"text": "CjeI", "value":"CjeI"},
-   {"text": "CjeNII", "value":"CjeNII"},
-   {"text": "CjeNIII", "value":"CjeNIII"},
-   {"text": "CjeNV", "value":"CjeNV"},
-   {"text": "CjeP659IV", "value":"CjeP659IV"},
-   {"text": "CjePI", "value":"CjePI"},
-   {"text": "CjuI", "value":"CjuI"},
-   {"text": "CjuII", "value":"CjuII"},
-   {"text": "Cla11845III", "value":"Cla11845III"},
-   {"text": "ClaI", "value":"ClaI"},
-   {"text": "Cly7489II", "value":"Cly7489II"},
-   {"text": "Cma23826I", "value":"Cma23826I"},
-   {"text": "CpoI", "value":"CpoI"},
-   {"text": "CseI", "value":"CseI"},
-   {"text": "CsiI", "value":"CsiI"},
-   {"text": "Csp2014I", "value":"Csp2014I"},
-   {"text": "Csp6I", "value":"Csp6I"},
-   {"text": "CspAI", "value":"CspAI"},
-   {"text": "CspCI", "value":"CspCI"},
-   {"text": "CspI", "value":"CspI"},
-   {"text": "CstMI", "value":"CstMI"},
-   {"text": "CviAII", "value":"CviAII"},
-   {"text": "CviJI", "value":"CviJI"},
-   {"text": "CviKI_1", "value":"CviKI_1"},
-   {"text": "CviQI", "value":"CviQI"},
-   {"text": "CviRI", "value":"CviRI"},
-   {"text": "Dde51507I", "value":"Dde51507I"},
-   {"text": "DdeI", "value":"DdeI"},
-   {"text": "DinI", "value":"DinI"},
-   {"text": "DpnI", "value":"DpnI"},
-   {"text": "DpnII", "value":"DpnII"},
-   {"text": "DraI", "value":"DraI"},
-   {"text": "DraII", "value":"DraII"},
-   {"text": "DraIII", "value":"DraIII"},
-   {"text": "DraRI", "value":"DraRI"},
-   {"text": "DrdI", "value":"DrdI"},
-   {"text": "DrdII", "value":"DrdII"},
-   {"text": "DrdIV", "value":"DrdIV"},
-   {"text": "DriI", "value":"DriI"},
-   {"text": "DsaI", "value":"DsaI"},
-   {"text": "DseDI", "value":"DseDI"},
-   {"text": "DvuIII", "value":"DvuIII"},
-   {"text": "EaeI", "value":"EaeI"},
-   {"text": "EagI", "value":"EagI"},
-   {"text": "Eam1104I", "value":"Eam1104I"},
-   {"text": "Eam1105I", "value":"Eam1105I"},
-   {"text": "EarI", "value":"EarI"},
-   {"text": "EciI", "value":"EciI"},
-   {"text": "Ecl136II", "value":"Ecl136II"},
-   {"text": "Ecl234I", "value":"Ecl234I"},
-   {"text": "Ecl35734I", "value":"Ecl35734I"},
-   {"text": "EclXI", "value":"EclXI"},
-   {"text": "Eco105I", "value":"Eco105I"},
-   {"text": "Eco130I", "value":"Eco130I"},
-   {"text": "Eco147I", "value":"Eco147I"},
-   {"text": "Eco24I", "value":"Eco24I"},
-   {"text": "Eco31I", "value":"Eco31I"},
-   {"text": "Eco32I", "value":"Eco32I"},
-   {"text": "Eco43896II", "value":"Eco43896II"},
-   {"text": "Eco4465II", "value":"Eco4465II"},
-   {"text": "Eco47I", "value":"Eco47I"},
-   {"text": "Eco47III", "value":"Eco47III"},
-   {"text": "Eco52I", "value":"Eco52I"},
-   {"text": "Eco53kI", "value":"Eco53kI"},
-   {"text": "Eco57I", "value":"Eco57I"},
-   {"text": "Eco57MI", "value":"Eco57MI"},
-   {"text": "Eco72I", "value":"Eco72I"},
-   {"text": "Eco81I", "value":"Eco81I"},
-   {"text": "Eco88I", "value":"Eco88I"},
-   {"text": "Eco91I", "value":"Eco91I"},
-   {"text": "EcoBLMcrX", "value":"EcoBLMcrX"},
-   {"text": "EcoE1140I", "value":"EcoE1140I"},
-   {"text": "EcoHI", "value":"EcoHI"},
-   {"text": "EcoHSI", "value":"EcoHSI"},
-   {"text": "EcoICRI", "value":"EcoICRI"},
-   {"text": "EcoMVII", "value":"EcoMVII"},
-   {"text": "EcoNI", "value":"EcoNI"},
-   {"text": "EcoNIH6II", "value":"EcoNIH6II"},
-   {"text": "EcoO109I", "value":"EcoO109I"},
-   {"text": "EcoO65I", "value":"EcoO65I"},
-   {"text": "EcoRI", "value":"EcoRI"},
-   {"text": "EcoRII", "value":"EcoRII"},
-   {"text": "EcoRV", "value":"EcoRV"},
-   {"text": "EcoT14I", "value":"EcoT14I"},
-   {"text": "EcoT22I", "value":"EcoT22I"},
-   {"text": "EcoT38I", "value":"EcoT38I"},
-   {"text": "EgeI", "value":"EgeI"},
-   {"text": "EheI", "value":"EheI"},
-   {"text": "Eli8509II", "value":"Eli8509II"},
-   {"text": "ErhI", "value":"ErhI"},
-   {"text": "EsaBC3I", "value":"EsaBC3I"},
-   {"text": "EsaSSI", "value":"EsaSSI"},
-   {"text": "Esp3007I", "value":"Esp3007I"},
-   {"text": "Esp3I", "value":"Esp3I"},
-   {"text": "EspI", "value":"EspI"},
-   {"text": "FaeI", "value":"FaeI"},
-   {"text": "FaiI", "value":"FaiI"},
-   {"text": "FalI", "value":"FalI"},
-   {"text": "FaqI", "value":"FaqI"},
-   {"text": "FatI", "value":"FatI"},
-   {"text": "FauI", "value":"FauI"},
-   {"text": "FauNDI", "value":"FauNDI"},
-   {"text": "Fba202Z8II", "value":"Fba202Z8II"},
-   {"text": "FbaI", "value":"FbaI"},
-   {"text": "FblI", "value":"FblI"},
-   {"text": "Fco1691IV", "value":"Fco1691IV"},
-   {"text": "FinI", "value":"FinI"},
-   {"text": "FmuI", "value":"FmuI"},
-   {"text": "Fnu4HI", "value":"Fnu4HI"},
-   {"text": "FnuDII", "value":"FnuDII"},
-   {"text": "FokI", "value":"FokI"},
-   {"text": "FriOI", "value":"FriOI"},
-   {"text": "FseI", "value":"FseI"},
-   {"text": "Fsp4HI", "value":"Fsp4HI"},
-   {"text": "FspAI", "value":"FspAI"},
-   {"text": "FspBI", "value":"FspBI"},
-   {"text": "FspEI", "value":"FspEI"},
-   {"text": "FspI", "value":"FspI"},
-   {"text": "FspPK15I", "value":"FspPK15I"},
-   {"text": "FtnUV", "value":"FtnUV"},
-   {"text": "GauT27I", "value":"GauT27I"},
-   {"text": "Gba708II", "value":"Gba708II"},
-   {"text": "GdiII", "value":"GdiII"},
-   {"text": "GlaI", "value":"GlaI"},
-   {"text": "GluI", "value":"GluI"},
-   {"text": "GsaI", "value":"GsaI"},
-   {"text": "GsuI", "value":"GsuI"},
-   {"text": "HaeI", "value":"HaeI"},
-   {"text": "HaeII", "value":"HaeII"},
-   {"text": "HaeIII", "value":"HaeIII"},
-   {"text": "HapII", "value":"HapII"},
-   {"text": "HauII", "value":"HauII"},
-   {"text": "HbaII", "value":"HbaII"},
-   {"text": "HdeNY26I", "value":"HdeNY26I"},
-   {"text": "HdeZA17I", "value":"HdeZA17I"},
-   {"text": "HgaI", "value":"HgaI"},
-   {"text": "HgiAI", "value":"HgiAI"},
-   {"text": "HgiCI", "value":"HgiCI"},
-   {"text": "HgiEII", "value":"HgiEII"},
-   {"text": "HgiJII", "value":"HgiJII"},
-   {"text": "HhaI", "value":"HhaI"},
-   {"text": "Hin1I", "value":"Hin1I"},
-   {"text": "Hin1II", "value":"Hin1II"},
-   {"text": "Hin4I", "value":"Hin4I"},
-   {"text": "Hin4II", "value":"Hin4II"},
-   {"text": "Hin6I", "value":"Hin6I"},
-   {"text": "HinP1I", "value":"HinP1I"},
-   {"text": "HincII", "value":"HincII"},
-   {"text": "HindII", "value":"HindII"},
-   {"text": "HindIII", "value":"HindIII"},
-   {"text": "HinfI", "value":"HinfI"},
-   {"text": "HpaI", "value":"HpaI"},
-   {"text": "HpaII", "value":"HpaII"},
-   {"text": "HphI", "value":"HphI"},
-   {"text": "Hpy166II", "value":"Hpy166II"},
-   {"text": "Hpy178III", "value":"Hpy178III"},
-   {"text": "Hpy188I", "value":"Hpy188I"},
-   {"text": "Hpy188III", "value":"Hpy188III"},
-   {"text": "Hpy300XI", "value":"Hpy300XI"},
-   {"text": "Hpy8I", "value":"Hpy8I"},
-   {"text": "Hpy99I", "value":"Hpy99I"},
-   {"text": "Hpy99XIII", "value":"Hpy99XIII"},
-   {"text": "Hpy99XIV", "value":"Hpy99XIV"},
-   {"text": "Hpy99XIV_mut1", "value":"Hpy99XIV_mut1"},
-   {"text": "Hpy99XXII", "value":"Hpy99XXII"},
-   {"text": "HpyAV", "value":"HpyAV"},
-   {"text": "HpyAXIV", "value":"HpyAXIV"},
-   {"text": "HpyAXVIII", "value":"HpyAXVIII"},
-   {"text": "HpyAXVI_mut1", "value":"HpyAXVI_mut1"},
-   {"text": "HpyAXVI_mut2", "value":"HpyAXVI_mut2"},
-   {"text": "HpyCH4III", "value":"HpyCH4III"},
-   {"text": "HpyCH4IV", "value":"HpyCH4IV"},
-   {"text": "HpyCH4V", "value":"HpyCH4V"},
-   {"text": "HpyF10VI", "value":"HpyF10VI"},
-   {"text": "HpyF3I", "value":"HpyF3I"},
-   {"text": "HpySE526I", "value":"HpySE526I"},
-   {"text": "HpyUM032XIII", "value":"HpyUM032XIII"},
-   {"text": "HpyUM032XIII_mut1", "value":"HpyUM032XIII_mut1"},
-   {"text": "HpyUM032XIV", "value":"HpyUM032XIV"},
-   {"text": "HpyUM037X", "value":"HpyUM037X"},
-   {"text": "Hso63250IV", "value":"Hso63250IV"},
-   {"text": "Hso63373III", "value":"Hso63373III"},
-   {"text": "Hsp92I", "value":"Hsp92I"},
-   {"text": "Hsp92II", "value":"Hsp92II"},
-   {"text": "HspAI", "value":"HspAI"},
-   {"text": "HspMHR1II", "value":"HspMHR1II"},
-   {"text": "Jma19592I", "value":"Jma19592I"},
-   {"text": "Jma19592II", "value":"Jma19592II"},
-   {"text": "Jsp2502II", "value":"Jsp2502II"},
-   {"text": "KasI", "value":"KasI"},
-   {"text": "KflI", "value":"KflI"},
-   {"text": "Kor51II", "value":"Kor51II"},
-   {"text": "Kpn156V", "value":"Kpn156V"},
-   {"text": "Kpn2I", "value":"Kpn2I"},
-   {"text": "Kpn327I", "value":"Kpn327I"},
-   {"text": "KpnI", "value":"KpnI"},
-   {"text": "KpnNH25III", "value":"KpnNH25III"},
-   {"text": "KpnNIH30III", "value":"KpnNIH30III"},
-   {"text": "KpnNIH50I", "value":"KpnNIH50I"},
-   {"text": "KroI", "value":"KroI"},
-   {"text": "Ksp22I", "value":"Ksp22I"},
-   {"text": "Ksp632I", "value":"Ksp632I"},
-   {"text": "KspAI", "value":"KspAI"},
-   {"text": "KspI", "value":"KspI"},
-   {"text": "Kzo9I", "value":"Kzo9I"},
-   {"text": "Lba2029III", "value":"Lba2029III"},
-   {"text": "Lbr124II", "value":"Lbr124II"},
-   {"text": "Lde4408II", "value":"Lde4408II"},
-   {"text": "LguI", "value":"LguI"},
-   {"text": "LlaG50I", "value":"LlaG50I"},
-   {"text": "LmnI", "value":"LmnI"},
-   {"text": "Lmo370I", "value":"Lmo370I"},
-   {"text": "Lmo911II", "value":"Lmo911II"},
-   {"text": "Lpl1004II", "value":"Lpl1004II"},
-   {"text": "LpnI", "value":"LpnI"},
-   {"text": "LpnPI", "value":"LpnPI"},
-   {"text": "Lra68I", "value":"Lra68I"},
-   {"text": "LsaDS4I", "value":"LsaDS4I"},
-   {"text": "Lsp1109I", "value":"Lsp1109I"},
-   {"text": "Lsp48III", "value":"Lsp48III"},
-   {"text": "Lsp6406VI", "value":"Lsp6406VI"},
-   {"text": "LweI", "value":"LweI"},
-   {"text": "MabI", "value":"MabI"},
-   {"text": "MaeI", "value":"MaeI"},
-   {"text": "MaeII", "value":"MaeII"},
-   {"text": "MaeIII", "value":"MaeIII"},
-   {"text": "MalI", "value":"MalI"},
-   {"text": "MaqI", "value":"MaqI"},
-   {"text": "MauBI", "value":"MauBI"},
-   {"text": "Mba11I", "value":"Mba11I"},
-   {"text": "MbiI", "value":"MbiI"},
-   {"text": "MboI", "value":"MboI"},
-   {"text": "MboII", "value":"MboII"},
-   {"text": "McaTI", "value":"McaTI"},
-   {"text": "Mcr10I", "value":"Mcr10I"},
-   {"text": "McrI", "value":"McrI"},
-   {"text": "MfeI", "value":"MfeI"},
-   {"text": "MflI", "value":"MflI"},
-   {"text": "MhlI", "value":"MhlI"},
-   {"text": "MjaIV", "value":"MjaIV"},
-   {"text": "MkaDII", "value":"MkaDII"},
-   {"text": "MlsI", "value":"MlsI"},
-   {"text": "Mlu211III", "value":"Mlu211III"},
-   {"text": "MluCI", "value":"MluCI"},
-   {"text": "MluI", "value":"MluI"},
-   {"text": "MluNI", "value":"MluNI"},
-   {"text": "Mly113I", "value":"Mly113I"},
-   {"text": "MlyI", "value":"MlyI"},
-   {"text": "MmeI", "value":"MmeI"},
-   {"text": "MnlI", "value":"MnlI"},
-   {"text": "Mox20I", "value":"Mox20I"},
-   {"text": "Mph1103I", "value":"Mph1103I"},
-   {"text": "MreI", "value":"MreI"},
-   {"text": "MroI", "value":"MroI"},
-   {"text": "MroNI", "value":"MroNI"},
-   {"text": "MroXI", "value":"MroXI"},
-   {"text": "MscI", "value":"MscI"},
-   {"text": "MseI", "value":"MseI"},
-   {"text": "MslI", "value":"MslI"},
-   {"text": "Msp20I", "value":"Msp20I"},
-   {"text": "MspA1I", "value":"MspA1I"},
-   {"text": "MspCI", "value":"MspCI"},
-   {"text": "MspGI", "value":"MspGI"},
-   {"text": "MspI", "value":"MspI"},
-   {"text": "MspI7II", "value":"MspI7II"},
-   {"text": "MspI7IV", "value":"MspI7IV"},
-   {"text": "MspJI", "value":"MspJI"},
-   {"text": "MspR9I", "value":"MspR9I"},
-   {"text": "MspSC27II", "value":"MspSC27II"},
-   {"text": "MssI", "value":"MssI"},
-   {"text": "MstI", "value":"MstI"},
-   {"text": "MteI", "value":"MteI"},
-   {"text": "MtuHN878II", "value":"MtuHN878II"},
-   {"text": "MunI", "value":"MunI"},
-   {"text": "Mva1269I", "value":"Mva1269I"},
-   {"text": "MvaI", "value":"MvaI"},
-   {"text": "MvnI", "value":"MvnI"},
-   {"text": "MwoI", "value":"MwoI"},
-   {"text": "NaeI", "value":"NaeI"},
-   {"text": "Nal45188II", "value":"Nal45188II"},
-   {"text": "NarI", "value":"NarI"},
-   {"text": "Nbr128II", "value":"Nbr128II"},
-   {"text": "NciI", "value":"NciI"},
-   {"text": "NcoI", "value":"NcoI"},
-   {"text": "NdeI", "value":"NdeI"},
-   {"text": "NdeII", "value":"NdeII"},
-   {"text": "NgoAVII", "value":"NgoAVII"},
-   {"text": "NgoAVIII", "value":"NgoAVIII"},
-   {"text": "NgoMIV", "value":"NgoMIV"},
-   {"text": "NhaXI", "value":"NhaXI"},
-   {"text": "NheI", "value":"NheI"},
-   {"text": "NhoI", "value":"NhoI"},
-   {"text": "NlaCI", "value":"NlaCI"},
-   {"text": "NlaIII", "value":"NlaIII"},
-   {"text": "NlaIV", "value":"NlaIV"},
-   {"text": "Nli3877I", "value":"Nli3877I"},
-   {"text": "NmeA6CIII", "value":"NmeA6CIII"},
-   {"text": "NmeAIII", "value":"NmeAIII"},
-   {"text": "NmeDI", "value":"NmeDI"},
-   {"text": "NmuCI", "value":"NmuCI"},
-   {"text": "NotI", "value":"NotI"},
-   {"text": "NpeUS61II", "value":"NpeUS61II"},
-   {"text": "NruI", "value":"NruI"},
-   {"text": "NsbI", "value":"NsbI"},
-   {"text": "NsiI", "value":"NsiI"},
-   {"text": "NspBII", "value":"NspBII"},
-   {"text": "NspI", "value":"NspI"},
-   {"text": "NspV", "value":"NspV"},
-   {"text": "ObaBS10I", "value":"ObaBS10I"},
-   {"text": "OgrI", "value":"OgrI"},
-   {"text": "OliI", "value":"OliI"},
-   {"text": "OspHL35III", "value":"OspHL35III"},
-   {"text": "PabI", "value":"PabI"},
-   {"text": "Pac19842II", "value":"Pac19842II"},
-   {"text": "PacI", "value":"PacI"},
-   {"text": "PacIII", "value":"PacIII"},
-   {"text": "PaeI", "value":"PaeI"},
-   {"text": "PaePA99III", "value":"PaePA99III"},
-   {"text": "PaeR7I", "value":"PaeR7I"},
-   {"text": "PagI", "value":"PagI"},
-   {"text": "Pal408I", "value":"Pal408I"},
-   {"text": "PalAI", "value":"PalAI"},
-   {"text": "PasI", "value":"PasI"},
-   {"text": "PauI", "value":"PauI"},
-   {"text": "Pba2294I", "value":"Pba2294I"},
-   {"text": "PcaII", "value":"PcaII"},
-   {"text": "PceI", "value":"PceI"},
-   {"text": "PciI", "value":"PciI"},
-   {"text": "PciSI", "value":"PciSI"},
-   {"text": "Pcr308II", "value":"Pcr308II"},
-   {"text": "PcsI", "value":"PcsI"},
-   {"text": "PctI", "value":"PctI"},
-   {"text": "Pdi8503III", "value":"Pdi8503III"},
-   {"text": "PdiI", "value":"PdiI"},
-   {"text": "PdmI", "value":"PdmI"},
-   {"text": "Pdu1735I", "value":"Pdu1735I"},
-   {"text": "PenI", "value":"PenI"},
-   {"text": "PfeI", "value":"PfeI"},
-   {"text": "Pfl1108I", "value":"Pfl1108I"},
-   {"text": "Pfl23II", "value":"Pfl23II"},
-   {"text": "Pfl8569I", "value":"Pfl8569I"},
-   {"text": "PflFI", "value":"PflFI"},
-   {"text": "PflMI", "value":"PflMI"},
-   {"text": "PflPt14I", "value":"PflPt14I"},
-   {"text": "PfoI", "value":"PfoI"},
-   {"text": "PfrJS12IV", "value":"PfrJS12IV"},
-   {"text": "PfrJS12V", "value":"PfrJS12V"},
-   {"text": "PfrJS15III", "value":"PfrJS15III"},
-   {"text": "Pin17FIII", "value":"Pin17FIII"},
-   {"text": "PinAI", "value":"PinAI"},
-   {"text": "PinP23II", "value":"PinP23II"},
-   {"text": "PinP59III", "value":"PinP59III"},
-   {"text": "PkrI", "value":"PkrI"},
-   {"text": "PlaDI", "value":"PlaDI"},
-   {"text": "Ple19I", "value":"Ple19I"},
-   {"text": "PleI", "value":"PleI"},
-   {"text": "PliMI", "value":"PliMI"},
-   {"text": "PluTI", "value":"PluTI"},
-   {"text": "PmaCI", "value":"PmaCI"},
-   {"text": "PmeI", "value":"PmeI"},
-   {"text": "PmlI", "value":"PmlI"},
-   {"text": "PpiI", "value":"PpiI"},
-   {"text": "PpiP13II", "value":"PpiP13II"},
-   {"text": "PpsI", "value":"PpsI"},
-   {"text": "Ppu10I", "value":"Ppu10I"},
-   {"text": "Ppu21I", "value":"Ppu21I"},
-   {"text": "PpuMI", "value":"PpuMI"},
-   {"text": "PscI", "value":"PscI"},
-   {"text": "Pse18267I", "value":"Pse18267I"},
-   {"text": "PshAI", "value":"PshAI"},
-   {"text": "PshBI", "value":"PshBI"},
-   {"text": "PsiI", "value":"PsiI"},
-   {"text": "Psp0357II", "value":"Psp0357II"},
-   {"text": "Psp03I", "value":"Psp03I"},
-   {"text": "Psp124BI", "value":"Psp124BI"},
-   {"text": "Psp1406I", "value":"Psp1406I"},
-   {"text": "Psp5II", "value":"Psp5II"},
-   {"text": "Psp6I", "value":"Psp6I"},
-   {"text": "PspCI", "value":"PspCI"},
-   {"text": "PspEI", "value":"PspEI"},
-   {"text": "PspFI", "value":"PspFI"},
-   {"text": "PspGI", "value":"PspGI"},
-   {"text": "PspLI", "value":"PspLI"},
-   {"text": "PspN4I", "value":"PspN4I"},
-   {"text": "PspOMI", "value":"PspOMI"},
-   {"text": "PspOMII", "value":"PspOMII"},
-   {"text": "PspPI", "value":"PspPI"},
-   {"text": "PspPPI", "value":"PspPPI"},
-   {"text": "PspPRI", "value":"PspPRI"},
-   {"text": "PspXI", "value":"PspXI"},
-   {"text": "PsrI", "value":"PsrI"},
-   {"text": "PssI", "value":"PssI"},
-   {"text": "Pst14472I", "value":"Pst14472I"},
-   {"text": "Pst145I", "value":"Pst145I"},
-   {"text": "Pst273I", "value":"Pst273I"},
-   {"text": "PstI", "value":"PstI"},
-   {"text": "PstNI", "value":"PstNI"},
-   {"text": "PsuGI", "value":"PsuGI"},
-   {"text": "PsuI", "value":"PsuI"},
-   {"text": "PsyI", "value":"PsyI"},
-   {"text": "PteI", "value":"PteI"},
-   {"text": "PvuI", "value":"PvuI"},
-   {"text": "PvuII", "value":"PvuII"},
-   {"text": "Rba2021I", "value":"Rba2021I"},
-   {"text": "RceI", "value":"RceI"},
-   {"text": "RdeGBI", "value":"RdeGBI"},
-   {"text": "RdeGBII", "value":"RdeGBII"},
-   {"text": "RdeGBIII", "value":"RdeGBIII"},
-   {"text": "RflFIII", "value":"RflFIII"},
-   {"text": "RgaI", "value":"RgaI"},
-   {"text": "RigI", "value":"RigI"},
-   {"text": "RlaI", "value":"RlaI"},
-   {"text": "RlaII", "value":"RlaII"},
-   {"text": "RleAI", "value":"RleAI"},
-   {"text": "Rmu369III", "value":"Rmu369III"},
-   {"text": "RpaB5I", "value":"RpaB5I"},
-   {"text": "RpaBI", "value":"RpaBI"},
-   {"text": "RpaI", "value":"RpaI"},
-   {"text": "RpaTI", "value":"RpaTI"},
-   {"text": "RruI", "value":"RruI"},
-   {"text": "RsaI", "value":"RsaI"},
-   {"text": "RsaNI", "value":"RsaNI"},
-   {"text": "RseI", "value":"RseI"},
-   {"text": "Rsp008IV", "value":"Rsp008IV"},
-   {"text": "Rsp008V", "value":"Rsp008V"},
-   {"text": "Rsp531II", "value":"Rsp531II"},
-   {"text": "RspPBTS2III", "value":"RspPBTS2III"},
-   {"text": "Rsr2I", "value":"Rsr2I"},
-   {"text": "RsrII", "value":"RsrII"},
-   {"text": "Rtr1953I", "value":"Rtr1953I"},
-   {"text": "SacI", "value":"SacI"},
-   {"text": "SacII", "value":"SacII"},
-   {"text": "Saf8902III", "value":"Saf8902III"},
-   {"text": "Sag901I", "value":"Sag901I"},
-   {"text": "SalI", "value":"SalI"},
-   {"text": "SanDI", "value":"SanDI"},
-   {"text": "SapI", "value":"SapI"},
-   {"text": "SaqAI", "value":"SaqAI"},
-   {"text": "SatI", "value":"SatI"},
-   {"text": "Sau3AI", "value":"Sau3AI"},
-   {"text": "Sau64037IV", "value":"Sau64037IV"},
-   {"text": "Sau96I", "value":"Sau96I"},
-   {"text": "SauI", "value":"SauI"},
-   {"text": "Sba460II", "value":"Sba460II"},
-   {"text": "SbfI", "value":"SbfI"},
-   {"text": "Sbo46I", "value":"Sbo46I"},
-   {"text": "ScaI", "value":"ScaI"},
-   {"text": "SchI", "value":"SchI"},
-   {"text": "SciI", "value":"SciI"},
-   {"text": "ScoDS2II", "value":"ScoDS2II"},
-   {"text": "ScrFI", "value":"ScrFI"},
-   {"text": "SdaI", "value":"SdaI"},
-   {"text": "SdeAI", "value":"SdeAI"},
-   {"text": "SdeOSI", "value":"SdeOSI"},
-   {"text": "SduI", "value":"SduI"},
-   {"text": "SecI", "value":"SecI"},
-   {"text": "SelI", "value":"SelI"},
-   {"text": "Sen17963III", "value":"Sen17963III"},
-   {"text": "SenA1673III", "value":"SenA1673III"},
-   {"text": "SenSARA26III", "value":"SenSARA26III"},
-   {"text": "SenTFIV", "value":"SenTFIV"},
-   {"text": "SetI", "value":"SetI"},
-   {"text": "SexAI", "value":"SexAI"},
-   {"text": "SfaAI", "value":"SfaAI"},
-   {"text": "SfaNI", "value":"SfaNI"},
-   {"text": "SfcI", "value":"SfcI"},
-   {"text": "SfeI", "value":"SfeI"},
-   {"text": "SfiI", "value":"SfiI"},
-   {"text": "SfoI", "value":"SfoI"},
-   {"text": "Sfr274I", "value":"Sfr274I"},
-   {"text": "Sfr303I", "value":"Sfr303I"},
-   {"text": "SfuI", "value":"SfuI"},
-   {"text": "SgeI", "value":"SgeI"},
-   {"text": "SgfI", "value":"SgfI"},
-   {"text": "SgrAI", "value":"SgrAI"},
-   {"text": "SgrAII", "value":"SgrAII"},
-   {"text": "SgrBI", "value":"SgrBI"},
-   {"text": "SgrDI", "value":"SgrDI"},
-   {"text": "SgrTI", "value":"SgrTI"},
-   {"text": "SgsI", "value":"SgsI"},
-   {"text": "SimI", "value":"SimI"},
-   {"text": "SinI", "value":"SinI"},
-   {"text": "SlaI", "value":"SlaI"},
-   {"text": "SmaI", "value":"SmaI"},
-   {"text": "SmaUMH5I", "value":"SmaUMH5I"},
-   {"text": "SmaUMH8I", "value":"SmaUMH8I"},
-   {"text": "SmiI", "value":"SmiI"},
-   {"text": "SmiMI", "value":"SmiMI"},
-   {"text": "SmlI", "value":"SmlI"},
-   {"text": "SmoI", "value":"SmoI"},
-   {"text": "Sna507VIII", "value":"Sna507VIII"},
-   {"text": "SnaBI", "value":"SnaBI"},
-   {"text": "SnaI", "value":"SnaI"},
-   {"text": "Sno506I", "value":"Sno506I"},
-   {"text": "Spe19205IV", "value":"Spe19205IV"},
-   {"text": "SpeI", "value":"SpeI"},
-   {"text": "SphI", "value":"SphI"},
-   {"text": "SplI", "value":"SplI"},
-   {"text": "SpnRII", "value":"SpnRII"},
-   {"text": "SpoDI", "value":"SpoDI"},
-   {"text": "SrfI", "value":"SrfI"},
-   {"text": "Sse232I", "value":"Sse232I"},
-   {"text": "Sse8387I", "value":"Sse8387I"},
-   {"text": "Sse8647I", "value":"Sse8647I"},
-   {"text": "Sse9I", "value":"Sse9I"},
-   {"text": "SseBI", "value":"SseBI"},
-   {"text": "SsiI", "value":"SsiI"},
-   {"text": "Ssp6803IV", "value":"Ssp6803IV"},
-   {"text": "Ssp714II", "value":"Ssp714II"},
-   {"text": "SspD5I", "value":"SspD5I"},
-   {"text": "SspDI", "value":"SspDI"},
-   {"text": "SspI", "value":"SspI"},
-   {"text": "SspJOR1II", "value":"SspJOR1II"},
-   {"text": "SspMI", "value":"SspMI"},
-   {"text": "SstE37I", "value":"SstE37I"},
-   {"text": "SstI", "value":"SstI"},
-   {"text": "Sth132I", "value":"Sth132I"},
-   {"text": "Sth20745III", "value":"Sth20745III"},
-   {"text": "Sth302II", "value":"Sth302II"},
-   {"text": "SthSt3II", "value":"SthSt3II"},
-   {"text": "StsI", "value":"StsI"},
-   {"text": "StuI", "value":"StuI"},
-   {"text": "StyD4I", "value":"StyD4I"},
-   {"text": "StyI", "value":"StyI"},
-   {"text": "SurP32aII", "value":"SurP32aII"},
-   {"text": "SwaI", "value":"SwaI"},
-   {"text": "TaaI", "value":"TaaI"},
-   {"text": "TaiI", "value":"TaiI"},
-   {"text": "TaqI", "value":"TaqI"},
-   {"text": "TaqII", "value":"TaqII"},
-   {"text": "TaqIII", "value":"TaqIII"},
-   {"text": "TasI", "value":"TasI"},
-   {"text": "TatI", "value":"TatI"},
-   {"text": "TauI", "value":"TauI"},
-   {"text": "TfiI", "value":"TfiI"},
-   {"text": "TpyTP2I", "value":"TpyTP2I"},
-   {"text": "Tru1I", "value":"Tru1I"},
-   {"text": "Tru9I", "value":"Tru9I"},
-   {"text": "TscAI", "value":"TscAI"},
-   {"text": "TseFI", "value":"TseFI"},
-   {"text": "TseI", "value":"TseI"},
-   {"text": "TsoI", "value":"TsoI"},
-   {"text": "Tsp45I", "value":"Tsp45I"},
-   {"text": "Tsp4CI", "value":"Tsp4CI"},
-   {"text": "TspARh3I", "value":"TspARh3I"},
-   {"text": "TspDTI", "value":"TspDTI"},
-   {"text": "TspEI", "value":"TspEI"},
-   {"text": "TspGWI", "value":"TspGWI"},
-   {"text": "TspMI", "value":"TspMI"},
-   {"text": "TspRI", "value":"TspRI"},
-   {"text": "TssI", "value":"TssI"},
-   {"text": "TstI", "value":"TstI"},
-   {"text": "TsuI", "value":"TsuI"},
-   {"text": "Tth111I", "value":"Tth111I"},
-   {"text": "Tth111II", "value":"Tth111II"},
-   {"text": "UbaF11I", "value":"UbaF11I"},
-   {"text": "UbaF12I", "value":"UbaF12I"},
-   {"text": "UbaF13I", "value":"UbaF13I"},
-   {"text": "UbaF14I", "value":"UbaF14I"},
-   {"text": "UbaF9I", "value":"UbaF9I"},
-   {"text": "UbaPI", "value":"UbaPI"},
-   {"text": "UcoMSI", "value":"UcoMSI"},
-   {"text": "UnbI", "value":"UnbI"},
-   {"text": "Van9116I", "value":"Van9116I"},
-   {"text": "Van91I", "value":"Van91I"},
-   {"text": "VchE4II", "value":"VchE4II"},
-   {"text": "Vdi96II", "value":"Vdi96II"},
-   {"text": "Vha464I", "value":"Vha464I"},
-   {"text": "VneI", "value":"VneI"},
-   {"text": "VpaK11AI", "value":"VpaK11AI"},
-   {"text": "VpaK11BI", "value":"VpaK11BI"},
-   {"text": "VspI", "value":"VspI"},
-   {"text": "Vtu19109I", "value":"Vtu19109I"},
-   {"text": "WviI", "value":"WviI"},
-   {"text": "XagI", "value":"XagI"},
-   {"text": "XapI", "value":"XapI"},
-   {"text": "XbaI", "value":"XbaI"},
-   {"text": "Xca85IV", "value":"Xca85IV"},
-   {"text": "XceI", "value":"XceI"},
-   {"text": "XcmI", "value":"XcmI"},
-   {"text": "XhoI", "value":"XhoI"},
-   {"text": "XhoII", "value":"XhoII"},
-   {"text": "XmaI", "value":"XmaI"},
-   {"text": "XmaIII", "value":"XmaIII"},
-   {"text": "XmaJI", "value":"XmaJI"},
-   {"text": "XmiI", "value":"XmiI"},
-   {"text": "XmnI", "value":"XmnI"},
-   {"text": "XspI", "value":"XspI"},
-   {"text": "YkrI", "value":"YkrI"},
-   {"text": "ZraI", "value":"ZraI"},
-   {"text": "ZrmI", "value":"ZrmI"},
-   {"text": "Zsp2I", "value":"Zsp2I"}
-            ],
-            "validationRules": [
-                {
-                    "type": "required"
-                }
-            ]
-        },
-        "request": {
-            "id": "enzymes",
-            "dataType": "list(string)",
-            "data": ["Common"]
-        }
-    }
-  ]
+inputFields:
+  - control:
+      id: sequenceColumn
+      label: Select sequence column
+      type: columnselect
+      filters:
+        - dataType: string
+          contentType: chemical/x-sequence
+        - dataType: binary
+          contentType: chemical/x-genbank
+      validationRules:
+        - type: required
+    request:
+      id: sequenceColumn
+      dataType: string
+      selectorType: column
+  - control:
+      id: enzymes
+      label: Select enzyme codes
+      type: select
+      multi: true
+      options:
+        - text: All
+          value: All
+        - text: Common
+          value: Common
+        - text: AanI
+          value: AanI
+        - text: AarI
+          value: AarI
+        - text: AasI
+          value: AasI
+        - text: AatII
+          value: AatII
+        - text: Aba6411II
+          value: Aba6411II
+        - text: AbaB8342IV
+          value: AbaB8342IV
+        - text: AbaCIII
+          value: AbaCIII
+        - text: AbaSI
+          value: AbaSI
+        - text: AbaUMB2I
+          value: AbaUMB2I
+        - text: Abr4036II
+          value: Abr4036II
+        - text: AbsI
+          value: AbsI
+        - text: Acc16I
+          value: Acc16I
+        - text: Acc36I
+          value: Acc36I
+        - text: Acc65I
+          value: Acc65I
+        - text: Acc65V
+          value: Acc65V
+        - text: AccB1I
+          value: AccB1I
+        - text: AccB7I
+          value: AccB7I
+        - text: AccBSI
+          value: AccBSI
+        - text: AccI
+          value: AccI
+        - text: AccII
+          value: AccII
+        - text: AccIII
+          value: AccIII
+        - text: AceIII
+          value: AceIII
+        - text: AchA6III
+          value: AchA6III
+        - text: AciI
+          value: AciI
+        - text: AclI
+          value: AclI
+        - text: AclWI
+          value: AclWI
+        - text: Aco12261II
+          value: Aco12261II
+        - text: AcoI
+          value: AcoI
+        - text: AcoY31II
+          value: AcoY31II
+        - text: AcsI
+          value: AcsI
+        - text: AcuI
+          value: AcuI
+        - text: AcvI
+          value: AcvI
+        - text: AcyI
+          value: AcyI
+        - text: AdeI
+          value: AdeI
+        - text: Adh6U21I
+          value: Adh6U21I
+        - text: AfaI
+          value: AfaI
+        - text: AfeI
+          value: AfeI
+        - text: AfiI
+          value: AfiI
+        - text: AflII
+          value: AflII
+        - text: AflIII
+          value: AflIII
+        - text: AgeI
+          value: AgeI
+        - text: AgsI
+          value: AgsI
+        - text: AhaIII
+          value: AhaIII
+        - text: AhdI
+          value: AhdI
+        - text: AhlI
+          value: AhlI
+        - text: AhyRBAHI
+          value: AhyRBAHI
+        - text: AhyYL17I
+          value: AhyYL17I
+        - text: AjiI
+          value: AjiI
+        - text: AjnI
+          value: AjnI
+        - text: AjuI
+          value: AjuI
+        - text: AleI
+          value: AleI
+        - text: AlfI
+          value: AlfI
+        - text: AloI
+          value: AloI
+        - text: AluBI
+          value: AluBI
+        - text: AluI
+          value: AluI
+        - text: Alw21I
+          value: Alw21I
+        - text: Alw26I
+          value: Alw26I
+        - text: Alw44I
+          value: Alw44I
+        - text: AlwFI
+          value: AlwFI
+        - text: AlwI
+          value: AlwI
+        - text: AlwNI
+          value: AlwNI
+        - text: Ama87I
+          value: Ama87I
+        - text: AmaCSI
+          value: AmaCSI
+        - text: Aod1I
+          value: Aod1I
+        - text: Aor13HI
+          value: Aor13HI
+        - text: Aor51HI
+          value: Aor51HI
+        - text: AoxI
+          value: AoxI
+        - text: ApaBI
+          value: ApaBI
+        - text: ApaI
+          value: ApaI
+        - text: ApaLI
+          value: ApaLI
+        - text: ApeKI
+          value: ApeKI
+        - text: ApoI
+          value: ApoI
+        - text: ApyPI
+          value: ApyPI
+        - text: AquII
+          value: AquII
+        - text: AquIII
+          value: AquIII
+        - text: AquIV
+          value: AquIV
+        - text: ArsI
+          value: ArsI
+        - text: AscI
+          value: AscI
+        - text: AseI
+          value: AseI
+        - text: Asi256I
+          value: Asi256I
+        - text: AsiGI
+          value: AsiGI
+        - text: AsiSI
+          value: AsiSI
+        - text: Asp103I
+          value: Asp103I
+        - text: Asp114pII
+          value: Asp114pII
+        - text: Asp337I
+          value: Asp337I
+        - text: Asp700I
+          value: Asp700I
+        - text: Asp718I
+          value: Asp718I
+        - text: AspA2I
+          value: AspA2I
+        - text: AspAMDIV
+          value: AspAMDIV
+        - text: AspBHI
+          value: AspBHI
+        - text: AspDUT2V
+          value: AspDUT2V
+        - text: AspJHL3II
+          value: AspJHL3II
+        - text: AspLEI
+          value: AspLEI
+        - text: AspNIH4III
+          value: AspNIH4III
+        - text: AspS9I
+          value: AspS9I
+        - text: AspSLV7III
+          value: AspSLV7III
+        - text: Asu14238IV
+          value: Asu14238IV
+        - text: AsuC2I
+          value: AsuC2I
+        - text: AsuHPI
+          value: AsuHPI
+        - text: AsuI
+          value: AsuI
+        - text: AsuII
+          value: AsuII
+        - text: AsuNHI
+          value: AsuNHI
+        - text: AteTI
+          value: AteTI
+        - text: AvaI
+          value: AvaI
+        - text: AvaII
+          value: AvaII
+        - text: AvaIII
+          value: AvaIII
+        - text: AvrII
+          value: AvrII
+        - text: Awo1030IV
+          value: Awo1030IV
+        - text: AxyI
+          value: AxyI
+        - text: BaeGI
+          value: BaeGI
+        - text: BaeI
+          value: BaeI
+        - text: Bag18758I
+          value: Bag18758I
+        - text: BalI
+          value: BalI
+        - text: BamHI
+          value: BamHI
+        - text: BanI
+          value: BanI
+        - text: BanII
+          value: BanII
+        - text: BanLI
+          value: BanLI
+        - text: BarI
+          value: BarI
+        - text: Bau1417V
+          value: Bau1417V
+        - text: BauI
+          value: BauI
+        - text: Bbr52II
+          value: Bbr52II
+        - text: Bbr57III
+          value: Bbr57III
+        - text: Bbr7017II
+          value: Bbr7017II
+        - text: Bbr7017III
+          value: Bbr7017III
+        - text: BbrPI
+          value: BbrPI
+        - text: BbsI
+          value: BbsI
+        - text: BbuB31I
+          value: BbuB31I
+        - text: BbuB31II
+          value: BbuB31II
+        - text: Bbv12I
+          value: Bbv12I
+        - text: BbvCI
+          value: BbvCI
+        - text: BbvI
+          value: BbvI
+        - text: BbvII
+          value: BbvII
+        - text: BccI
+          value: BccI
+        - text: Bce3081I
+          value: Bce3081I
+        - text: Bce83I
+          value: Bce83I
+        - text: BceAI
+          value: BceAI
+        - text: BceSIV
+          value: BceSIV
+        - text: BcefI
+          value: BcefI
+        - text: BcgI
+          value: BcgI
+        - text: BciT130I
+          value: BciT130I
+        - text: BciVI
+          value: BciVI
+        - text: BclI
+          value: BclI
+        - text: BcnI
+          value: BcnI
+        - text: BcoDI
+          value: BcoDI
+        - text: BcuI
+          value: BcuI
+        - text: BdaI
+          value: BdaI
+        - text: BetI
+          value: BetI
+        - text: BfaI
+          value: BfaI
+        - text: BfaSII
+          value: BfaSII
+        - text: BfiI
+          value: BfiI
+        - text: BfmI
+          value: BfmI
+        - text: BfoI
+          value: BfoI
+        - text: BfrI
+          value: BfrI
+        - text: BfuAI
+          value: BfuAI
+        - text: BfuI
+          value: BfuI
+        - text: Bga514I
+          value: Bga514I
+        - text: BglI
+          value: BglI
+        - text: BglII
+          value: BglII
+        - text: BinI
+          value: BinI
+        - text: BisI
+          value: BisI
+        - text: BkrAM31DI
+          value: BkrAM31DI
+        - text: Ble402II
+          value: Ble402II
+        - text: BlnI
+          value: BlnI
+        - text: BloAII
+          value: BloAII
+        - text: BlpI
+          value: BlpI
+        - text: BlsI
+          value: BlsI
+        - text: BmcAI
+          value: BmcAI
+        - text: Bme1390I
+          value: Bme1390I
+        - text: Bme18I
+          value: Bme18I
+        - text: BmeDI
+          value: BmeDI
+        - text: BmeRI
+          value: BmeRI
+        - text: BmeT110I
+          value: BmeT110I
+        - text: BmgBI
+          value: BmgBI
+        - text: BmgI
+          value: BmgI
+        - text: BmgT120I
+          value: BmgT120I
+        - text: BmiI
+          value: BmiI
+        - text: BmrFI
+          value: BmrFI
+        - text: BmrI
+          value: BmrI
+        - text: BmsI
+          value: BmsI
+        - text: BmtI
+          value: BmtI
+        - text: BmuI
+          value: BmuI
+        - text: BoxI
+          value: BoxI
+        - text: BpiI
+          value: BpiI
+        - text: BplI
+          value: BplI
+        - text: BpmI
+          value: BpmI
+        - text: Bpu10I
+          value: Bpu10I
+        - text: Bpu1102I
+          value: Bpu1102I
+        - text: Bpu14I
+          value: Bpu14I
+        - text: BpuEI
+          value: BpuEI
+        - text: BpuMI
+          value: BpuMI
+        - text: Bsa29I
+          value: Bsa29I
+        - text: BsaAI
+          value: BsaAI
+        - text: BsaBI
+          value: BsaBI
+        - text: BsaHI
+          value: BsaHI
+        - text: BsaI
+          value: BsaI
+        - text: BsaJI
+          value: BsaJI
+        - text: BsaWI
+          value: BsaWI
+        - text: BsaXI
+          value: BsaXI
+        - text: BsbI
+          value: BsbI
+        - text: Bsc4I
+          value: Bsc4I
+        - text: BscAI
+          value: BscAI
+        - text: BscGI
+          value: BscGI
+        - text: Bse118I
+          value: Bse118I
+        - text: Bse1I
+          value: Bse1I
+        - text: Bse21I
+          value: Bse21I
+        - text: Bse3DI
+          value: Bse3DI
+        - text: Bse8I
+          value: Bse8I
+        - text: BseAI
+          value: BseAI
+        - text: BseBI
+          value: BseBI
+        - text: BseCI
+          value: BseCI
+        - text: BseDI
+          value: BseDI
+        - text: BseGI
+          value: BseGI
+        - text: BseJI
+          value: BseJI
+        - text: BseLI
+          value: BseLI
+        - text: BseMI
+          value: BseMI
+        - text: BseMII
+          value: BseMII
+        - text: BseNI
+          value: BseNI
+        - text: BsePI
+          value: BsePI
+        - text: BseRI
+          value: BseRI
+        - text: BseSI
+          value: BseSI
+        - text: BseX3I
+          value: BseX3I
+        - text: BseXI
+          value: BseXI
+        - text: BseYI
+          value: BseYI
+        - text: BsgI
+          value: BsgI
+        - text: Bsh1236I
+          value: Bsh1236I
+        - text: Bsh1285I
+          value: Bsh1285I
+        - text: BshFI
+          value: BshFI
+        - text: BshNI
+          value: BshNI
+        - text: BshTI
+          value: BshTI
+        - text: BshVI
+          value: BshVI
+        - text: BsiEI
+          value: BsiEI
+        - text: BsiHKAI
+          value: BsiHKAI
+        - text: BsiHKCI
+          value: BsiHKCI
+        - text: BsiI
+          value: BsiI
+        - text: BsiSI
+          value: BsiSI
+        - text: BsiWI
+          value: BsiWI
+        - text: BsiYI
+          value: BsiYI
+        - text: BslFI
+          value: BslFI
+        - text: BslI
+          value: BslI
+        - text: BsmAI
+          value: BsmAI
+        - text: BsmBI
+          value: BsmBI
+        - text: BsmFI
+          value: BsmFI
+        - text: BsmI
+          value: BsmI
+        - text: BsnI
+          value: BsnI
+        - text: Bso31I
+          value: Bso31I
+        - text: BsoBI
+          value: BsoBI
+        - text: Bsp119I
+          value: Bsp119I
+        - text: Bsp120I
+          value: Bsp120I
+        - text: Bsp1286I
+          value: Bsp1286I
+        - text: Bsp13I
+          value: Bsp13I
+        - text: Bsp1407I
+          value: Bsp1407I
+        - text: Bsp143I
+          value: Bsp143I
+        - text: Bsp1720I
+          value: Bsp1720I
+        - text: Bsp19I
+          value: Bsp19I
+        - text: Bsp24I
+          value: Bsp24I
+        - text: Bsp3004IV
+          value: Bsp3004IV
+        - text: Bsp460III
+          value: Bsp460III
+        - text: Bsp68I
+          value: Bsp68I
+        - text: BspACI
+          value: BspACI
+        - text: BspANI
+          value: BspANI
+        - text: BspCNI
+          value: BspCNI
+        - text: BspD6I
+          value: BspD6I
+        - text: BspDI
+          value: BspDI
+        - text: BspEI
+          value: BspEI
+        - text: BspFNI
+          value: BspFNI
+        - text: BspGI
+          value: BspGI
+        - text: BspHI
+          value: BspHI
+        - text: BspLI
+          value: BspLI
+        - text: BspLU11I
+          value: BspLU11I
+        - text: BspMAI
+          value: BspMAI
+        - text: BspMI
+          value: BspMI
+        - text: BspMII
+          value: BspMII
+        - text: BspNCI
+          value: BspNCI
+        - text: BspOI
+          value: BspOI
+        - text: BspPI
+          value: BspPI
+        - text: BspQI
+          value: BspQI
+        - text: BspT104I
+          value: BspT104I
+        - text: BspT107I
+          value: BspT107I
+        - text: BspTI
+          value: BspTI
+        - text: BspTNI
+          value: BspTNI
+        - text: BsrBI
+          value: BsrBI
+        - text: BsrDI
+          value: BsrDI
+        - text: BsrFI
+          value: BsrFI
+        - text: BsrGI
+          value: BsrGI
+        - text: BsrI
+          value: BsrI
+        - text: BssAI
+          value: BssAI
+        - text: BssECI
+          value: BssECI
+        - text: BssHII
+          value: BssHII
+        - text: BssMI
+          value: BssMI
+        - text: BssNAI
+          value: BssNAI
+        - text: BssNI
+          value: BssNI
+        - text: BssSI
+          value: BssSI
+        - text: BssT1I
+          value: BssT1I
+        - text: Bst1107I
+          value: Bst1107I
+        - text: Bst2BI
+          value: Bst2BI
+        - text: Bst2UI
+          value: Bst2UI
+        - text: Bst4CI
+          value: Bst4CI
+        - text: Bst6I
+          value: Bst6I
+        - text: BstACI
+          value: BstACI
+        - text: BstAFI
+          value: BstAFI
+        - text: BstAPI
+          value: BstAPI
+        - text: BstAUI
+          value: BstAUI
+        - text: BstBAI
+          value: BstBAI
+        - text: BstBI
+          value: BstBI
+        - text: BstC8I
+          value: BstC8I
+        - text: BstDEI
+          value: BstDEI
+        - text: BstDSI
+          value: BstDSI
+        - text: BstEII
+          value: BstEII
+        - text: BstENI
+          value: BstENI
+        - text: BstF5I
+          value: BstF5I
+        - text: BstFNI
+          value: BstFNI
+        - text: BstH2I
+          value: BstH2I
+        - text: BstHHI
+          value: BstHHI
+        - text: BstKTI
+          value: BstKTI
+        - text: BstMAI
+          value: BstMAI
+        - text: BstMBI
+          value: BstMBI
+        - text: BstMCI
+          value: BstMCI
+        - text: BstMWI
+          value: BstMWI
+        - text: BstNI
+          value: BstNI
+        - text: BstNSI
+          value: BstNSI
+        - text: BstPAI
+          value: BstPAI
+        - text: BstPI
+          value: BstPI
+        - text: BstSCI
+          value: BstSCI
+        - text: BstSFI
+          value: BstSFI
+        - text: BstSLI
+          value: BstSLI
+        - text: BstSNI
+          value: BstSNI
+        - text: BstUI
+          value: BstUI
+        - text: BstV1I
+          value: BstV1I
+        - text: BstV2I
+          value: BstV2I
+        - text: BstX2I
+          value: BstX2I
+        - text: BstXI
+          value: BstXI
+        - text: BstYI
+          value: BstYI
+        - text: BstZ17I
+          value: BstZ17I
+        - text: BstZI
+          value: BstZI
+        - text: Bsu15I
+          value: Bsu15I
+        - text: Bsu36I
+          value: Bsu36I
+        - text: BsuI
+          value: BsuI
+        - text: BsuRI
+          value: BsuRI
+        - text: BsuTUI
+          value: BsuTUI
+        - text: BtgI
+          value: BtgI
+        - text: BtgZI
+          value: BtgZI
+        - text: BthCI
+          value: BthCI
+        - text: BtrI
+          value: BtrI
+        - text: BtsCI
+          value: BtsCI
+        - text: BtsI
+          value: BtsI
+        - text: BtsIMutI
+          value: BtsIMutI
+        - text: BtuMI
+          value: BtuMI
+        - text: Bve1B23I
+          value: Bve1B23I
+        - text: BveI
+          value: BveI
+        - text: Cac8I
+          value: Cac8I
+        - text: CaiI
+          value: CaiI
+        - text: Cal14237I
+          value: Cal14237I
+        - text: CalB3II
+          value: CalB3II
+        - text: Cau10061II
+          value: Cau10061II
+        - text: CauII
+          value: CauII
+        - text: Cba13II
+          value: Cba13II
+        - text: Cba16038I
+          value: Cba16038I
+        - text: Cbo67071IV
+          value: Cbo67071IV
+        - text: Cch467III
+          value: Cch467III
+        - text: CchII
+          value: CchII
+        - text: CchIII
+          value: CchIII
+        - text: CciI
+          value: CciI
+        - text: CciNI
+          value: CciNI
+        - text: Cco14983V
+          value: Cco14983V
+        - text: Cco14983VI
+          value: Cco14983VI
+        - text: CcrNAIII
+          value: CcrNAIII
+        - text: Cdi11397I
+          value: Cdi11397I
+        - text: CdiI
+          value: CdiI
+        - text: CdpI
+          value: CdpI
+        - text: Cdu23823II
+          value: Cdu23823II
+        - text: CfoI
+          value: CfoI
+        - text: Cfr10I
+          value: Cfr10I
+        - text: Cfr13I
+          value: Cfr13I
+        - text: Cfr42I
+          value: Cfr42I
+        - text: Cfr9I
+          value: Cfr9I
+        - text: CfrI
+          value: CfrI
+        - text: CfrMH13II
+          value: CfrMH13II
+        - text: CfrMH16VI
+          value: CfrMH16VI
+        - text: Cfupf3II
+          value: Cfupf3II
+        - text: Cgl13032I
+          value: Cgl13032I
+        - text: Cgl13032II
+          value: Cgl13032II
+        - text: ChaI
+          value: ChaI
+        - text: Cje265V
+          value: Cje265V
+        - text: Cje54107III
+          value: Cje54107III
+        - text: CjeFIII
+          value: CjeFIII
+        - text: CjeFV
+          value: CjeFV
+        - text: CjeI
+          value: CjeI
+        - text: CjeNII
+          value: CjeNII
+        - text: CjeNIII
+          value: CjeNIII
+        - text: CjeNV
+          value: CjeNV
+        - text: CjeP659IV
+          value: CjeP659IV
+        - text: CjePI
+          value: CjePI
+        - text: CjuI
+          value: CjuI
+        - text: CjuII
+          value: CjuII
+        - text: Cla11845III
+          value: Cla11845III
+        - text: ClaI
+          value: ClaI
+        - text: Cly7489II
+          value: Cly7489II
+        - text: Cma23826I
+          value: Cma23826I
+        - text: CpoI
+          value: CpoI
+        - text: CseI
+          value: CseI
+        - text: CsiI
+          value: CsiI
+        - text: Csp2014I
+          value: Csp2014I
+        - text: Csp6I
+          value: Csp6I
+        - text: CspAI
+          value: CspAI
+        - text: CspCI
+          value: CspCI
+        - text: CspI
+          value: CspI
+        - text: CstMI
+          value: CstMI
+        - text: CviAII
+          value: CviAII
+        - text: CviJI
+          value: CviJI
+        - text: CviKI_1
+          value: CviKI_1
+        - text: CviQI
+          value: CviQI
+        - text: CviRI
+          value: CviRI
+        - text: Dde51507I
+          value: Dde51507I
+        - text: DdeI
+          value: DdeI
+        - text: DinI
+          value: DinI
+        - text: DpnI
+          value: DpnI
+        - text: DpnII
+          value: DpnII
+        - text: DraI
+          value: DraI
+        - text: DraII
+          value: DraII
+        - text: DraIII
+          value: DraIII
+        - text: DraRI
+          value: DraRI
+        - text: DrdI
+          value: DrdI
+        - text: DrdII
+          value: DrdII
+        - text: DrdIV
+          value: DrdIV
+        - text: DriI
+          value: DriI
+        - text: DsaI
+          value: DsaI
+        - text: DseDI
+          value: DseDI
+        - text: DvuIII
+          value: DvuIII
+        - text: EaeI
+          value: EaeI
+        - text: EagI
+          value: EagI
+        - text: Eam1104I
+          value: Eam1104I
+        - text: Eam1105I
+          value: Eam1105I
+        - text: EarI
+          value: EarI
+        - text: EciI
+          value: EciI
+        - text: Ecl136II
+          value: Ecl136II
+        - text: Ecl234I
+          value: Ecl234I
+        - text: Ecl35734I
+          value: Ecl35734I
+        - text: EclXI
+          value: EclXI
+        - text: Eco105I
+          value: Eco105I
+        - text: Eco130I
+          value: Eco130I
+        - text: Eco147I
+          value: Eco147I
+        - text: Eco24I
+          value: Eco24I
+        - text: Eco31I
+          value: Eco31I
+        - text: Eco32I
+          value: Eco32I
+        - text: Eco43896II
+          value: Eco43896II
+        - text: Eco4465II
+          value: Eco4465II
+        - text: Eco47I
+          value: Eco47I
+        - text: Eco47III
+          value: Eco47III
+        - text: Eco52I
+          value: Eco52I
+        - text: Eco53kI
+          value: Eco53kI
+        - text: Eco57I
+          value: Eco57I
+        - text: Eco57MI
+          value: Eco57MI
+        - text: Eco72I
+          value: Eco72I
+        - text: Eco81I
+          value: Eco81I
+        - text: Eco88I
+          value: Eco88I
+        - text: Eco91I
+          value: Eco91I
+        - text: EcoBLMcrX
+          value: EcoBLMcrX
+        - text: EcoE1140I
+          value: EcoE1140I
+        - text: EcoHI
+          value: EcoHI
+        - text: EcoHSI
+          value: EcoHSI
+        - text: EcoICRI
+          value: EcoICRI
+        - text: EcoMVII
+          value: EcoMVII
+        - text: EcoNI
+          value: EcoNI
+        - text: EcoNIH6II
+          value: EcoNIH6II
+        - text: EcoO109I
+          value: EcoO109I
+        - text: EcoO65I
+          value: EcoO65I
+        - text: EcoRI
+          value: EcoRI
+        - text: EcoRII
+          value: EcoRII
+        - text: EcoRV
+          value: EcoRV
+        - text: EcoT14I
+          value: EcoT14I
+        - text: EcoT22I
+          value: EcoT22I
+        - text: EcoT38I
+          value: EcoT38I
+        - text: EgeI
+          value: EgeI
+        - text: EheI
+          value: EheI
+        - text: Eli8509II
+          value: Eli8509II
+        - text: ErhI
+          value: ErhI
+        - text: EsaBC3I
+          value: EsaBC3I
+        - text: EsaSSI
+          value: EsaSSI
+        - text: Esp3007I
+          value: Esp3007I
+        - text: Esp3I
+          value: Esp3I
+        - text: EspI
+          value: EspI
+        - text: FaeI
+          value: FaeI
+        - text: FaiI
+          value: FaiI
+        - text: FalI
+          value: FalI
+        - text: FaqI
+          value: FaqI
+        - text: FatI
+          value: FatI
+        - text: FauI
+          value: FauI
+        - text: FauNDI
+          value: FauNDI
+        - text: Fba202Z8II
+          value: Fba202Z8II
+        - text: FbaI
+          value: FbaI
+        - text: FblI
+          value: FblI
+        - text: Fco1691IV
+          value: Fco1691IV
+        - text: FinI
+          value: FinI
+        - text: FmuI
+          value: FmuI
+        - text: Fnu4HI
+          value: Fnu4HI
+        - text: FnuDII
+          value: FnuDII
+        - text: FokI
+          value: FokI
+        - text: FriOI
+          value: FriOI
+        - text: FseI
+          value: FseI
+        - text: Fsp4HI
+          value: Fsp4HI
+        - text: FspAI
+          value: FspAI
+        - text: FspBI
+          value: FspBI
+        - text: FspEI
+          value: FspEI
+        - text: FspI
+          value: FspI
+        - text: FspPK15I
+          value: FspPK15I
+        - text: FtnUV
+          value: FtnUV
+        - text: GauT27I
+          value: GauT27I
+        - text: Gba708II
+          value: Gba708II
+        - text: GdiII
+          value: GdiII
+        - text: GlaI
+          value: GlaI
+        - text: GluI
+          value: GluI
+        - text: GsaI
+          value: GsaI
+        - text: GsuI
+          value: GsuI
+        - text: HaeI
+          value: HaeI
+        - text: HaeII
+          value: HaeII
+        - text: HaeIII
+          value: HaeIII
+        - text: HapII
+          value: HapII
+        - text: HauII
+          value: HauII
+        - text: HbaII
+          value: HbaII
+        - text: HdeNY26I
+          value: HdeNY26I
+        - text: HdeZA17I
+          value: HdeZA17I
+        - text: HgaI
+          value: HgaI
+        - text: HgiAI
+          value: HgiAI
+        - text: HgiCI
+          value: HgiCI
+        - text: HgiEII
+          value: HgiEII
+        - text: HgiJII
+          value: HgiJII
+        - text: HhaI
+          value: HhaI
+        - text: Hin1I
+          value: Hin1I
+        - text: Hin1II
+          value: Hin1II
+        - text: Hin4I
+          value: Hin4I
+        - text: Hin4II
+          value: Hin4II
+        - text: Hin6I
+          value: Hin6I
+        - text: HinP1I
+          value: HinP1I
+        - text: HincII
+          value: HincII
+        - text: HindII
+          value: HindII
+        - text: HindIII
+          value: HindIII
+        - text: HinfI
+          value: HinfI
+        - text: HpaI
+          value: HpaI
+        - text: HpaII
+          value: HpaII
+        - text: HphI
+          value: HphI
+        - text: Hpy166II
+          value: Hpy166II
+        - text: Hpy178III
+          value: Hpy178III
+        - text: Hpy188I
+          value: Hpy188I
+        - text: Hpy188III
+          value: Hpy188III
+        - text: Hpy300XI
+          value: Hpy300XI
+        - text: Hpy8I
+          value: Hpy8I
+        - text: Hpy99I
+          value: Hpy99I
+        - text: Hpy99XIII
+          value: Hpy99XIII
+        - text: Hpy99XIV
+          value: Hpy99XIV
+        - text: Hpy99XIV_mut1
+          value: Hpy99XIV_mut1
+        - text: Hpy99XXII
+          value: Hpy99XXII
+        - text: HpyAV
+          value: HpyAV
+        - text: HpyAXIV
+          value: HpyAXIV
+        - text: HpyAXVIII
+          value: HpyAXVIII
+        - text: HpyAXVI_mut1
+          value: HpyAXVI_mut1
+        - text: HpyAXVI_mut2
+          value: HpyAXVI_mut2
+        - text: HpyCH4III
+          value: HpyCH4III
+        - text: HpyCH4IV
+          value: HpyCH4IV
+        - text: HpyCH4V
+          value: HpyCH4V
+        - text: HpyF10VI
+          value: HpyF10VI
+        - text: HpyF3I
+          value: HpyF3I
+        - text: HpySE526I
+          value: HpySE526I
+        - text: HpyUM032XIII
+          value: HpyUM032XIII
+        - text: HpyUM032XIII_mut1
+          value: HpyUM032XIII_mut1
+        - text: HpyUM032XIV
+          value: HpyUM032XIV
+        - text: HpyUM037X
+          value: HpyUM037X
+        - text: Hso63250IV
+          value: Hso63250IV
+        - text: Hso63373III
+          value: Hso63373III
+        - text: Hsp92I
+          value: Hsp92I
+        - text: Hsp92II
+          value: Hsp92II
+        - text: HspAI
+          value: HspAI
+        - text: HspMHR1II
+          value: HspMHR1II
+        - text: Jma19592I
+          value: Jma19592I
+        - text: Jma19592II
+          value: Jma19592II
+        - text: Jsp2502II
+          value: Jsp2502II
+        - text: KasI
+          value: KasI
+        - text: KflI
+          value: KflI
+        - text: Kor51II
+          value: Kor51II
+        - text: Kpn156V
+          value: Kpn156V
+        - text: Kpn2I
+          value: Kpn2I
+        - text: Kpn327I
+          value: Kpn327I
+        - text: KpnI
+          value: KpnI
+        - text: KpnNH25III
+          value: KpnNH25III
+        - text: KpnNIH30III
+          value: KpnNIH30III
+        - text: KpnNIH50I
+          value: KpnNIH50I
+        - text: KroI
+          value: KroI
+        - text: Ksp22I
+          value: Ksp22I
+        - text: Ksp632I
+          value: Ksp632I
+        - text: KspAI
+          value: KspAI
+        - text: KspI
+          value: KspI
+        - text: Kzo9I
+          value: Kzo9I
+        - text: Lba2029III
+          value: Lba2029III
+        - text: Lbr124II
+          value: Lbr124II
+        - text: Lde4408II
+          value: Lde4408II
+        - text: LguI
+          value: LguI
+        - text: LlaG50I
+          value: LlaG50I
+        - text: LmnI
+          value: LmnI
+        - text: Lmo370I
+          value: Lmo370I
+        - text: Lmo911II
+          value: Lmo911II
+        - text: Lpl1004II
+          value: Lpl1004II
+        - text: LpnI
+          value: LpnI
+        - text: LpnPI
+          value: LpnPI
+        - text: Lra68I
+          value: Lra68I
+        - text: LsaDS4I
+          value: LsaDS4I
+        - text: Lsp1109I
+          value: Lsp1109I
+        - text: Lsp48III
+          value: Lsp48III
+        - text: Lsp6406VI
+          value: Lsp6406VI
+        - text: LweI
+          value: LweI
+        - text: MabI
+          value: MabI
+        - text: MaeI
+          value: MaeI
+        - text: MaeII
+          value: MaeII
+        - text: MaeIII
+          value: MaeIII
+        - text: MalI
+          value: MalI
+        - text: MaqI
+          value: MaqI
+        - text: MauBI
+          value: MauBI
+        - text: Mba11I
+          value: Mba11I
+        - text: MbiI
+          value: MbiI
+        - text: MboI
+          value: MboI
+        - text: MboII
+          value: MboII
+        - text: McaTI
+          value: McaTI
+        - text: Mcr10I
+          value: Mcr10I
+        - text: McrI
+          value: McrI
+        - text: MfeI
+          value: MfeI
+        - text: MflI
+          value: MflI
+        - text: MhlI
+          value: MhlI
+        - text: MjaIV
+          value: MjaIV
+        - text: MkaDII
+          value: MkaDII
+        - text: MlsI
+          value: MlsI
+        - text: Mlu211III
+          value: Mlu211III
+        - text: MluCI
+          value: MluCI
+        - text: MluI
+          value: MluI
+        - text: MluNI
+          value: MluNI
+        - text: Mly113I
+          value: Mly113I
+        - text: MlyI
+          value: MlyI
+        - text: MmeI
+          value: MmeI
+        - text: MnlI
+          value: MnlI
+        - text: Mox20I
+          value: Mox20I
+        - text: Mph1103I
+          value: Mph1103I
+        - text: MreI
+          value: MreI
+        - text: MroI
+          value: MroI
+        - text: MroNI
+          value: MroNI
+        - text: MroXI
+          value: MroXI
+        - text: MscI
+          value: MscI
+        - text: MseI
+          value: MseI
+        - text: MslI
+          value: MslI
+        - text: Msp20I
+          value: Msp20I
+        - text: MspA1I
+          value: MspA1I
+        - text: MspCI
+          value: MspCI
+        - text: MspGI
+          value: MspGI
+        - text: MspI
+          value: MspI
+        - text: MspI7II
+          value: MspI7II
+        - text: MspI7IV
+          value: MspI7IV
+        - text: MspJI
+          value: MspJI
+        - text: MspR9I
+          value: MspR9I
+        - text: MspSC27II
+          value: MspSC27II
+        - text: MssI
+          value: MssI
+        - text: MstI
+          value: MstI
+        - text: MteI
+          value: MteI
+        - text: MtuHN878II
+          value: MtuHN878II
+        - text: MunI
+          value: MunI
+        - text: Mva1269I
+          value: Mva1269I
+        - text: MvaI
+          value: MvaI
+        - text: MvnI
+          value: MvnI
+        - text: MwoI
+          value: MwoI
+        - text: NaeI
+          value: NaeI
+        - text: Nal45188II
+          value: Nal45188II
+        - text: NarI
+          value: NarI
+        - text: Nbr128II
+          value: Nbr128II
+        - text: NciI
+          value: NciI
+        - text: NcoI
+          value: NcoI
+        - text: NdeI
+          value: NdeI
+        - text: NdeII
+          value: NdeII
+        - text: NgoAVII
+          value: NgoAVII
+        - text: NgoAVIII
+          value: NgoAVIII
+        - text: NgoMIV
+          value: NgoMIV
+        - text: NhaXI
+          value: NhaXI
+        - text: NheI
+          value: NheI
+        - text: NhoI
+          value: NhoI
+        - text: NlaCI
+          value: NlaCI
+        - text: NlaIII
+          value: NlaIII
+        - text: NlaIV
+          value: NlaIV
+        - text: Nli3877I
+          value: Nli3877I
+        - text: NmeA6CIII
+          value: NmeA6CIII
+        - text: NmeAIII
+          value: NmeAIII
+        - text: NmeDI
+          value: NmeDI
+        - text: NmuCI
+          value: NmuCI
+        - text: NotI
+          value: NotI
+        - text: NpeUS61II
+          value: NpeUS61II
+        - text: NruI
+          value: NruI
+        - text: NsbI
+          value: NsbI
+        - text: NsiI
+          value: NsiI
+        - text: NspBII
+          value: NspBII
+        - text: NspI
+          value: NspI
+        - text: NspV
+          value: NspV
+        - text: ObaBS10I
+          value: ObaBS10I
+        - text: OgrI
+          value: OgrI
+        - text: OliI
+          value: OliI
+        - text: OspHL35III
+          value: OspHL35III
+        - text: PabI
+          value: PabI
+        - text: Pac19842II
+          value: Pac19842II
+        - text: PacI
+          value: PacI
+        - text: PacIII
+          value: PacIII
+        - text: PaeI
+          value: PaeI
+        - text: PaePA99III
+          value: PaePA99III
+        - text: PaeR7I
+          value: PaeR7I
+        - text: PagI
+          value: PagI
+        - text: Pal408I
+          value: Pal408I
+        - text: PalAI
+          value: PalAI
+        - text: PasI
+          value: PasI
+        - text: PauI
+          value: PauI
+        - text: Pba2294I
+          value: Pba2294I
+        - text: PcaII
+          value: PcaII
+        - text: PceI
+          value: PceI
+        - text: PciI
+          value: PciI
+        - text: PciSI
+          value: PciSI
+        - text: Pcr308II
+          value: Pcr308II
+        - text: PcsI
+          value: PcsI
+        - text: PctI
+          value: PctI
+        - text: Pdi8503III
+          value: Pdi8503III
+        - text: PdiI
+          value: PdiI
+        - text: PdmI
+          value: PdmI
+        - text: Pdu1735I
+          value: Pdu1735I
+        - text: PenI
+          value: PenI
+        - text: PfeI
+          value: PfeI
+        - text: Pfl1108I
+          value: Pfl1108I
+        - text: Pfl23II
+          value: Pfl23II
+        - text: Pfl8569I
+          value: Pfl8569I
+        - text: PflFI
+          value: PflFI
+        - text: PflMI
+          value: PflMI
+        - text: PflPt14I
+          value: PflPt14I
+        - text: PfoI
+          value: PfoI
+        - text: PfrJS12IV
+          value: PfrJS12IV
+        - text: PfrJS12V
+          value: PfrJS12V
+        - text: PfrJS15III
+          value: PfrJS15III
+        - text: Pin17FIII
+          value: Pin17FIII
+        - text: PinAI
+          value: PinAI
+        - text: PinP23II
+          value: PinP23II
+        - text: PinP59III
+          value: PinP59III
+        - text: PkrI
+          value: PkrI
+        - text: PlaDI
+          value: PlaDI
+        - text: Ple19I
+          value: Ple19I
+        - text: PleI
+          value: PleI
+        - text: PliMI
+          value: PliMI
+        - text: PluTI
+          value: PluTI
+        - text: PmaCI
+          value: PmaCI
+        - text: PmeI
+          value: PmeI
+        - text: PmlI
+          value: PmlI
+        - text: PpiI
+          value: PpiI
+        - text: PpiP13II
+          value: PpiP13II
+        - text: PpsI
+          value: PpsI
+        - text: Ppu10I
+          value: Ppu10I
+        - text: Ppu21I
+          value: Ppu21I
+        - text: PpuMI
+          value: PpuMI
+        - text: PscI
+          value: PscI
+        - text: Pse18267I
+          value: Pse18267I
+        - text: PshAI
+          value: PshAI
+        - text: PshBI
+          value: PshBI
+        - text: PsiI
+          value: PsiI
+        - text: Psp0357II
+          value: Psp0357II
+        - text: Psp03I
+          value: Psp03I
+        - text: Psp124BI
+          value: Psp124BI
+        - text: Psp1406I
+          value: Psp1406I
+        - text: Psp5II
+          value: Psp5II
+        - text: Psp6I
+          value: Psp6I
+        - text: PspCI
+          value: PspCI
+        - text: PspEI
+          value: PspEI
+        - text: PspFI
+          value: PspFI
+        - text: PspGI
+          value: PspGI
+        - text: PspLI
+          value: PspLI
+        - text: PspN4I
+          value: PspN4I
+        - text: PspOMI
+          value: PspOMI
+        - text: PspOMII
+          value: PspOMII
+        - text: PspPI
+          value: PspPI
+        - text: PspPPI
+          value: PspPPI
+        - text: PspPRI
+          value: PspPRI
+        - text: PspXI
+          value: PspXI
+        - text: PsrI
+          value: PsrI
+        - text: PssI
+          value: PssI
+        - text: Pst14472I
+          value: Pst14472I
+        - text: Pst145I
+          value: Pst145I
+        - text: Pst273I
+          value: Pst273I
+        - text: PstI
+          value: PstI
+        - text: PstNI
+          value: PstNI
+        - text: PsuGI
+          value: PsuGI
+        - text: PsuI
+          value: PsuI
+        - text: PsyI
+          value: PsyI
+        - text: PteI
+          value: PteI
+        - text: PvuI
+          value: PvuI
+        - text: PvuII
+          value: PvuII
+        - text: Rba2021I
+          value: Rba2021I
+        - text: RceI
+          value: RceI
+        - text: RdeGBI
+          value: RdeGBI
+        - text: RdeGBII
+          value: RdeGBII
+        - text: RdeGBIII
+          value: RdeGBIII
+        - text: RflFIII
+          value: RflFIII
+        - text: RgaI
+          value: RgaI
+        - text: RigI
+          value: RigI
+        - text: RlaI
+          value: RlaI
+        - text: RlaII
+          value: RlaII
+        - text: RleAI
+          value: RleAI
+        - text: Rmu369III
+          value: Rmu369III
+        - text: RpaB5I
+          value: RpaB5I
+        - text: RpaBI
+          value: RpaBI
+        - text: RpaI
+          value: RpaI
+        - text: RpaTI
+          value: RpaTI
+        - text: RruI
+          value: RruI
+        - text: RsaI
+          value: RsaI
+        - text: RsaNI
+          value: RsaNI
+        - text: RseI
+          value: RseI
+        - text: Rsp008IV
+          value: Rsp008IV
+        - text: Rsp008V
+          value: Rsp008V
+        - text: Rsp531II
+          value: Rsp531II
+        - text: RspPBTS2III
+          value: RspPBTS2III
+        - text: Rsr2I
+          value: Rsr2I
+        - text: RsrII
+          value: RsrII
+        - text: Rtr1953I
+          value: Rtr1953I
+        - text: SacI
+          value: SacI
+        - text: SacII
+          value: SacII
+        - text: Saf8902III
+          value: Saf8902III
+        - text: Sag901I
+          value: Sag901I
+        - text: SalI
+          value: SalI
+        - text: SanDI
+          value: SanDI
+        - text: SapI
+          value: SapI
+        - text: SaqAI
+          value: SaqAI
+        - text: SatI
+          value: SatI
+        - text: Sau3AI
+          value: Sau3AI
+        - text: Sau64037IV
+          value: Sau64037IV
+        - text: Sau96I
+          value: Sau96I
+        - text: SauI
+          value: SauI
+        - text: Sba460II
+          value: Sba460II
+        - text: SbfI
+          value: SbfI
+        - text: Sbo46I
+          value: Sbo46I
+        - text: ScaI
+          value: ScaI
+        - text: SchI
+          value: SchI
+        - text: SciI
+          value: SciI
+        - text: ScoDS2II
+          value: ScoDS2II
+        - text: ScrFI
+          value: ScrFI
+        - text: SdaI
+          value: SdaI
+        - text: SdeAI
+          value: SdeAI
+        - text: SdeOSI
+          value: SdeOSI
+        - text: SduI
+          value: SduI
+        - text: SecI
+          value: SecI
+        - text: SelI
+          value: SelI
+        - text: Sen17963III
+          value: Sen17963III
+        - text: SenA1673III
+          value: SenA1673III
+        - text: SenSARA26III
+          value: SenSARA26III
+        - text: SenTFIV
+          value: SenTFIV
+        - text: SetI
+          value: SetI
+        - text: SexAI
+          value: SexAI
+        - text: SfaAI
+          value: SfaAI
+        - text: SfaNI
+          value: SfaNI
+        - text: SfcI
+          value: SfcI
+        - text: SfeI
+          value: SfeI
+        - text: SfiI
+          value: SfiI
+        - text: SfoI
+          value: SfoI
+        - text: Sfr274I
+          value: Sfr274I
+        - text: Sfr303I
+          value: Sfr303I
+        - text: SfuI
+          value: SfuI
+        - text: SgeI
+          value: SgeI
+        - text: SgfI
+          value: SgfI
+        - text: SgrAI
+          value: SgrAI
+        - text: SgrAII
+          value: SgrAII
+        - text: SgrBI
+          value: SgrBI
+        - text: SgrDI
+          value: SgrDI
+        - text: SgrTI
+          value: SgrTI
+        - text: SgsI
+          value: SgsI
+        - text: SimI
+          value: SimI
+        - text: SinI
+          value: SinI
+        - text: SlaI
+          value: SlaI
+        - text: SmaI
+          value: SmaI
+        - text: SmaUMH5I
+          value: SmaUMH5I
+        - text: SmaUMH8I
+          value: SmaUMH8I
+        - text: SmiI
+          value: SmiI
+        - text: SmiMI
+          value: SmiMI
+        - text: SmlI
+          value: SmlI
+        - text: SmoI
+          value: SmoI
+        - text: Sna507VIII
+          value: Sna507VIII
+        - text: SnaBI
+          value: SnaBI
+        - text: SnaI
+          value: SnaI
+        - text: Sno506I
+          value: Sno506I
+        - text: Spe19205IV
+          value: Spe19205IV
+        - text: SpeI
+          value: SpeI
+        - text: SphI
+          value: SphI
+        - text: SplI
+          value: SplI
+        - text: SpnRII
+          value: SpnRII
+        - text: SpoDI
+          value: SpoDI
+        - text: SrfI
+          value: SrfI
+        - text: Sse232I
+          value: Sse232I
+        - text: Sse8387I
+          value: Sse8387I
+        - text: Sse8647I
+          value: Sse8647I
+        - text: Sse9I
+          value: Sse9I
+        - text: SseBI
+          value: SseBI
+        - text: SsiI
+          value: SsiI
+        - text: Ssp6803IV
+          value: Ssp6803IV
+        - text: Ssp714II
+          value: Ssp714II
+        - text: SspD5I
+          value: SspD5I
+        - text: SspDI
+          value: SspDI
+        - text: SspI
+          value: SspI
+        - text: SspJOR1II
+          value: SspJOR1II
+        - text: SspMI
+          value: SspMI
+        - text: SstE37I
+          value: SstE37I
+        - text: SstI
+          value: SstI
+        - text: Sth132I
+          value: Sth132I
+        - text: Sth20745III
+          value: Sth20745III
+        - text: Sth302II
+          value: Sth302II
+        - text: SthSt3II
+          value: SthSt3II
+        - text: StsI
+          value: StsI
+        - text: StuI
+          value: StuI
+        - text: StyD4I
+          value: StyD4I
+        - text: StyI
+          value: StyI
+        - text: SurP32aII
+          value: SurP32aII
+        - text: SwaI
+          value: SwaI
+        - text: TaaI
+          value: TaaI
+        - text: TaiI
+          value: TaiI
+        - text: TaqI
+          value: TaqI
+        - text: TaqII
+          value: TaqII
+        - text: TaqIII
+          value: TaqIII
+        - text: TasI
+          value: TasI
+        - text: TatI
+          value: TatI
+        - text: TauI
+          value: TauI
+        - text: TfiI
+          value: TfiI
+        - text: TpyTP2I
+          value: TpyTP2I
+        - text: Tru1I
+          value: Tru1I
+        - text: Tru9I
+          value: Tru9I
+        - text: TscAI
+          value: TscAI
+        - text: TseFI
+          value: TseFI
+        - text: TseI
+          value: TseI
+        - text: TsoI
+          value: TsoI
+        - text: Tsp45I
+          value: Tsp45I
+        - text: Tsp4CI
+          value: Tsp4CI
+        - text: TspARh3I
+          value: TspARh3I
+        - text: TspDTI
+          value: TspDTI
+        - text: TspEI
+          value: TspEI
+        - text: TspGWI
+          value: TspGWI
+        - text: TspMI
+          value: TspMI
+        - text: TspRI
+          value: TspRI
+        - text: TssI
+          value: TssI
+        - text: TstI
+          value: TstI
+        - text: TsuI
+          value: TsuI
+        - text: Tth111I
+          value: Tth111I
+        - text: Tth111II
+          value: Tth111II
+        - text: UbaF11I
+          value: UbaF11I
+        - text: UbaF12I
+          value: UbaF12I
+        - text: UbaF13I
+          value: UbaF13I
+        - text: UbaF14I
+          value: UbaF14I
+        - text: UbaF9I
+          value: UbaF9I
+        - text: UbaPI
+          value: UbaPI
+        - text: UcoMSI
+          value: UcoMSI
+        - text: UnbI
+          value: UnbI
+        - text: Van9116I
+          value: Van9116I
+        - text: Van91I
+          value: Van91I
+        - text: VchE4II
+          value: VchE4II
+        - text: Vdi96II
+          value: Vdi96II
+        - text: Vha464I
+          value: Vha464I
+        - text: VneI
+          value: VneI
+        - text: VpaK11AI
+          value: VpaK11AI
+        - text: VpaK11BI
+          value: VpaK11BI
+        - text: VspI
+          value: VspI
+        - text: Vtu19109I
+          value: Vtu19109I
+        - text: WviI
+          value: WviI
+        - text: XagI
+          value: XagI
+        - text: XapI
+          value: XapI
+        - text: XbaI
+          value: XbaI
+        - text: Xca85IV
+          value: Xca85IV
+        - text: XceI
+          value: XceI
+        - text: XcmI
+          value: XcmI
+        - text: XhoI
+          value: XhoI
+        - text: XhoII
+          value: XhoII
+        - text: XmaI
+          value: XmaI
+        - text: XmaIII
+          value: XmaIII
+        - text: XmaJI
+          value: XmaJI
+        - text: XmiI
+          value: XmiI
+        - text: XmnI
+          value: XmnI
+        - text: XspI
+          value: XspI
+        - text: YkrI
+          value: YkrI
+        - text: ZraI
+          value: ZraI
+        - text: ZrmI
+          value: ZrmI
+        - text: Zsp2I
+          value: Zsp2I
+      validationRules:
+        - type: required
+    request:
+      id: enzymes
+      dataType: list(string)
+      data:
+        - Common
 description: Performs restriction analysis using codes from REBASE
 category: python-local.bio.sequence
 comments: ''

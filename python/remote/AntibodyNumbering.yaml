@@ -4,65 +4,39 @@ serviceName: AntibodyNumbering
 executorId: Glysade.CPythonDataFxn
 serviceUri: PYRO:glysade.pyserver@localhost:9101
 version: 0.0.3
-input_fields: |
-  [
-    {
-      "control": {
-        "id": "sequenceColumn",
-        "label": "Select sequence column",
-        "type": "columnselect",
-        "filters": [
-          {
-            "dataType": "string",
-            "contentType": "chemical/x-sequence"
-          },
-          {
-            "dataType": "binary",
-            "contentType": "chemical/x-genbank"
-          }
-        ],
-        "validationRules": [
-          {
-            "type": "required"
-          }
-        ]
-      },
-      "request": {
-        "id": "sequenceColumn",
-        "dataType": "string",
-        "selectorType": "column"
-      }
-    },
-    {
-      "control": {
-        "id": "scheme",
-        "label": "Numbering scheme",
-        "type": "radiogroup",
-        "radios": [
-          {
-            "text": "Kabat",
-            "value": "kabat"
-          },
-          {
-            "text": "Chothia",
-            "value": "chothia"
-          }
-        ],
-        "validationRules": [
-          {
-            "type": "required",
-            "message": "Must select something from 'Numbering scheme'"
-          }
-        ]
-      },
-      "request": {
-        "field": "scheme",
-        "id": "scheme",
-        "dataType": "string",
-        "data": "kabat"
-      }
-    }
-  ]
+inputFields:
+  - control:
+      id: sequenceColumn
+      label: Select sequence column
+      type: columnselect
+      filters:
+        - dataType: string
+          contentType: chemical/x-sequence
+        - dataType: binary
+          contentType: chemical/x-genbank
+      validationRules:
+        - type: required
+    request:
+      id: sequenceColumn
+      dataType: string
+      selectorType: column
+  - control:
+      id: scheme
+      label: Numbering scheme
+      type: radiogroup
+      radios:
+        - text: Kabat
+          value: kabat
+        - text: Chothia
+          value: chothia
+      validationRules:
+        - type: required
+          message: Must select something from 'Numbering scheme'
+    request:
+      field: scheme
+      id: scheme
+      dataType: string
+      data: kabat
 description: Identifies antibody chain numbering and aligns chains
 category: python-remote.bio.sequence
 comments: ''

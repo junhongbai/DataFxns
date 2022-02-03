@@ -4,89 +4,18 @@ serviceName: AntibodyNumbering
 executorId: Glysade.CPythonDataFxn
 serviceUri: LOCAL:glysade.python
 version: 0.0.2
-inputFields: |
-  [
-    {
-      "control": {
-        "id": "sequenceColumn",
-        "label": "Select sequence column",
-        "type": "columnselect",
-        "filters": [
-          {
-            "dataType": "string",
-            "contentType": "chemical/x-sequence"
-          },
-          {
-            "dataType": "binary",
-            "contentType": "chemical/x-genbank"
-          }
-        ],
-        "validationRules": [
-          {
-            "type": "required"
-          }
-        ]
-      },
-      "request": {
-        "id": "sequenceColumn",
-        "dataType": "string",
-        "selectorType": "column"
-      }
-    },
-    {
-      "control": {
-        "id": "scheme",
-        "label": "Numbering scheme",
-        "type": "radiogroup",
-        "radios": [
-          {
-            "text": "Kabat",
-            "value": "kabat"
-          },
-          {
-            "text": "Chothia",
-            "value": "chothia"
-          },
-          {
-            "text": "IMGT",
-            "value": "imgt"
-          },
-          {
-            "text": "Martin (extended Chothia)",
-            "value": "martin"
-          },
-          {
-            "text": "Aho",
-            "value": "aho"
-          }
-        ],
-        "validationRules": [
-          {
-            "type": "required",
-            "message": "Must select something from 'Numbering scheme'"
-          }
-        ]
-      },
-      "request": {
-        "field": "scheme",
-        "id": "scheme",
-        "dataType": "string",
-        "data": "kabat"
-      }
-    }
-  ]
-inputFields2:
+inputFields:
   - control:
       id: sequenceColumn
       label: Select sequence column
       type: columnselect
       filters:
-      - dataType: string
-        contentType: chemical/x-sequence
-      - dataType: binary
-        contentType: chemical/x-genbank
+        - dataType: string
+          contentType: chemical/x-sequence
+        - dataType: binary
+          contentType: chemical/x-genbank
       validationRules:
-      - type: required
+        - type: required
     request:
       id: sequenceColumn
       dataType: string
@@ -96,19 +25,19 @@ inputFields2:
       label: Numbering scheme
       type: radiogroup
       radios:
-      - text: Kabat
-        value: kabat
-      - text: Chothia
-        value: chothia
-      - text: IMGT
-        value: imgt
-      - text: Martin (extended Chothia)
-        value: martin
-      - text: Aho
-        value: aho
+        - text: Kabat
+          value: kabat
+        - text: Chothia
+          value: chothia
+        - text: IMGT
+          value: imgt
+        - text: Martin (extended Chothia)
+          value: martin
+        - text: Aho
+          value: aho
       validationRules:
-      - type: required
-        message: Must select something from 'Numbering scheme'
+        - type: required
+          message: Must select something from 'Numbering scheme'
     request:
       field: scheme
       id: scheme

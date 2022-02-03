@@ -4,58 +4,35 @@ serviceName: BlastTableSearch
 executorId: Glysade.CPythonDataFxn
 serviceUri: LOCAL:glysade.python
 version: 0.0.3
-input_fields: |
-    [
-        {
-            "control": {
-                "id": "sequenceColumn",
-                "label": "Select sequence column",
-                "type": "columnselect",
-                "filters": [
-                    {
-                        "dataType": "string",
-                        "contentType": "chemical/x-sequence"
-                    },
-                    {
-                        "dataType": "binary",
-                        "contentType": "chemical/x-genbank"
-                    }
-                ],
-                "validationRules": [
-                    {
-                        "type": "required",
-                        "message": "Must select column of sequences"
-                    }
-                ]
-            },
-            "request": {
-                "id": "sequenceColumn",
-                "dataType": "string",
-                "selectorType": "column"
-            }
-        },
-        {
-            "control": {
-                "id": "query",
-                "label": "Query sequence",
-                "type": "textarea",
-                "rows": 5,
-                "validationRules": [
-                    {
-                        "type": "sequence"
-                    },
-                    {
-                        "type": "required"
-                    }
-                ]
-            },
-            "request": {
-                "id": "query",
-                "dataType": "string",
-                "contentType": "chemical/x-sequence"
-            }
-        }
-    ]
+inputFields:
+  - control:
+      id: sequenceColumn
+      label: Select sequence column
+      type: columnselect
+      filters:
+        - dataType: string
+          contentType: chemical/x-sequence
+        - dataType: binary
+          contentType: chemical/x-genbank
+      validationRules:
+        - type: required
+          message: Must select column of sequences
+    request:
+      id: sequenceColumn
+      dataType: string
+      selectorType: column
+  - control:
+      id: query
+      label: Query sequence
+      type: textarea
+      rows: 5
+      validationRules:
+        - type: sequence
+        - type: required
+    request:
+      id: query
+      dataType: string
+      contentType: chemical/x-sequence
 description: Performs a blast search of the sequences in the provided table using the provided query sequence
 category: python-local.bio.sequence
 comments: ''

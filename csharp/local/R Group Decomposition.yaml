@@ -5,138 +5,91 @@ executorId: Glysade.CSharpDataFxn
 serviceUri: LOCAL:glysade.csharp
 maximumOutputColumns: 50
 version: 0.0.1
-input_fields: |
-  [
-    {
-      "control": {
-        "id": "queryData",
-        "label": "Enter cores",
-        "type": "sketcher",
-        "validationRules": [
-          {
-            "type": "structure",
-            "message": "Must enter a structure"
-          }
-        ]
-      },
-      "request": {
-        "id": "queryData",
-        "dataType": "string",
-        "contentType": "chemical/x-mdl-molfile",
-        "field": "structure"
-      }
-    },
-    {
-      "control": {
-        "id": "structureColumn",
-        "label": "Select structure column",
-        "type": "columnselect",
-        "filters": [
-          {
-            "dataType": "string",
-            "contentType": [
-              "chemical/x-mdl-molfile",
-              "chemical/x-mdl-molfile-v3000",
-              "chemical/x-smiles",
-              "chemical/x-daylight-smiles"
-            ]
-          },
-          {
-            "dataType": "binary",
-            "contentType": ["chemical/x-mdl-molfile","chemical/x-mdl-molfile-v3000"]
-          }
-        ],
-        "validationRules": [
-          {
-            "type": "required",
-            "message": "Must select column of 2D structures"
-          }
-        ]
-      },
-      "request": {
-        "id": "structureColumn",
-        "dataType": "string",
-        "selectorType": "column"
-      }
-    },
-    {
-      "control": {
-        "label": "Match on defined R groups only",
-        "id": "matchOnRGroupsOnly",
-        "type": "checkbox"
-      },
-      "request": {
-        "id": "matchOnRGroupsOnly",
-        "dataType": "boolean",
-        "data": false
-      }
-    },
-    {
-      "control": {
-        "label": "Treat disconnected structure as single fragmented core (instead of separate cores)",
-        "id": "allowFragmentedCore",
-        "type": "checkbox"
-      },
-      "request": {
-        "id": "allowFragmentedCore",
-        "dataType": "boolean",
-        "data": false
-      }
-    },
-    {
-      "control": {
-        "label": "Output format",
-        "id": "outputFormat",
-        "type": "radiogroup",
-        "radios": [
-          {
-            "text": "chemical/x-mdl-molfile",
-            "value":  "chemical/x-mdl-molfile"
-          },
-          {
-            "text": "chemical/x-smiles",
-            "value":  "chemical/x-smiles"
-          }
-        ],
-        "validationRules": [
-          {
-            "type": "required",
-            "message": "Must select something from 'Output format'"
-          }
-        ]
-      },
-      "request": {
-        "field": "outputFormat",
-        "id": "outputFormat",
-        "dataType": "string",
-        "data": "chemical/x-mdl-molfile"
-      }
-    },
-    {
-      "control": {
-        "id": "prefix",
-        "label": "Column prefix",
-        "type": "text"
-      },
-      "request": {
-        "id": "prefix",
-        "dataType": "string",
-        "data": ""
-      }
-    },
-    {
-      "control": {
-        "id": "suffix",
-        "label": "Column suffix",
-        "type": "text"
-      },
-      "request": {
-        "id": "suffix",
-        "dataType": "string",
-        "data": ""
-      }
-    }
-  ]
+inputFields:
+  - control:
+      id: queryData
+      label: Enter cores
+      type: sketcher
+      validationRules:
+        - type: structure
+          message: Must enter a structure
+    request:
+      id: queryData
+      dataType: string
+      contentType: chemical/x-mdl-molfile
+      field: structure
+  - control:
+      id: structureColumn
+      label: Select structure column
+      type: columnselect
+      filters:
+        - dataType: string
+          contentType:
+            - chemical/x-mdl-molfile
+            - chemical/x-mdl-molfile-v3000
+            - chemical/x-smiles
+            - chemical/x-daylight-smiles
+        - dataType: binary
+          contentType:
+            - chemical/x-mdl-molfile
+            - chemical/x-mdl-molfile-v3000
+      validationRules:
+        - type: required
+          message: Must select column of 2D structures
+    request:
+      id: structureColumn
+      dataType: string
+      selectorType: column
+  - control:
+      label: Match on defined R groups only
+      id: matchOnRGroupsOnly
+      type: checkbox
+    request:
+      id: matchOnRGroupsOnly
+      dataType: boolean
+      data: false
+  - control:
+      label: Treat disconnected structure as single fragmented core (instead of
+        separate cores)
+      id: allowFragmentedCore
+      type: checkbox
+    request:
+      id: allowFragmentedCore
+      dataType: boolean
+      data: false
+  - control:
+      label: Output format
+      id: outputFormat
+      type: radiogroup
+      radios:
+        - text: chemical/x-mdl-molfile
+          value: chemical/x-mdl-molfile
+        - text: chemical/x-smiles
+          value: chemical/x-smiles
+      validationRules:
+        - type: required
+          message: Must select something from 'Output format'
+    request:
+      field: outputFormat
+      id: outputFormat
+      dataType: string
+      data: chemical/x-mdl-molfile
+  - control:
+      id: prefix
+      label: Column prefix
+      type: text
+    request:
+      id: prefix
+      dataType: string
+      data: ""
+  - control:
+      id: suffix
+      label: Column suffix
+      type: text
+    request:
+      id: suffix
+      dataType: string
+      data: ""
 description: Performs R group decomposition on the  structures in a data table column
 category: csharp-local.chem.2D
 comments: ''

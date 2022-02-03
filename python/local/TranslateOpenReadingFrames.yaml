@@ -4,117 +4,133 @@ serviceName: TranslateOpenReadingFrames
 executorId: Glysade.CPythonDataFxn
 serviceUri: LOCAL:glysade.python
 version: 0.0.1
-input_fields: |
-  [
-    {
-      "control": {
-        "id": "sequenceColumn",
-        "label": "Select sequence column",
-        "type": "columnselect",
-        "filters": [
-          {
-            "dataType": "string",
-            "contentType": "chemical/x-sequence"
-          },
-          {
-            "dataType": "binary",
-            "contentType": "chemical/x-genbank"
-          }
-        ],
-        "validationRules": [
-          {
-            "type": "required"
-          }
-        ]
-      },
-      "request": {
-        "id": "sequenceColumn",
-        "dataType": "string",
-        "selectorType": "column"
-      }
-    },
-   {
-        "control": {
-            "id": "mimimumProteinLength",
-            "label": "Mimimum protein length",
-            "type": "text",
-            "validationRules": [
-                {
-                    "type": "required"
-                }
-            ]
-        },
-        "request": {
-            "id": "minimumProteinLength",
-            "dataType": "integer",
-            "data": 100
-        }
-    },  
-   {
-        "control": {
-            "id": "codonTableName",
-            "label": "Codon table name",
-              "type": "select",
-                "options": [
-    {"text": "Standard", "value":"Standard"},
-    {"text": "SGC0", "value":"SGC0"},
-    {"text": "Vertebrate Mitochondrial", "value":"Vertebrate Mitochondrial"},
-    {"text": "SGC1", "value":"SGC1"},
-    {"text": "Yeast Mitochondrial", "value":"Yeast Mitochondrial"},
-    {"text": "SGC2", "value":"SGC2"},
-    {"text": "Mold Mitochondrial", "value":"Mold Mitochondrial"},
-    {"text": "Protozoan Mitochondrial", "value":"Protozoan Mitochondrial"},
-    {"text": "Coelenterate Mitochondrial", "value":"Coelenterate Mitochondrial"},
-    {"text": "Mycoplasma", "value":"Mycoplasma"},
-    {"text": "Spiroplasma", "value":"Spiroplasma"},
-    {"text": "SGC3", "value":"SGC3"},
-    {"text": "Invertebrate Mitochondrial", "value":"Invertebrate Mitochondrial"},
-    {"text": "SGC4", "value":"SGC4"},
-    {"text": "Ciliate Nuclear", "value":"Ciliate Nuclear"},
-    {"text": "Dasycladacean Nuclear", "value":"Dasycladacean Nuclear"},
-    {"text": "Hexamita Nuclear", "value":"Hexamita Nuclear"},
-    {"text": "SGC5", "value":"SGC5"},
-    {"text": "Echinoderm Mitochondrial", "value":"Echinoderm Mitochondrial"},
-    {"text": "Flatworm Mitochondrial", "value":"Flatworm Mitochondrial"},
-    {"text": "SGC8", "value":"SGC8"},
-    {"text": "Euplotid Nuclear", "value":"Euplotid Nuclear"},
-    {"text": "SGC9", "value":"SGC9"},
-    {"text": "Bacterial", "value":"Bacterial"},
-    {"text": "Archaeal", "value":"Archaeal"},
-    {"text": "Plant Plastid", "value":"Plant Plastid"},
-    {"text": "Alternative Yeast Nuclear", "value":"Alternative Yeast Nuclear"},
-    {"text": "Ascidian Mitochondrial", "value":"Ascidian Mitochondrial"},
-    {"text": "Alternative Flatworm Mitochondrial", "value":"Alternative Flatworm Mitochondrial"},
-    {"text": "Blepharisma Macronuclear", "value":"Blepharisma Macronuclear"},
-    {"text": "Chlorophycean Mitochondrial", "value":"Chlorophycean Mitochondrial"},
-    {"text": "Trematode Mitochondrial", "value":"Trematode Mitochondrial"},
-    {"text": "Scenedesmus obliquus Mitochondrial", "value":"Scenedesmus obliquus Mitochondrial"},
-    {"text": "Thraustochytrium Mitochondrial", "value":"Thraustochytrium Mitochondrial"},
-    {"text": "Pterobranchia Mitochondrial", "value":"Pterobranchia Mitochondrial"},
-    {"text": "Candidate Division SR1", "value":"Candidate Division SR1"},
-    {"text": "Gracilibacteria", "value":"Gracilibacteria"},
-    {"text": "Pachysolen tannophilus Nuclear", "value":"Pachysolen tannophilus Nuclear"},
-    {"text": "Karyorelict Nuclear", "value":"Karyorelict Nuclear"},
-    {"text": "Condylostoma Nuclear", "value":"Condylostoma Nuclear"},
-    {"text": "Mesodinium Nuclear", "value":"Mesodinium Nuclear"},
-    {"text": "Peritrich Nuclear", "value":"Peritrich Nuclear"},
-    {"text": "Blastocrithidia Nuclear", "value":"Blastocrithidia Nuclear"},
-    {"text": "Balanophoraceae Plastid", "value":"Balanophoraceae Plastid"},
-    {"text": "Cephalodiscidae Mitochondrial", "value":"Cephalodiscidae Mitochondrial"}
-                  ],
-            "validationRules": [
-                {
-                    "type": "required"
-                }
-            ]
-        },
-        "request": {
-            "id": "codonTableName",
-            "dataType": "string",
-            "data": "Standard"
-        }
-    }
-  ] 
+inputFields:
+  - control:
+      id: sequenceColumn
+      label: Select sequence column
+      type: columnselect
+      filters:
+        - dataType: string
+          contentType: chemical/x-sequence
+        - dataType: binary
+          contentType: chemical/x-genbank
+      validationRules:
+        - type: required
+    request:
+      id: sequenceColumn
+      dataType: string
+      selectorType: column
+  - control:
+      id: mimimumProteinLength
+      label: Mimimum protein length
+      type: text
+      validationRules:
+        - type: required
+    request:
+      id: minimumProteinLength
+      dataType: integer
+      data: 100
+  - control:
+      id: codonTableName
+      label: Codon table name
+      type: select
+      options:
+        - text: Standard
+          value: Standard
+        - text: SGC0
+          value: SGC0
+        - text: Vertebrate Mitochondrial
+          value: Vertebrate Mitochondrial
+        - text: SGC1
+          value: SGC1
+        - text: Yeast Mitochondrial
+          value: Yeast Mitochondrial
+        - text: SGC2
+          value: SGC2
+        - text: Mold Mitochondrial
+          value: Mold Mitochondrial
+        - text: Protozoan Mitochondrial
+          value: Protozoan Mitochondrial
+        - text: Coelenterate Mitochondrial
+          value: Coelenterate Mitochondrial
+        - text: Mycoplasma
+          value: Mycoplasma
+        - text: Spiroplasma
+          value: Spiroplasma
+        - text: SGC3
+          value: SGC3
+        - text: Invertebrate Mitochondrial
+          value: Invertebrate Mitochondrial
+        - text: SGC4
+          value: SGC4
+        - text: Ciliate Nuclear
+          value: Ciliate Nuclear
+        - text: Dasycladacean Nuclear
+          value: Dasycladacean Nuclear
+        - text: Hexamita Nuclear
+          value: Hexamita Nuclear
+        - text: SGC5
+          value: SGC5
+        - text: Echinoderm Mitochondrial
+          value: Echinoderm Mitochondrial
+        - text: Flatworm Mitochondrial
+          value: Flatworm Mitochondrial
+        - text: SGC8
+          value: SGC8
+        - text: Euplotid Nuclear
+          value: Euplotid Nuclear
+        - text: SGC9
+          value: SGC9
+        - text: Bacterial
+          value: Bacterial
+        - text: Archaeal
+          value: Archaeal
+        - text: Plant Plastid
+          value: Plant Plastid
+        - text: Alternative Yeast Nuclear
+          value: Alternative Yeast Nuclear
+        - text: Ascidian Mitochondrial
+          value: Ascidian Mitochondrial
+        - text: Alternative Flatworm Mitochondrial
+          value: Alternative Flatworm Mitochondrial
+        - text: Blepharisma Macronuclear
+          value: Blepharisma Macronuclear
+        - text: Chlorophycean Mitochondrial
+          value: Chlorophycean Mitochondrial
+        - text: Trematode Mitochondrial
+          value: Trematode Mitochondrial
+        - text: Scenedesmus obliquus Mitochondrial
+          value: Scenedesmus obliquus Mitochondrial
+        - text: Thraustochytrium Mitochondrial
+          value: Thraustochytrium Mitochondrial
+        - text: Pterobranchia Mitochondrial
+          value: Pterobranchia Mitochondrial
+        - text: Candidate Division SR1
+          value: Candidate Division SR1
+        - text: Gracilibacteria
+          value: Gracilibacteria
+        - text: Pachysolen tannophilus Nuclear
+          value: Pachysolen tannophilus Nuclear
+        - text: Karyorelict Nuclear
+          value: Karyorelict Nuclear
+        - text: Condylostoma Nuclear
+          value: Condylostoma Nuclear
+        - text: Mesodinium Nuclear
+          value: Mesodinium Nuclear
+        - text: Peritrich Nuclear
+          value: Peritrich Nuclear
+        - text: Blastocrithidia Nuclear
+          value: Blastocrithidia Nuclear
+        - text: Balanophoraceae Plastid
+          value: Balanophoraceae Plastid
+        - text: Cephalodiscidae Mitochondrial
+          value: Cephalodiscidae Mitochondrial
+      validationRules:
+        - type: required
+    request:
+      id: codonTableName
+      dataType: string
+      data: Standard
 description: Translates DNA using all open reading frames
 category: python-local.bio.sequence
 comments: ''

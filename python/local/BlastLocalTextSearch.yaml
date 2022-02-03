@@ -4,149 +4,84 @@ serviceName: BlastLocalTextSearch
 executorId: Glysade.CPythonDataFxn
 serviceUri: LOCAL:glysade.python
 version: 1.0.0
-input_fields: |
-  [
-    {
-          "control": {
-              "id": "query",
-              "label": "Enter query sequence",
-              "type": "textarea",
-              "rows": 5,
-              "validationRules": [
-                  {
-                      "type": "sequence"
-                  },
-                  {
-                      "type": "required"
-                  }
-              ]
-          },
-          "request": {
-              "id": "query",
-              "dataType": "string",
-              "contentType": "chemical/x-sequence"
-          }
-      },
-      {
-          "control": {
-              "id": "method",
-              "label": "Select method",
-              "type": "select",
-              "options": [
-                  {
-                      "text": "BLASTP: protein(q)-protein(d)",
-                      "value": "BLASTP"
-                  },
-                  {
-                      "text": "BLASTN: nucleotide(q)-nucleotide(d)",
-                      "value": "BLASTN"
-                  },
-                  {
-                      "text": "BLASTX: nucleotide(q)-protein(d)",
-                      "value": "BLASTX"
-                  },
-                  {
-                      "text": "TBLASTN: protein(q)-nucleotide(d)+translation",
-                      "value": "TBLASTN"
-                  },
-                  {
-                      "text": "TBLASTX: nucleotide(q)-nucleotide(d)+translation",
-                      "value": "TBLASTX"
-                  }
-              ],
-              "validationRules": [
-                  {
-                      "type": "required"
-                  }
-              ]
-          },
-          "request": {
-              "id": "method",
-              "dataType": "string",
-              "data": [
-                  "BLASTP"
-              ]
-          }
-      },
-      {
-          "control": {
-              "id": "databaseName",
-              "label": "Select database",
-              "type": "select",
-              "options": [
-                  {
-                      "text": "Human NCBI NR",
-                      "value": "human_nr"
-                  },
-                  {
-                      "text": "Human Uniprot SwissProt",
-                      "value": "up_sp_human"
-                  },
-                  {
-                      "text": "Human Uniprot Trembl",
-                      "value": "up_tbl_human"
-                  },
-                  {
-                      "text": "Human NCBI NT",
-                      "value": "human_nt"
-                  },
-                  {
-                      "text": "Human EBI ENA",
-                      "value": "ena_cd_human"
-                  },
-                  {
-                      "text": "Mouse NCBI NR",
-                      "value": "mouse_nr"
-                  },
-                  {
-                      "text": "Mouse NCBI NT",
-                      "value": "mouse_nt"
-                  },
-                  {
-                      "text": "Rat NCBI NR",
-                      "value": "rat_nr"
-                  },
-                  {
-                      "text": "Rat NCBI NT",
-                      "value": "rat_nt"
-                  }
-              ],
-              "validationRules": [
-                  {
-                      "type": "required"
-                  }
-              ]
-          },
-          "request": {
-              "id": "databaseName",
-              "dataType": "string"
-          }
-      },
-      {
-          "control": {
-              "id": "maxHits",
-              "label": "Max hits",
-              "type": "text",
-              "validationRules": [
-                  {
-                      "type": "required",
-                      "message": "Must enter a value between 1 and 5000"
-                  },
-                  {
-                      "type": "range",
-                      "min": 1,
-                      "max": 5000,
-                      "message": "Max hits must be a value between 1 and 5000"
-                  }
-              ]
-          },
-          "request": {
-              "id": "maxHits",
-              "dataType": "integer",
-              "data": 100
-          }
-      }
-  ]
+inputFields:
+  - control:
+      id: query
+      label: Enter query sequence
+      type: textarea
+      rows: 5
+      validationRules:
+        - type: sequence
+        - type: required
+    request:
+      id: query
+      dataType: string
+      contentType: chemical/x-sequence
+  - control:
+      id: method
+      label: Select method
+      type: select
+      options:
+        - text: "BLASTP: protein(q)-protein(d)"
+          value: BLASTP
+        - text: "BLASTN: nucleotide(q)-nucleotide(d)"
+          value: BLASTN
+        - text: "BLASTX: nucleotide(q)-protein(d)"
+          value: BLASTX
+        - text: "TBLASTN: protein(q)-nucleotide(d)+translation"
+          value: TBLASTN
+        - text: "TBLASTX: nucleotide(q)-nucleotide(d)+translation"
+          value: TBLASTX
+      validationRules:
+        - type: required
+    request:
+      id: method
+      dataType: string
+      data:
+        - BLASTP
+  - control:
+      id: databaseName
+      label: Select database
+      type: select
+      options:
+        - text: Human NCBI NR
+          value: human_nr
+        - text: Human Uniprot SwissProt
+          value: up_sp_human
+        - text: Human Uniprot Trembl
+          value: up_tbl_human
+        - text: Human NCBI NT
+          value: human_nt
+        - text: Human EBI ENA
+          value: ena_cd_human
+        - text: Mouse NCBI NR
+          value: mouse_nr
+        - text: Mouse NCBI NT
+          value: mouse_nt
+        - text: Rat NCBI NR
+          value: rat_nr
+        - text: Rat NCBI NT
+          value: rat_nt
+      validationRules:
+        - type: required
+    request:
+      id: databaseName
+      dataType: string
+  - control:
+      id: maxHits
+      label: Max hits
+      type: text
+      validationRules:
+        - type: required
+          message: Must enter a value between 1 and 5000
+        - type: range
+          min: 1
+          max: 5000
+          message: Max hits must be a value between 1 and 5000
+    request:
+      id: maxHits
+      dataType: integer
+      data: 100
 description: Performs a BLAST search of user selected databases using a query entered as text
 category: python-local.bio.sequence
 comments: ''

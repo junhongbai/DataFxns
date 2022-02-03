@@ -4,108 +4,62 @@ serviceName: BlastWebSearch
 executorId: Glysade.CPythonDataFxn
 serviceUri: LOCAL:glysade.python
 version: 1.0.0
-input_fields: |
-  [
-    {
-      "control": {
-        "id": "query",
-        "label": "Enter query sequence",
-        "type": "textarea",
-        "rows": 5,
-        "validationRules": [
-          {
-            "type": "sequence"
-          },
-          {
-            "type": "required"
-          }
-        ]
-      },
-      "request": {
-        "id": "query",
-        "dataType": "string",
-        "contentType": "chemical/x-sequence"
-      }
-    },
-    {
-      "control": {
-        "id": "databaseName",
-        "label": "Select database to search",
-        "type": "select",
-        "options": [
-          {
-            "text": "envnr",
-            "value": "envnr"
-          },
-          {
-            "text": "nr",
-            "value": "nr"
-          },
-          {
-            "text": "pataa",
-            "value": "pataa"
-          },
-          {
-            "text": "pdb",
-            "value": "pdb"
-          },
-          {
-            "text": "env_nt",
-            "value": "env_nt"
-          },
-          {
-            "text": "nt",
-            "value": "nt"
-          },
-          {
-            "text": "est",
-            "value": "est"
-          },
-          {
-            "text": "other_genomic",
-            "value": "other_genomic"
-          },
-          {
-            "text": "refseq_genomic",
-            "value": "refseq_genomic"
-          }
-        ],
-        "validationRules": [
-          {
-            "type": "required"
-          }
-        ]
-      },
-      "request": {
-        "id": "databaseName",
-        "dataType": "string"
-      }
-    } ,
-    {
-      "control": {
-        "id": "maxHits",
-        "label": "Max hits",
-        "type": "text",
-        "validationRules": [
-          {
-            "type": "required",
-            "message": "Must enter a value between 1 and 5000"
-          },
-          {
-            "type": "range",
-            "min": 1,
-            "max": 5000,
-            "message": "Max hits must be a value between 1 and 5000"
-          }
-        ]
-      },
-      "request": {
-        "id": "maxHits",
-        "dataType": "integer",
-        "data": 100
-      }
-    }
-  ]
+inputFields:
+  - control:
+      id: query
+      label: Enter query sequence
+      type: textarea
+      rows: 5
+      validationRules:
+        - type: sequence
+        - type: required
+    request:
+      id: query
+      dataType: string
+      contentType: chemical/x-sequence
+  - control:
+      id: databaseName
+      label: Select database to search
+      type: select
+      options:
+        - text: envnr
+          value: envnr
+        - text: nr
+          value: nr
+        - text: pataa
+          value: pataa
+        - text: pdb
+          value: pdb
+        - text: env_nt
+          value: env_nt
+        - text: nt
+          value: nt
+        - text: est
+          value: est
+        - text: other_genomic
+          value: other_genomic
+        - text: refseq_genomic
+          value: refseq_genomic
+      validationRules:
+        - type: required
+    request:
+      id: databaseName
+      dataType: string
+  - control:
+      id: maxHits
+      label: Max hits
+      type: text
+      validationRules:
+        - type: required
+          message: Must enter a value between 1 and 5000
+        - type: range
+          min: 1
+          max: 5000
+          message: Max hits must be a value between 1 and 5000
+    request:
+      id: maxHits
+      dataType: integer
+      data: 100
 description: Pairwise sequence alignment service, aligning a set of sequences to a query sequence
 category: python-local.bio.sequence
 comments: ""

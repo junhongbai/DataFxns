@@ -4,69 +4,41 @@ serviceName: SequenceRegularExpressionMatch
 executorId: Glysade.CSharpDataFxn
 serviceUri: LOCAL:glysade.csharp
 version: 0.0.1
-input_fields: |
-  [
-    {
-        "control": {
-            "id": "sequenceColumn",
-            "label": "Select sequence column",
-            "type": "columnselect",
-            "filters": [
-                {
-                    "dataType": "string",
-                    "contentType": "chemical/x-sequence"
-                },
-                {
-                    "dataType": "binary",
-                    "contentType": "chemical/x-genbank"
-                }
-            ],
-            "validationRules": [
-                {
-                    "type": "required"
-                }
-            ]
-        },
-        "request": {
-            "id": "sequenceColumn",
-            "dataType": "integer",
-            "selectorType": "column"
-        }
-    },
-    {
-        "control": {
-            "id": "columnName",
-            "label": "Column Name",
-            "type": "text",
-            "validationRules": [
-                {
-                    "type": "required"
-                }
-            ]
-        },
-        "request": {
-            "id": "columnName",
-            "dataType": "string"
-        }
-    },
-    {
-        "control": {
-            "id": "expression",
-            "label": "Regular Expression",
-            "type": "text",
-            "rows": 1,
-            "validationRules": [
-                {
-                    "type": "required"
-                }
-            ]
-        },
-        "request": {
-            "id": "expression",
-            "dataType": "string"
-        }
-    }
-  ]
+inputFields:
+  - control:
+      id: sequenceColumn
+      label: Select sequence column
+      type: columnselect
+      filters:
+        - dataType: string
+          contentType: chemical/x-sequence
+        - dataType: binary
+          contentType: chemical/x-genbank
+      validationRules:
+        - type: required
+    request:
+      id: sequenceColumn
+      dataType: integer
+      selectorType: column
+  - control:
+      id: columnName
+      label: Column Name
+      type: text
+      validationRules:
+        - type: required
+    request:
+      id: columnName
+      dataType: string
+  - control:
+      id: expression
+      label: Regular Expression
+      type: text
+      rows: 1
+      validationRules:
+        - type: required
+    request:
+      id: expression
+      dataType: string
 description: Creates boolean columns indicating the presence or absence of input regular expressions in a sequence column.
 category: csharp-local.bio.sequence
 comments: 

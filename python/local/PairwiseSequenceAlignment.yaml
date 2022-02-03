@@ -4,86 +4,51 @@ serviceName: PairwiseSequenceAlignment
 executorId: Glysade.CPythonDataFxn
 serviceUri: LOCAL:glysade.python
 version: 1.0.0
-input_fields: |
-  [
-    {
-      "control": {
-        "id": "query",
-        "label": "Enter reference sequence",
-        "type": "textarea",
-        "rows": 5,
-        "validationRules": [
-          {
-            "type": "sequence"
-          },
-          {
-            "type": "required"
-          }
-        ]
-      },
-      "request": {
-        "id": "query",
-        "dataType": "string",
-        "contentType": "chemical/x-sequence"
-      }
-    },
-    {
-      "control": {
-        "id": "sequenceColumn",
-        "label": "Select sequence column",
-        "type": "columnselect",
-        "filters": [
-          {
-            "dataType": "string",
-            "contentType": "chemical/x-sequence"
-          },
-          {
-            "dataType": "binary",
-            "contentType": "chemical/x-genbank"
-          }
-        ],
-        "validationRules": [
-          {
-            "type": "required"
-          }
-        ]
-      },
-      "request": {
-        "id": "sequenceColumn",
-        "dataType": "string",
-        "selectorType": "column"
-      }
-    },
-    {
-      "control": {
-        "id": "method",
-        "label": "Alignment method",
-        "type": "radiogroup",
-        "radios": [
-          {
-            "text": "Needleman   Wunsch",
-            "value": "NEEDLE"
-          },
-          {
-            "text": "Smith   Waterman",
-            "value": "WATER"
-          }
-        ],
-        "validationRules": [
-          {
-            "type": "required",
-            "message": "Must select something from 'Alignment method'"
-          }
-        ]
-      },
-      "request": {
-        "field": "method",
-        "id": "method",
-        "dataType": "string",
-        "data": "NEEDLE"
-      }
-    }
-  ]
+inputFields:
+  - control:
+      id: query
+      label: Enter reference sequence
+      type: textarea
+      rows: 5
+      validationRules:
+        - type: sequence
+        - type: required
+    request:
+      id: query
+      dataType: string
+      contentType: chemical/x-sequence
+  - control:
+      id: sequenceColumn
+      label: Select sequence column
+      type: columnselect
+      filters:
+        - dataType: string
+          contentType: chemical/x-sequence
+        - dataType: binary
+          contentType: chemical/x-genbank
+      validationRules:
+        - type: required
+    request:
+      id: sequenceColumn
+      dataType: string
+      selectorType: column
+  - control:
+      id: method
+      label: Alignment method
+      type: radiogroup
+      radios:
+        - text: Needleman   Wunsch
+          value: NEEDLE
+        - text: Smith   Waterman
+          value: WATER
+      validationRules:
+        - type: required
+          message: Must select something from 'Alignment method'
+    request:
+      field: method
+      id: method
+      dataType: string
+      data: NEEDLE
 description: Pairwise sequence alignment service, aligning a set of sequences to a query sequence
 category: python-local.bio.sequence
 comments: ''

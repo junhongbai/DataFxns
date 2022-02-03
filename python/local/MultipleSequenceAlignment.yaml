@@ -4,65 +4,39 @@ serviceName: MultipleSequenceAlignment
 executorId: Glysade.CPythonDataFxn
 serviceUri: LOCAL:glysade.python
 version: 0.0.3
-input_fields: |
-    [
-        {
-            "control": {
-                "id": "sequenceColumn",
-                "label": "Select sequence column",
-                "type": "columnselect",
-                "filters": [
-                    {
-                        "dataType": "string",
-                        "contentType": "chemical/x-sequence"
-                    },
-                    {
-                        "dataType": "binary",
-                        "contentType": "chemical/x-genbank"
-                    }
-                ],
-                "validationRules": [
-                    {
-                        "type": "required"
-                    }
-                ]
-            },
-            "request": {
-                "id": "sequenceColumn",
-                "dataType": "string",
-                "selectorType": "column"
-            }
-        },
-        {
-            "control": {
-                "id": "alignmentMethod",
-                "label": "Alignment method",
-                "type": "radiogroup",
-                "radios": [
-                    {
-                        "text": "Clustal Omega",
-                        "value": "CLUSTALO"
-                    },
-                    {
-                        "text": "MUSCLE",
-                        "value": "MUSCLE"
-                    }
-                ],
-                "validationRules": [
-                    {
-                        "type": "required",
-                        "message": "Must select something from 'Alignment method'"
-                    }
-                ]
-            },
-            "request": {
-                "field": "alignmentMethod",
-                "id": "alignmentMethod",
-                "dataType": "string",
-                "data": "CLUSTALO"
-            }
-        }
-    ]
+inputFields:
+  - control:
+      id: sequenceColumn
+      label: Select sequence column
+      type: columnselect
+      filters:
+        - dataType: string
+          contentType: chemical/x-sequence
+        - dataType: binary
+          contentType: chemical/x-genbank
+      validationRules:
+        - type: required
+    request:
+      id: sequenceColumn
+      dataType: string
+      selectorType: column
+  - control:
+      id: alignmentMethod
+      label: Alignment method
+      type: radiogroup
+      radios:
+        - text: Clustal Omega
+          value: CLUSTALO
+        - text: MUSCLE
+          value: MUSCLE
+      validationRules:
+        - type: required
+          message: Must select something from 'Alignment method'
+    request:
+      field: alignmentMethod
+      id: alignmentMethod
+      dataType: string
+      data: CLUSTALO
 description: Performs multiple sequence alignment using a variety of algorithms
 category: python-local.bio.sequence
 comments: ''
