@@ -81,7 +81,7 @@ inputFields:
 description: R Group Analysis Service
 category: csharp-local.chem.2D
 comments:
-iron_python: |
+ironPython: |
   ############################################
   #  Copyright 2018, 2019, 2020 Glysade LLC  #
   ############################################

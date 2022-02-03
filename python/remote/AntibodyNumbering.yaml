@@ -40,7 +40,7 @@ inputFields:
 description: Identifies antibody chain numbering and aligns chains
 category: python-remote.bio.sequence
 comments: ''
-iron_python: ''
+ironPython: ''
 tags: 
   - color : '#dddddd'
     text  : MAB

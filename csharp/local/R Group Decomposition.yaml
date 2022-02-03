@@ -93,5 +93,5 @@ inputFields:
 description: Performs R group decomposition on the  structures in a data table column
 category: csharp-local.chem.2D
 comments: ''
-iron_python: ''
+ironPython: ''
 chemistryFunction: true

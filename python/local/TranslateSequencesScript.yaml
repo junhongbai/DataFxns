@@ -140,7 +140,7 @@ inputFields:
 description: Translates DNA To Protein
 category: python-local.bio.sequence
 comments: ''
-iron_python: ''
+ironPython: ''
 # to generate all codon table names
 # from Bio.Data import CodonTable
 # for k in CodonTable.ambiguous_generic_by_name:

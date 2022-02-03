@@ -63,7 +63,7 @@ inputFields:
 description: Pairwise sequence alignment service, aligning a set of sequences to a query sequence
 category: python-local.bio.sequence
 comments: ""
-iron_python: |
+ironPython: |
   ############################################
   #  Copyright 2017, 2018, 2019 Glysade LLC  #
   ############################################

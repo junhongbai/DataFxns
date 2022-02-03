@@ -52,4 +52,4 @@ inputFields:
 description: Pairwise sequence alignment service, aligning a set of sequences to a query sequence
 category: python-remote.bio.sequence
 comments: ''
-iron_python: ''
+ironPython: ''

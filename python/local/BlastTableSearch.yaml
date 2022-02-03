@@ -36,4 +36,4 @@ inputFields:
 description: Performs a blast search of the sequences in the provided table using the provided query sequence
 category: python-local.bio.sequence
 comments: ''
-iron_python: ''
+ironPython: ''

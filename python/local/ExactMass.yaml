@@ -30,4 +30,4 @@ inputFields:
 description: Calculates exact mass for structures 
 category: python-local.chem.2D
 comments: ''
-iron_python: ''
+ironPython: ''

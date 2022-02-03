@@ -89,7 +89,7 @@ inputFields:
 description: Performs a BLAST search of user selected databases using a query entered as text
 category: python-local.bio.sequence
 comments: ""
-iron_python: |
+ironPython: |
     ############################################
     #  Copyright 2019 Glysade LLC             #
     ############################################

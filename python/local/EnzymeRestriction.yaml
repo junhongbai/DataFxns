@@ -1996,7 +1996,7 @@ inputFields:
 description: Performs restriction analysis using codes from REBASE
 category: python-local.bio.sequence
 comments: ''
-iron_python: ''
+ironPython: ''
 # to create options (except all and common)
 # from Bio.Restriction import *
 # l = [str(a) for a in AllEnzymes]
