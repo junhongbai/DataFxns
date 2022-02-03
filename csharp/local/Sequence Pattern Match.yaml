@@ -1,6 +1,7 @@
 id: 0473c160-a492-488b-960f-eba70557785c
 name: Sequence Pattern Match
-serviceName: SequencePatternMatch
+serviceName: PublisherCore.SequencePatternMatchDataFunction
+assembly: PublisherCore
 executorId: Glysade.CSharpDataFxn
 serviceUri: LOCAL:glysade.csharp
 version: 0.0.1

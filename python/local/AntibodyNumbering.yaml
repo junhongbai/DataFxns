@@ -82,5 +82,5 @@ iron_python: ''
 tags: 
   - color : '#dddddd'
     text  : MAB
-  - color : '#337ab'
+  - color : '#337abc'
     text  : sequence
