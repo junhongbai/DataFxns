@@ -54,7 +54,7 @@ inputFields:
           value: chothia
         - text: IMGT
           value: imgt
-     validationRules:
+      validationRules:
         - type: required
           message: Must select something from 'CDR definition'
     request:
@@ -62,7 +62,6 @@ inputFields:
       id: cdrDefinition
       dataType: string
       data: kabat
-
 description: Identifies antibody chain numbering and aligns chains
 category: python-local.bio.sequence
 comments: ''
