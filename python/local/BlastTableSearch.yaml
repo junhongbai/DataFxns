@@ -33,6 +33,15 @@ inputFields:
       id: query
       dataType: string
       contentType: chemical/x-sequence
+outputFields:
+  - id: query
+    name: 'Query sequence'
+    source: inputField
+    type: sequence
+  - id: column3
+    name: Score filter
+    source: column
+    type: filter
 description: Performs a blast search of the sequences in the provided table using the provided query sequence
 category: python-local.bio.sequence
 comments: ''
