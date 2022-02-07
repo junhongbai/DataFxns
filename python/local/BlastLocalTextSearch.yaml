@@ -76,10 +76,10 @@ inputFields:
       validationRules:
         - type: required
           message: Must enter a value between 1 and 5000
-        - type: range
-          min: 1
-          max: 5000
-          message: Max hits must be a value between 1 and 5000
+        #- type: range
+        #  min: 1
+        #  max: 5000
+        #  message: Max hits must be a value between 1 and 5000
     request:
       id: maxHits
       dataType: integer
