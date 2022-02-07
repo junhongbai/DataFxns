@@ -66,6 +66,8 @@ inputFields:
           value: rat_nr
         - text: Rat NCBI NT
           value: rat_nt
+        - text: Human IG Germline
+          value: human_IG_germline
       validationRules:
         - type: required
     request:
