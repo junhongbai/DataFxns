@@ -1,0 +1,49 @@
+id: d8364cdb-87b2-4b20-b928-77960da7b4a5
+name: IG Blastp Local Text Search
+serviceName: IgBlastpLocalTextSearch
+executorId: Glysade.CPythonDataFxn
+serviceUri: LOCAL:glysade.python
+version: 1.0.0
+inputFields:
+  - control:
+      id: query
+      label: Enter query amino acid sequence
+      type: textarea
+      rows: 5
+      validationRules:
+        - type: sequence
+        - type: required
+    request:
+      id: query
+      dataType: string
+      contentType: chemical/x-sequence
+  - control:
+      id: organism
+      label: Organism for query sequence
+      type: select
+      options:
+        - text: Human
+          value: human
+      validationRules:
+         - type: required
+    request:
+      id: organism
+      dataType: string
+      data: human
+  - control:
+      id: germlineDbV
+      label: Germline V gene database
+      type: select
+      options:
+        - text: IMGT human V genes (F + ORF + in-frame P)
+          value: imgt.Homo_sapiens.AA.V.f.orf
+      validationRules:
+        - type: required
+    request:
+      id: germlineDbV
+      dataType: string
+      data: imgt.Homo_sapiens.AA.V.f.orf
+description: Analyze immunoglobulin (Ig) sequences using blastp
+category: python-local.bio.sequence
+comments: ''
+ironPython: ''

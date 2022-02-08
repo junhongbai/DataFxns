@@ -1,0 +1,90 @@
+id: 3f45eab5-2436-4759-acb6-696f626e12dc
+name: IG Blastn Local Text Search
+serviceName: IgBlastnLocalTextSearch
+executorId: Glysade.CPythonDataFxn
+serviceUri: LOCAL:glysade.python
+version: 1.0.0
+inputFields:
+  - control:
+      id: query
+      label: Enter query nucleotide acid sequence
+      type: textarea
+      rows: 5
+      validationRules:
+        - type: sequence
+        - type: required
+    request:
+      id: query
+      dataType: string
+      contentType: chemical/x-sequence
+  - control:
+      id: organism
+      label: Organism for query sequence
+      type: select
+      options:
+        - text: Human
+          value: human
+      validationRules:
+         - type: required
+    request:
+      id: organism
+      dataType: string
+      data: human
+  - control:
+      id: germlineDbV
+      label: Germline V gene database
+      type: select
+      options:
+        - text: IMGT human V genes (F + ORF + in-frame P)
+          value: imgt.Homo_sapiens.AA.V.f.orf
+      validationRules:
+        - type: required
+    request:
+      id: germlineDbV
+      dataType: string
+      data: imgt.Homo_sapiens.AA.V.f.orf
+  - control:
+      id: germlineDbD
+      label: Germline D gene database
+      type: select
+      options:
+        - text: IMGT human D genes (F + ORF)
+          value: imgt.Homo_sapiens.AA.D.f.orf
+      validationRules:
+        - type: required
+    request:
+      id: germlineDbD
+      dataType: string
+      data: imgt.Homo_sapiens.AA.D.f.orf
+  - control:
+      id: germlineDbJ
+      label: Germline J gene database
+      type: select
+      options:
+        - text: IMGT human J genes (F + ORF)
+          value: imgt.Homo_sapiens.AA.J.f.orf
+      validationRules:
+        - type: required
+    request:
+      id: germlineDbJ
+      dataType: string
+      data: imgt.Homo_sapiens.AA.J.f.orf
+  - control:
+      id: domainSystem
+      label: V domain delineation system
+      type: select
+      options:
+        - text: IMGT
+          value: imgt
+        - text: Kabat
+          value: kabat
+      validationRules:
+         - type: required
+    request:
+      id: domainSystem
+      dataType: string
+      data: imgt
+description: Analyze immunoglobulin (Ig) sequences using blastn
+category: python-local.bio.sequence
+comments: ''
+ironPython: ''
