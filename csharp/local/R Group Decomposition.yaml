@@ -47,7 +47,7 @@ inputFields:
     request:
       id: matchOnRGroupsOnly
       dataType: boolean
-      data: false
+      data: !!bool false
   - control:
       label: Treat disconnected structure as single fragmented core (instead of
         separate cores)
@@ -56,7 +56,7 @@ inputFields:
     request:
       id: allowFragmentedCore
       dataType: boolean
-      data: false
+      data: !!bool false
   - control:
       label: Output format
       id: outputFormat

@@ -67,7 +67,7 @@ inputFields:
     request:
       id: showMultipleAlignments
       dataType: boolean
-      data: false
+      data: !!bool false
 description: Pairwise sequence alignment service, aligning a set of sequences to a query sequence
 category: python-local.bio.sequence
 comments: ""
