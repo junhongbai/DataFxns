@@ -26,11 +26,11 @@ inputFields:
           value: BLASTP
         - text: "BLASTN: nucleotide(q)-nucleotide(d)"
           value: BLASTN
-        - text: "BLASTX: nucleotide(q)-protein(d)"
+        - text: "BLASTX: nucleotide(q)+translation-protein(d)"
           value: BLASTX
         - text: "TBLASTN: protein(q)-nucleotide(d)+translation"
           value: TBLASTN
-        - text: "TBLASTX: nucleotide(q)-nucleotide(d)+translation"
+        - text: "TBLASTX: nucleotide(q)+translation-nucleotide(d)+translation"
           value: TBLASTX
       validationRules:
         - type: required
@@ -84,6 +84,14 @@ inputFields:
       id: maxHits
       dataType: integer
       data: !!int 100
+  - control:
+      label: Build multiple alignment column
+      id: showMultipleAlignments
+      type: checkbox
+    request:
+      id: showMultipleAlignments
+      dataType: boolean
+      data: false
 description: Performs a BLAST search of user selected databases using a query entered as text
 category: python-local.bio.sequence
 comments: ''

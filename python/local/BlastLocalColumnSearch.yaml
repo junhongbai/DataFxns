@@ -30,11 +30,11 @@ inputFields:
           value: BLASTP
         - text: "BLASTN: nucleotide(q)-nucleotide(d)"
           value: BLASTN
-        - text: "BLASTX: nucleotide(q)-protein(d)"
+        - text: "BLASTX: nucleotide(q)+translation-protein(d)"
           value: BLASTX
         - text: "TBLASTN: protein(q)-nucleotide(d)+translation"
           value: TBLASTN
-        - text: "TBLASTX: nucleotide(q)-nucleotide(d)+translation"
+        - text: "TBLASTX: nucleotide(q)+translation-nucleotide(d)+translation"
           value: TBLASTX
       validationRules:
         - type: required

@@ -60,9 +60,18 @@ inputFields:
       id: maxHits
       dataType: integer
       data: !!int 100
+  - control:
+      label: Build multiple alignment column
+      id: showMultipleAlignments
+      type: checkbox
+    request:
+      id: showMultipleAlignments
+      dataType: boolean
+      data: false
 description: Pairwise sequence alignment service, aligning a set of sequences to a query sequence
 category: python-local.bio.sequence
 comments: ""
+updateBehavior: manual
 ironPython: |
   ############################################
   #  Copyright 2017, 2018, 2019 Glysade LLC  #
