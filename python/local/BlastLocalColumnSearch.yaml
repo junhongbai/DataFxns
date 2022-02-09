@@ -66,7 +66,7 @@ inputFields:
           value: rat_nr
         - text: Rat NCBI NT
           value: rat_nt
-        - text: Human IG Germline
+        - text: Human IG Germline (Proteins)
           value: human_IG_germline
       validationRules:
         - type: required
@@ -81,13 +81,13 @@ inputFields:
         - type: required
           message: Must enter a value between 1 and 5000
         - type: range
-          min: 1
-          max: 5000
+          min: !!int 1
+          max: !!int 5000
           message: Max hits must be a value between 1 and 5000
     request:
       id: maxHits
       dataType: integer
-      data: 100
+      data: !!int 100
 description: Performs a BLAST search of user selected databases using a query entered as text
 category: python-local.bio.sequence
 comments: ""
