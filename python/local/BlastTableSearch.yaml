@@ -33,6 +33,14 @@ inputFields:
       id: query
       dataType: string
       contentType: chemical/x-sequence
+  - control:
+      label: Build multiple alignment column (query is not included)
+      id: showMultipleAlignments
+      type: checkbox
+    request:
+      id: showMultipleAlignments
+      dataType: boolean
+      data: !!bool false
 outputFields:
   - id: query
     name: 'Query sequence'

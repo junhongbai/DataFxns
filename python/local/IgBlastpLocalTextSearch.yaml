@@ -43,6 +43,21 @@ inputFields:
       id: germlineDbV
       dataType: string
       data: imgt.Homo_sapiens.AA.V.f.orf
+  - control:
+      id: domainSystem
+      label: V domain delineation system
+      type: select
+      options:
+        - text: IMGT
+          value: imgt
+        - text: Kabat
+          value: kabat
+      validationRules:
+         - type: required
+    request:
+      id: domainSystem
+      dataType: string
+      data: imgt
 description: Analyze immunoglobulin (Ig) sequences using blastp
 category: python-local.bio.sequence
 comments: ''
