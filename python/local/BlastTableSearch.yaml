@@ -25,7 +25,7 @@ inputFields:
       id: query
       label: Query sequence
       type: textarea
-      rows: 5
+      rows: !!int 5
       validationRules:
         - type: sequence
         - type: required

@@ -33,7 +33,7 @@ inputFields:
       id: expression
       label: Regular Expression
       type: text
-      rows: 1
+      rows: !!int 1
       validationRules:
         - type: required
     request:

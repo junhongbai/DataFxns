@@ -9,7 +9,7 @@ inputFields:
       id: parentStructureColumn
       label: Parent structure column
       type: columnselect
-      multi: false
+      multi: !!bool false
       filters:
         - dataType: binary
           contentType:
@@ -31,7 +31,7 @@ inputFields:
       id: parentIDColumn
       label: Parent ID column
       type: columnselect
-      multi: false
+      multi: !!bool false
       filters:
         - dataType: int
         - dataType: string
@@ -43,7 +43,7 @@ inputFields:
       id: rGroupColumns
       label: R Group columns
       type: columnselect
-      multi: true
+      multi: !!bool true
       filters:
         - dataType: binary
           contentType:
@@ -67,7 +67,7 @@ inputFields:
       id: dataColumns
       label: Data columns
       type: columnselect
-      multi: true
+      multi: !!bool true
       filters:
         - dataType: int
         - dataType: float

@@ -24,7 +24,7 @@ inputFields:
       id: enzymes
       label: Select enzyme codes
       type: select
-      multi: true
+      multi: !!bool true
       options:
         - text: All
           value: All

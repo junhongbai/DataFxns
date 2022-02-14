@@ -29,7 +29,7 @@ inputFields:
     request:
       id: minimumProteinLength
       dataType: integer
-      data: 100
+      data: !!int 100
   - control:
       id: codonTableName
       label: Codon table name

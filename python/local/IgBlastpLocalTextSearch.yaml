@@ -9,7 +9,7 @@ inputFields:
       id: query
       label: Enter query amino acid sequence
       type: textarea
-      rows: 5
+      rows: !!int 5
       validationRules:
         - type: sequence
         - type: required

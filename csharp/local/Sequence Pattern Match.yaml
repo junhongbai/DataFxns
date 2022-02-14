@@ -25,7 +25,7 @@ inputFields:
       id: patterns
       label: Match patterns
       type: select
-      multi: true
+      multi: !!bool true
       options:
         - text: Cysteine
           value: Cysteine,C
