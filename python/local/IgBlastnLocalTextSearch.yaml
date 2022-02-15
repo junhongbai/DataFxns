@@ -36,39 +36,39 @@ inputFields:
       type: select
       options:
         - text: IMGT human V genes (F + ORF + in-frame P)
-          value: imgt.Homo_sapiens.AA.V.f.orf
+          value: imgt.Homo_sapiens.V.f.orf
       validationRules:
         - type: required
     request:
       id: germlineDbV
       dataType: string
-      data: imgt.Homo_sapiens.AA.V.f.orf
+      data: imgt.Homo_sapiens.V.f.orf
   - control:
       id: germlineDbD
       label: Germline D gene database
       type: select
       options:
         - text: IMGT human D genes (F + ORF)
-          value: imgt.Homo_sapiens.AA.D.f.orf
+          value: imgt.Homo_sapiens.D.f.orf
       validationRules:
         - type: required
     request:
       id: germlineDbD
       dataType: string
-      data: imgt.Homo_sapiens.AA.D.f.orf
+      data: imgt.Homo_sapiens.D.f.orf
   - control:
       id: germlineDbJ
       label: Germline J gene database
       type: select
       options:
         - text: IMGT human J genes (F + ORF)
-          value: imgt.Homo_sapiens.AA.J.f.orf
+          value: imgt.Homo_sapiens.J.f.orf
       validationRules:
         - type: required
     request:
       id: germlineDbJ
       dataType: string
-      data: imgt.Homo_sapiens.AA.J.f.orf
+      data: imgt.Homo_sapiens.J.f.orf
   - control:
       id: domainSystem
       label: V domain delineation system
