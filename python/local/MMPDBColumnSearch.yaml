@@ -5,7 +5,7 @@ executorId: Glysade.CPythonDataFxn
 serviceUri: LOCAL:glysade.python
 version: 1.0.0
 input_fields: 
- - control:
+  - control:
       id: queryData
       label: Enter cores
       type: sketcher
@@ -17,7 +17,7 @@ input_fields:
       dataType: string
       contentType: chemical/x-mdl-molfile
       field: structure
- - control:
+  - control:
       id: structureColumn
       label: Select structure column
       type: columnselect
