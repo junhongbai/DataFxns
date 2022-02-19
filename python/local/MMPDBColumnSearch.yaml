@@ -40,7 +40,7 @@ inputFields:
       dataType: string
       selectorType: column
 description: Finds MMP transformations and associated property predictions for a query structure
-category: python.local.chem.2D
+category: python-local.chem.2D
 comments: ''
 iron_python: |
   ############################################
