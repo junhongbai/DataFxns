@@ -7,7 +7,7 @@ version: 1.0.0
 inputFields: 
   - control:
       id: queryData
-      label: Enter cores
+      label: Enter query
       type: sketcher
       validationRules:
         - type: structure
