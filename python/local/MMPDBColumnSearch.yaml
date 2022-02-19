@@ -1,7 +1,7 @@
 id: 98445748-0e43-43cb-a5d1-5b0e7a2d8677
 name: MMPDB Database Search
 description: Finds MMP transformations and associated property predictions for a query structure
-category: python.local.chem.2D
+category: python-local.chem.2D
 version: 1.0.0
 serviceName: MmpdbDatabaseSearch
 serviceUri: LOCAL:glysade.python
