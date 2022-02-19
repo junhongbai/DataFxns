@@ -4,7 +4,7 @@ serviceName: MmpdbDatabaseSearch
 executorId: Glysade.CPythonDataFxn
 serviceUri: LOCAL:glysade.python
 version: 1.0.0
-input_fields: 
+inputFields: 
   - control:
       id: queryData
       label: Enter cores
