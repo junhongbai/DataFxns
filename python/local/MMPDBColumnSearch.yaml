@@ -1,0 +1,140 @@
+id: 98445748-0e43-43cb-a5d1-5b0e7a2d8677
+name: MMPDB Database Search
+serviceName: MmpdbDatabaseSearch
+executorId: Glysade.CPythonDataFxn
+serviceUri: LOCAL:glysade.python
+version: 1.0.0
+input_fields: 
+ - control:
+      id: queryData
+      label: Enter cores
+      type: sketcher
+      validationRules:
+        - type: structure
+          message: Must enter a structure
+    request:
+      id: queryData
+      dataType: string
+      contentType: chemical/x-mdl-molfile
+      field: structure
+ - control:
+      id: structureColumn
+      label: Select structure column
+      type: columnselect
+      filters:
+        - dataType: string
+          contentType:
+            - chemical/x-mdl-molfile
+            - chemical/x-mdl-molfile-v3000
+            - chemical/x-smiles
+            - chemical/x-daylight-smiles
+        - dataType: binary
+          contentType:
+            - chemical/x-mdl-molfile
+            - chemical/x-mdl-molfile-v3000
+      validationRules:
+        - type: required
+          message: Must select column of 2D structures
+    request:
+      id: structureColumn
+      dataType: string
+      selectorType: column
+description: Finds MMP transformations and associated property predictions for a query structure
+category: python.local.chem.2D
+comments: ''
+iron_python: |
+  ############################################
+  #  Copyright 2020 Glysade LLC             #
+  ############################################
+
+  import sys, clr, json
+  from System import Guid, String
+  from Spotfire.Dxp.Data import DataTable, DataManager
+  from Spotfire.Dxp.Application import PanelTypeIdentifiers
+  from Spotfire.Dxp.Application import Panel
+  from Spotfire.Dxp.Application.Layout import LayoutDefinition
+  import Spotfire.Dxp.Application.PanelCollection
+
+  from System import AppDomain
+  for asm in AppDomain.CurrentDomain.GetAssemblies():
+    if asm.GetName().Name == 'Charts' or asm.GetName().Name == 'Common':
+        clr.AddReference(asm.FullName)
+
+  from Common import ColumnIdService
+  from Charts import ChartsModel
+
+  #tableId pass in args
+  dataTable = None
+
+  tableGuid = Guid(tableId)
+  if Document.Data.Tables.Contains(tableGuid):
+    dataTable = Document.Data.Tables[tableGuid]
+
+  if not dataTable:
+      raise Exception('target table not found')
+
+  idService = Application.GetService(ColumnIdService)
+
+  page = Document.Pages.AddNew('MMP Search Results')
+
+  tableVis = page.Visuals.AddNew[ChartsModel]()
+  tableVis.SetKeyValue('visualization','table-visualization')
+  tableVis.DataTable = dataTable
+  tableVis.ConfigureColumns()
+  tableVis.Title = 'MMP Results'
+  tableVis.Marking = Document.Data.Markings.DefaultMarkingReference
+  tableVis.SetKeyValue(tableId+".table-visualization.table.transposed","true")
+  skipColumns = ['Query','ENV_RULE','Fingerprint','TransformFingerprint']
+  removed = []
+  unfixed = []
+  for column in dataTable.Columns:
+      if column.Name in skipColumns:
+          removed.append(idService.GetID(column))
+      else:
+          unfixed.append(idService.GetID(column))
+
+  tableVis.SetKeyValue(tableId+".table-visualization.table.removedColumnIds", json.dumps(removed))
+  tableVis.SetKeyValue(tableId+".table-visualization.table.unfixedColumnIds", json.dumps(unfixed))
+
+  mmpFilterVis = page.Visuals.AddNew[ChartsModel]()
+  mmpFilterVis.SetKeyValue('visualization','mmp-filter-visualization')
+  mmpFilterVis.DataTable = dataTable
+  mmpFilterVis.ConfigureColumns()
+  mmpFilterVis.Title = 'MMP Filter'
+  mmpFilterVis.Marking = Document.Data.Markings.DefaultMarkingReference
+  mmpFilterVis.SetKeyValue('mmp-filter-visualization.filter.mmp-results-visualization',tableVis.Visual.Id.ToString())
+
+  mpoVis = page.Visuals.AddNew[ChartsModel]()
+  mpoVis.SetKeyValue('visualization','mpo-visualization')
+  mpoVis.DataTable = dataTable
+  mpoVis.ConfigureColumns()
+  mpoVis.Title = 'MMP Properties'
+  mpoVis.Marking = Document.Data.Markings.DefaultMarkingReference
+  skipColumns = ['RADIUS','ENV_RULE']
+  configured = []
+  for column in dataTable.Columns:
+      if column.DataType.IsNumeric and column.Name not in skipColumns:
+          configured.append({'columnId': idService.GetID(column),'logScale':False,'inverted':False})
+  mpoVis.SetKeyValue(tableId+".mpo-visualization.mpo.axes",json.dumps(configured))
+
+  tableVis.SetActiveVisual()
+  page.AutoConfigure()
+
+  page.FilterPanel.Visible = True
+  page.DetailsOnDemandPanel.Visible = False
+
+  filterPanel = page.FilterPanel
+  for group in filterPanel.TableGroups:
+     if group.Name != dataTable.Name:
+      group.Visible = False
+
+  layout = LayoutDefinition()
+  layout.BeginStackedSection()
+  layout.BeginSideBySideSection()
+  layout.Add(mmpFilterVis.Visual,33.3)
+  layout.Add(mpoVis.Visual,66.6)
+  layout.EndSection()
+  layout.Add(tableVis.Visual)
+  layout.EndSection()
+  page.ApplyLayout(layout)
+
