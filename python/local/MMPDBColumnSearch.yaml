@@ -56,7 +56,6 @@ inputFields:
       - int
       - float
       - long
-      contentType: []
   request:
     id: propertyFields
     dataType: list(string)
