@@ -1,0 +1,112 @@
+id: 8ac0fdad-e8d4-4e6a-b013-8ac8ff74a80a
+name: Core Decomposition Analysis
+description: Perform core decomposition analysis on a structure column
+category: csharp-local.chem.2D
+version: 0.0.1
+serviceName: CoreDecomposition
+serviceUri: LOCAL:glysade.csharp
+executorId: Glysade.CSharpDataFxn
+inputFields:
+- control:
+    id: structureColumn
+    label: Select structure column
+    type: columnselect
+    filters:
+    - dataType: string
+      contentType:
+      - chemical/x-mdl-molfile
+      - chemical/x-mdl-molfile-v3000
+      - chemical/x-smiles
+      - chemical/x-daylight-smiles
+    - dataType: binary
+      contentType:
+      - chemical/x-mdl-molfile
+      - chemical/x-mdl-molfile-v3000
+    validationRules:
+    - type: required
+      message: Must select column of 2D structures
+    tooltip: ''
+  request:
+    id: structureColumn
+    dataType: string
+    selectorType: column
+- control:
+    id: method
+    label: Decomposition Method
+    type: radiogroup
+    radios:
+    - text: Brics
+      value: Brics
+    - text: Recap
+      value: Recap
+    validationRules:
+    - type: required
+      message: ''
+  request:
+    id: method
+    dataType: string
+    data: Brics
+assembly: 
+tags: 
+comments: 
+ironPython: |
+  ############################################
+  #  Copyright 2020 Glysade LLC             #
+  ############################################
+
+  import sys,clr
+  from Spotfire.Dxp.Data import DataTable, DataManager
+  from Spotfire.Dxp.Application import PanelTypeIdentifiers
+  from Spotfire.Dxp.Application import Panel
+  import Spotfire.Dxp.Application.PanelCollection
+
+  from System import AppDomain
+  for asm in AppDomain.CurrentDomain.GetAssemblies():
+      if asm.GetName().Name == 'Charts':
+          clr.AddReference(asm.FullName)
+          break
+
+  from Charts import ChartsModel
+
+  #tableId pass in args
+  dataTable = None
+
+  for table in Document.Data.Tables:
+      if str(table.Id) == tableId:
+          dataTable = table
+
+  if not dataTable:
+      raise Exception('target table not found')
+
+  page = Document.Pages.AddNew('Core Decomposition Results')
+
+  nbrVis = page.Visuals.AddNew[ChartsModel]()
+  nbrVis.Title = "Core Decomposition Results"
+  nbrVis.SetKeyValue('visualization','core-decomposition-visualization')
+  nbrVis.DataTable = dataTable
+  nbrVis.ConfigureColumns()
+  nbrVis.Marking = Document.Data.Markings.DefaultMarkingReference
+
+  nbrVis.SetActiveVisual()
+  page.AutoConfigure()
+
+  panelsToHide = [PanelTypeIdentifiers.DataPanel, PanelTypeIdentifiers.DetailsOnDemandPanel, PanelTypeIdentifiers.FilterPanel]
+  panelsToShow = []
+
+  for panel in page.Panels:
+      if panel.TypeId in panelsToHide and panel.Visible:
+          panel.Visible = False
+      elif panel.TypeId in panelsToShow and not panel.Visible:
+        panel.Visible = True
+        for fg in panel.TableGroups:
+          if fg.Name == dataTable.Name:
+            fg.Visible = True
+          else:
+            fg.Visible = False
+updateBehavior: manual
+maximumOutputColumns: !!int 1
+maximumOutputTables: !!int 0
+chemistryFunction: !!bool false
+tkid: 
+script: 
+outputFields: 
