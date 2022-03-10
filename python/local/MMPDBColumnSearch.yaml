@@ -9,7 +9,7 @@ executorId: Glysade.CPythonDataFxn
 inputFields:
 - control:
     id: queryData
-    label: Enter cores
+    label: Enter query structure
     type: sketcher
     validationRules:
     - type: structure
