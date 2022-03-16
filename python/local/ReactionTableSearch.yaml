@@ -1,0 +1,69 @@
+id: d358bb04-ed05-4693-9a9b-5dd0da4fc8c3
+name: Reaction Table Search
+description: Given a chemical reaction finds reactant and product compound pairs in the input data table.
+category: python-local.chem.2D
+version: 1.0.0
+serviceName: ReactionTableSearch
+serviceUri: LOCAL:glysade.python
+executorId: Glysade.CPythonDataFxn
+inputFields:
+- control:
+    id: reactionQuery
+    label: Enter reaction
+    type: sketcher
+    validationRules:
+    - type: structure
+      message: Must enter a structure
+    - type: required
+      message: ''
+  request:
+    id: reactionQuery
+    dataType: string
+    contentType: chemical/x-mdl-molfile
+    field: structure
+- control:
+    id: structureColumn
+    label: Select structure column
+    type: columnselect
+    filters:
+    - dataType:
+      - string
+      contentType:
+      - chemical/x-mdl-molfile
+      - chemical/x-mdl-molfile-v3000
+      - chemical/x-smiles
+      - chemical/x-daylight-smiles
+    - dataType: binary
+      contentType:
+      - chemical/x-mdl-molfile
+      - chemical/x-mdl-molfile-v3000
+    validationRules:
+    - type: required
+      message: Must select column of 2D structures
+  request:
+    id: structureColumn
+    dataType: string
+    selectorType: column
+- control:
+    id: propertyFields
+    label: Property columns
+    type: columnselect
+    multi: !!bool true
+    tooltip: Select columns containing properties
+    validationRules:
+    - type: oneOrMoreRequired
+      message: ''
+    filters:
+    - dataType:
+      - double
+      - int
+      - float
+      - long
+  request:
+    id: propertyFields
+    dataType: list(string)
+    selectorType: column
+assembly: 
+tags: 
+comments: ''
+
