@@ -1,6 +1,6 @@
 id: d358bb04-ed05-4693-9a9b-5dd0da4fc8c3
 name: Reaction Table Search
-description: Given a chemical reaction finds reactant and product compound pairs in the input data table.
+description: Given a chemical reaction finds reactant and product compound pairs in the input data table.  Either sketch reaction or enter reaction smarts.
 category: python-local.chem.2D
 version: 1.0.0
 serviceName: ReactionTableSearch
@@ -9,18 +9,19 @@ executorId: Glysade.CPythonDataFxn
 inputFields:
 - control:
     id: reactionQuery
-    label: Enter reaction
-    type: sketcher
-    validationRules:
-    - type: structure
-      message: Must enter a structure
-    - type: required
-      message: ''
+    label: Enter label for reactionQuery
+    type: molecule
+    molTypes:
+    - extension: .smi
+      contentType: chemical/x-smiles
+      name: SMILES (*.smi)
+    - extension: .mol
+      contentType: chemical/x-mdl-molfile
+      name: MOL file (*.mol)
   request:
     id: reactionQuery
     dataType: string
     contentType: chemical/x-mdl-molfile
-    field: structure
 - control:
     id: structureColumn
     label: Select structure column
@@ -46,10 +47,10 @@ inputFields:
     selectorType: column
 - control:
     id: propertyFields
-    label: Property columns
+    label: MMP Properties
     type: columnselect
     multi: !!bool true
-    tooltip: Select columns containing properties
+    tooltip: Select columns containing MMP Properties
     validationRules:
     - type: oneOrMoreRequired
       message: ''
@@ -66,4 +67,14 @@ inputFields:
 assembly: 
 tags: 
 comments: ''
-
+ironPython: 
+updateBehavior: automatic
+maximumOutputColumns: !!int 10
+maximumOutputTables: !!int 1
+chemistryFunction: !!bool false
+tkid: 
+script: 
+outputFields: 
+allowedClients:
+- Analyst
+- WebPlayer
