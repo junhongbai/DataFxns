@@ -1,9 +1,9 @@
-id: 98445748-0e43-43cb-a5d1-5b0e7a2d8677
+id: 8a684464-212f-4aa1-8be8-ec0628803f5a
 name: MMPDB Database Search
 description: Finds MMP transformations and associated property predictions for a query structure
 category: python-local.chem.2D
 version: 1.0.0
-serviceName: MmpdbColumnSearch
+serviceName: MmpdbDatabaseSearch
 serviceUri: LOCAL:glysade.python
 executorId: Glysade.CPythonDataFxn
 inputFields:
@@ -20,56 +20,19 @@ inputFields:
     contentType: chemical/x-mdl-molfile
     field: structure
 - control:
-    id: structureColumn
-    label: Select structure column
-    type: columnselect
-    filters:
-    - dataType: string
-      contentType:
-      - chemical/x-mdl-molfile
-      - chemical/x-mdl-molfile-v3000
-      - chemical/x-smiles
-      - chemical/x-daylight-smiles
-    - dataType: binary
-      contentType:
-      - chemical/x-mdl-molfile
-      - chemical/x-mdl-molfile-v3000
+    id: mmpdbDatabasePath
+    label: MMPDB database
+    type: text
     validationRules:
     - type: required
-      message: Must select column of 2D structures
-  request:
-    id: structureColumn
-    dataType: string
-    selectorType: column
-- control:
-    id: propertyFields
-    label: MMP Properties
-    type: columnselect
-    multi: !!bool true
-    tooltip: Select columns containing MMP Properties
-    validationRules:
-    - type: oneOrMoreRequired
       message: ''
-    filters:
-    - dataType:
-      - double
-      - int
-      - float
-      - long
   request:
-    id: propertyFields
-    dataType: list(string)
-    selectorType: column
+    id: mmpdbDatabasePath
+    dataType: string
+    data: C:\gareth\src\pylib\chem\mmp\db\AID_2642_datatable_all.mmpdb
 assembly: 
 tags: 
 comments: ''
-updateBehavior: automatic
-maximumOutputColumns: !!int 10
-maximumOutputTables: !!int 1
-chemistryFunction: !!bool false
-tkid: 
-script: 
-outputFields: 
 ironPython: |
   ############################################
   #  Copyright 2020 Glysade LLC             #
@@ -165,4 +128,13 @@ ironPython: |
   layout.Add(tableVis.Visual)
   layout.EndSection()
   page.ApplyLayout(layout)
-
+updateBehavior: automatic
+maximumOutputColumns: !!int 10
+maximumOutputTables: !!int 1
+chemistryFunction: !!bool false
+tkid: 
+script: 
+outputFields: 
+allowedClients:
+- Analyst
+- WebPlayer
