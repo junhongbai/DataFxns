@@ -12,12 +12,12 @@ inputFields:
     label: Enter label for reactionQuery
     type: molecule
     molTypes:
-    - extension: .smi
-      contentType: chemical/x-smiles
-      name: SMILES (*.smi)
-    - extension: .mol
-      contentType: chemical/x-mdl-molfile
-      name: MOL file (*.mol)
+    - extension: .sma
+      contentType: chemical/x-smarts
+      name: SMARTS (*.sma)
+    - extension: .rxn
+      contentType: chemical/x-mdl-rxnfile
+      name: RXN file (*.rxn)
   request:
     id: reactionQuery
     dataType: string
@@ -61,7 +61,7 @@ inputFields:
     selectorType: column
 - control:
     id: propertyColumns
-    label: Properties
+    label: Property columns
     type: columnselect
     multi: !!bool true
     tooltip: Select columns containing properties
