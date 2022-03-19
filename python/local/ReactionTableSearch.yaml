@@ -75,7 +75,7 @@ inputFields:
       - float
       - long
   request:
-    id: propertyFields
+    id: propertyColumns
     dataType: list(string)
     selectorType: column
 assembly: 
