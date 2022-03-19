@@ -29,7 +29,7 @@ inputFields:
   request:
     id: mmpdbDatabasePath
     dataType: string
-    data: C:\gareth\src\pylib\chem\mmp\db\AID_2642_datatable_all.mmpdb
+    data: C:\db\mmp\AID_1341_datatable_all.mmpdb
 assembly: 
 tags: 
 comments: ''

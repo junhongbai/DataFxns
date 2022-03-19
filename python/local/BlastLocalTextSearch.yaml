@@ -92,6 +92,17 @@ inputFields:
       id: showMultipleAlignments
       dataType: boolean
       data: !!bool false
+  - control:
+      id: blastDbPath
+      label: Directory containing BLAST databases
+      type: text
+      validationRules:
+      - type: required
+        message: ''
+    request:
+      id: blastDbPath
+      dataType: string
+      data: C:\db\ncbi
 description: Performs a BLAST search of user selected databases using a query entered as text
 category: python-local.bio.sequence
 comments: ''

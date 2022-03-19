@@ -58,6 +58,17 @@ inputFields:
       id: domainSystem
       dataType: string
       data: imgt
+  - control:
+      id: igBlastDataDirectory
+      label: Directory containing IG BLAST distribution and data
+      type: text
+      validationRules:
+      - type: required
+        message: ''
+    request:
+      id: igBlastDataDirectory
+      dataType: string
+      data: C:\db\ncbi-igblast
 description: Analyze immunoglobulin (Ig) sequences using blastp
 category: python-local.bio.sequence
 comments: ''
