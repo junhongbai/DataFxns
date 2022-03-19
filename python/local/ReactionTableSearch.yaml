@@ -9,7 +9,7 @@ executorId: Glysade.CPythonDataFxn
 inputFields:
 - control:
     id: reactionQuery
-    label: Enter label for reactionQuery
+    label: Reaction query
     type: molecule
     molTypes:
     - extension: .sma
