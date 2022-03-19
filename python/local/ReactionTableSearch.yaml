@@ -21,7 +21,7 @@ inputFields:
   request:
     id: reactionQuery
     dataType: string
-    contentType: chemical/x-mdl-molfile
+    contentType: chemical/x-mdl-rxnfile
 - control:
     id: structureColumn
     label: Select structure column
@@ -46,11 +46,25 @@ inputFields:
     dataType: string
     selectorType: column
 - control:
-    id: propertyFields
+    id: idColumn
+    label: ID column
+    type: columnselect
+    multi: !!bool false
+    filters:
+      - dataType: int
+      - dataType: string
+    validationRules:
+    - type: required
+  request:
+    id: idColumn
+    dataType: string
+    selectorType: column
+- control:
+    id: propertyColumns
     label: Properties
     type: columnselect
     multi: !!bool true
-    tooltip: Select columns containing MMP Properties
+    tooltip: Select columns containing properties
     validationRules:
     - type: oneOrMoreRequired
       message: ''
