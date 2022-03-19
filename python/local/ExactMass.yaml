@@ -2,7 +2,7 @@ id: f8d5a8da-c543-4c39-bb90-6efeb57f0da3
 name: Exact Mass
 serviceName: ExactMass
 executorId: Glysade.CPythonDataFxn
-serviceUri: LOCAL:glysade.python
+serviceUri: glysade.python
 version: 0.0.1
 inputFields:
   - control:

@@ -2,7 +2,7 @@ id: 60f4da90-cf62-4d64-9fd6-f84a766da0e2
 name: Translate Sequences
 serviceName: TranslateSequences
 executorId: Glysade.CPythonDataFxn
-serviceUri: LOCAL:glysade.python
+serviceUri: glysade.python
 version: 0.0.1
 inputFields:
   - control:

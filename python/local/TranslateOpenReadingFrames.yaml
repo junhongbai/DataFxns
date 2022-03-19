@@ -2,7 +2,7 @@ id: 4e055974-73b3-442e-b5e4-d0668e9182e0
 name: Translate Sequences From All Open Reading Frames
 serviceName: TranslateOpenReadingFrames
 executorId: Glysade.CPythonDataFxn
-serviceUri: LOCAL:glysade.python
+serviceUri: glysade.python
 version: 0.0.1
 inputFields:
   - control:

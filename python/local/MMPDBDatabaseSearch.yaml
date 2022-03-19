@@ -4,7 +4,7 @@ description: Finds MMP transformations and associated property predictions for a
 category: python-local.chem.2D
 version: 1.0.0
 serviceName: MmpdbDatabaseSearch
-serviceUri: LOCAL:glysade.python
+serviceUri: glysade.python
 executorId: Glysade.CPythonDataFxn
 inputFields:
 - control:

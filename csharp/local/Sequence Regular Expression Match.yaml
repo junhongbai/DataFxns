@@ -2,7 +2,7 @@ id: 70470634-68a8-4950-9d88-348bc19e3a1d
 name: Sequence Regular Expression Match
 serviceName: SequenceRegularExpressionMatch
 executorId: Glysade.CSharpDataFxn
-serviceUri: LOCAL:glysade.csharp
+serviceUri: glysade.csharp
 version: 0.0.1
 inputFields:
   - control:

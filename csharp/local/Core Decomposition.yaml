@@ -4,7 +4,7 @@ description: Perform core decomposition analysis on a structure column
 category: csharp-local.chem.2D
 version: 0.0.1
 serviceName: CoreDecomposition
-serviceUri: LOCAL:glysade.csharp
+serviceUri: glysade.csharp
 executorId: Glysade.CSharpDataFxn
 inputFields:
 - control:

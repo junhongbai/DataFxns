@@ -2,7 +2,7 @@ id: 27b9cd82-6d18-4805-b3b6-b4e3446d665b
 name: R Group Decomposition
 serviceName: RGroupDecomposition
 executorId: Glysade.CSharpDataFxn
-serviceUri: LOCAL:glysade.csharp
+serviceUri: glysade.csharp
 maximumOutputColumns: 50
 version: 0.0.1
 inputFields:

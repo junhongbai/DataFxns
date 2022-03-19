@@ -2,7 +2,7 @@ id: 224d9521-4c9a-4c37-8e88-f29f467e5ee4
 name: Exact Mass Script
 serviceName: Script
 executorId: Glysade.CPythonDataFxn
-serviceUri: LOCAL:glysade.python
+serviceUri: glysade.python
 version: 0.0.1
 script: |
   from rdkit.Chem.Descriptors import ExactMolWt

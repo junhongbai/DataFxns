@@ -2,7 +2,7 @@ id: d8364cdb-87b2-4b20-b928-77960da7b4a5
 name: IG Blastp Local Text Search
 serviceName: IgBlastpLocalTextSearch
 executorId: Glysade.CPythonDataFxn
-serviceUri: LOCAL:glysade.python
+serviceUri: glysade.python
 version: 1.0.0
 inputFields:
   - control:

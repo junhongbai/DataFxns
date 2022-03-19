@@ -2,7 +2,7 @@ id: 2ae35da5-dcb6-4661-8749-d0781b4d278e
 name: Blast Web Search
 serviceName: BlastWebSearch
 executorId: Glysade.CPythonDataFxn
-serviceUri: LOCAL:glysade.python
+serviceUri: glysade.python
 version: 1.0.0
 inputFields:
   - control:

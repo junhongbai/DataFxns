@@ -2,7 +2,7 @@ id: 02f4e032-64bf-4e69-b429-fc03015faed8
 name: Blast Local Column Search
 serviceName: BlastLocalColumnSearch
 executorId: Glysade.CPythonDataFxn
-serviceUri: LOCAL:glysade.python
+serviceUri: glysade.python
 version: 1.0.0
 inputFields:
   - control:

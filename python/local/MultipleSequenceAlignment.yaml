@@ -2,7 +2,7 @@ id: b9657ce6-3399-47a2-a60d-4d4b30f5620c
 name: Multiple Sequence Alignment
 serviceName: MultipleSequenceAlignment
 executorId: Glysade.CPythonDataFxn
-serviceUri: LOCAL:glysade.python
+serviceUri: glysade.python
 version: 0.0.3
 inputFields:
   - control:

@@ -2,7 +2,7 @@ id: 9b85bc2d-2878-4b51-ac00-42514af35b05
 name: Pairwise Sequence Alignment
 serviceName: PairwiseSequenceAlignment
 executorId: Glysade.CPythonDataFxn
-serviceUri: LOCAL:glysade.python
+serviceUri: glysade.python
 version: 1.0.0
 inputFields:
   - control:

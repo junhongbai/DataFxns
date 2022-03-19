@@ -2,7 +2,7 @@ id: a94e9f2a-fbef-400a-80fa-dad7f5335321
 name: Translate Sequences Script
 serviceName: Script
 executorId: Glysade.CPythonDataFxn
-serviceUri: LOCAL:glysade.python
+serviceUri: glysade.python
 version: 0.0.1
 script: |
     from df.bio_helper import values_to_sequences, sequences_to_column

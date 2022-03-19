@@ -2,7 +2,7 @@ id: 889c0cad-0919-4620-b785-2f7c3b98dc96
 name: Antibody Numbering
 serviceName: AntibodyNumbering
 executorId: Glysade.CPythonDataFxn
-serviceUri: LOCAL:glysade.python
+serviceUri: glysade.python
 version: 0.0.2
 inputFields:
   - control:
