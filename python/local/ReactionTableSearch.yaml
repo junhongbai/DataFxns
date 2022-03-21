@@ -11,6 +11,7 @@ inputFields:
     id: reactionQuery
     label: Reaction query
     type: molecule
+    sketcherContentType: chemical/x-mdl-rxnfile
     molTypes:
     - extension: .sma
       contentType: chemical/x-smarts
