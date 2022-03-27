@@ -27,7 +27,7 @@ inputFields:
       pathType: file
       fileTypes: 
         - name: MMPDB database
-          extension: mmpdb
+          extension: .mmpdb
       validationRules:
         - type: required
           message: ''
