@@ -61,7 +61,9 @@ inputFields:
   - control:
       id: igBlastDataDirectory
       label: Directory containing IG BLAST distribution and data
-      type: text
+      type: file
+      mode: path
+      pathType: folder
       validationRules:
       - type: required
         message: ''

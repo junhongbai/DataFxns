@@ -7,29 +7,34 @@ serviceName: MmpdbDatabaseSearch
 serviceUri: glysade.python
 executorId: Glysade.CPythonDataFxn
 inputFields:
-- control:
-    id: queryData
-    label: Enter query structure
-    type: sketcher
-    validationRules:
-    - type: structure
-      message: Must enter a structure
-  request:
-    id: queryData
-    dataType: string
-    contentType: chemical/x-mdl-molfile
-    field: structure
-- control:
-    id: mmpdbDatabasePath
-    label: MMPDB database
-    type: text
-    validationRules:
-    - type: required
-      message: ''
-  request:
-    id: mmpdbDatabasePath
-    dataType: string
-    data: C:\db\mmp\AID_1341_datatable_all.mmpdb
+  - control:
+      id: queryData
+      label: Enter query structure
+      type: sketcher
+      validationRules:
+      - type: structure
+        message: Must enter a structure
+    request:
+      id: queryData
+      dataType: string
+      contentType: chemical/x-mdl-molfile
+      field: structure
+  - control:
+      id: mmpdbDatabasePath
+      label: MMPDB database
+      type: file
+      mode: path
+      pathType: file
+      fileTypes: 
+        - name: MMPDB database
+          extension: mmpdb
+      validationRules:
+        - type: required
+          message: ''
+    request:
+      id: mmpdbDatabasePath
+      dataType: string
+      data: C:\db\mmp\AID_1341_datatable_all.mmpdb
 assembly: 
 tags: 
 comments: ''

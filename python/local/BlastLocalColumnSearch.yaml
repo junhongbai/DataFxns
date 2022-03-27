@@ -41,8 +41,7 @@ inputFields:
     request:
       id: method
       dataType: string
-      data:
-        - BLASTP
+      data: BLASTP
   - control:
       id: databaseName
       label: Select database
@@ -91,7 +90,9 @@ inputFields:
   - control:
       id: blastDbPath
       label: Directory containing BLAST databases
-      type: text
+      type: file
+      mode: path
+      pathType: folder
       validationRules:
       - type: required
         message: ''
