@@ -100,7 +100,7 @@ inputFields:
       id: blastDbPath
       dataType: string
       data: C:\db\ncbi
-description: Performs a BLAST search of user selected databases using a query entered as text
+description: Performs a BLAST search of user selected databases using a queries from a sequence column
 category: python-local.bio.sequence
 comments: ""
 ironPython: |
