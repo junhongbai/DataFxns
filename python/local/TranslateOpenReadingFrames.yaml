@@ -21,6 +21,20 @@ inputFields:
       dataType: string
       selectorType: column
   - control:
+      id: idColumn
+      label: ID Column (optional)
+      type: columnselect
+      multi: !!bool false
+      filters:
+      - dataType:
+        - string
+        - int
+      tooltip: ID column is not required for Genbank encoded sequences
+    request:
+      id: idColumn
+      dataType: string
+      selectorType: column
+  - control:
       id: mimimumProteinLength
       label: Mimimum protein length
       type: text
