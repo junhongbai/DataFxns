@@ -1,0 +1,63 @@
+id: 0df8f3c7-f3b9-f98d-7285-c74791149f7f
+name: Deprotect Script
+description: Deprotects structures in an input column
+category: python-local.chem.2D
+version: 0.0.1
+serviceName: Script
+serviceUri: glysade.python
+executorId: Glysade.CPythonDataFxn
+inputFields:
+- control:
+    id: structureColumn
+    label: Select structure column
+    type: columnselect
+    filters:
+    - dataType: string
+      contentType:
+      - chemical/x-mdl-molfile
+      - chemical/x-mdl-molfile-v3000
+      - chemical/x-smiles
+      - chemical/x-daylight-smiles
+    - dataType: binary
+      contentType:
+      - chemical/x-mdl-molfile
+      - chemical/x-mdl-molfile-v3000
+    validationRules:
+    - type: required
+      message: Must select column of 2D structures
+  request:
+    id: structureColumn
+    dataType: string
+    selectorType: column
+assembly: 
+tags: 
+comments: ''
+ironPython: ''
+updateBehavior: automatic
+maximumOutputColumns: !!int 10
+maximumOutputTables: !!int 1
+chemistryFunction: !!bool false
+tkid: 
+script: |
+  from df.chem_helper import column_to_molecules, molecules_to_column
+  from df.data_transfer import DataFunctionRequest, DataFunctionResponse, DataType, ColumnData, \
+  string_input_field
+  from rdkit.Chem.rdDeprotect import Deprotect
+
+
+  def execute(request: DataFunctionRequest) -> DataFunctionResponse:
+                         column_id = string_input_field(request, 'structureColumn')
+                         input_column = request.inputColumns[column_id]
+                         input_molecules = column_to_molecules(input_column)
+                         deprotected_molecules = [None if m is None else Deprotect(m) for m in input_molecules]
+                         output_column = molecules_to_column(deprotected_molecules, f'Deprotected {input_column.name}', DataType.STRING)
+                         response = DataFunctionResponse(outputColumns=[output_column])
+                         return response
+outputFields:
+allowedClients:
+- Analyst
+- WebPlayer
+demoUrl: 
+limitBy: none
+creationTime: 2022-01-26T22:41:35.0000000-07:00
+lastModificationTime: 2022-03-19T09:12:29.0000000-06:00
