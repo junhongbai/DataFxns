@@ -50,7 +50,7 @@ script: |
                          input_column = request.inputColumns[column_id]
                          input_molecules = column_to_molecules(input_column)
                          deprotected_molecules = [None if m is None else Deprotect(m) for m in input_molecules]
-                         output_column = molecules_to_column(deprotected_molecules, f'Deprotected {input_column.name}', DataType.STRING)
+                         output_column = molecules_to_column(deprotected_molecules, f'Deprotected {input_column.name}', DataType.BINARY)
                          response = DataFunctionResponse(outputColumns=[output_column])
                          return response
 outputFields:
