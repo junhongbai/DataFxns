@@ -1,0 +1,540 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://glysade.com/datafxndef.schema.json",
+  "title": "Glysade Data Function Definition",
+  "description": "Schema for the Glysade data function YAML file",
+  "type": "object",
+  "definitions": {
+    "inputFieldRequest":{
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "dataType": {
+          "type": "string",
+          "enum": [
+            "boolean",
+            "string",
+            "binary",
+            "integer",
+            "float",
+            "list(string)",
+            "list(integer)",
+            "list(float)"
+          ]
+        },
+        "contentType": {
+          "type": "string"
+        },
+        "data": {
+          "type": [ "boolean", "integer", "double", "string", "array" ]
+        },
+        "selectorType": {
+          "type": "string",
+          "enum": [ "column", "table" ]
+        },
+        "field": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id", "dataType"
+      ]
+    },
+    "validationRule": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "numeric",
+            "oneOrMoreRequired",
+            "oneRequired",
+            "range",
+            "required",
+            "sequence",
+            "structure"
+          ]
+        },
+        "message": {
+          "type": "string",
+          "description": "Optional message to display if validation fails, overrides the default message"
+        },
+        "min": {
+          "type": "number",
+          "description": "Optional minimum value if validation rule type is 'range'"
+        },
+        "max": {
+          "type": "number",
+          "description": "Optional minimum value if validation rule type is 'range'"
+        }
+      },
+      "required": [
+        "type"
+      ]
+    },
+    "inputFieldControl": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "checkbox",
+            "columnselect",
+            "file",
+            "hidden",
+            "molecule",
+            "radiogroup",
+            "select",
+            "sketcher",
+            "text",
+            "textarea"
+          ]
+        },
+        "tooltip": {
+          "type": "string"
+        },
+        "validationRules": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/validationRule" }
+        }
+      },
+      "required": [
+        "id",
+        "type"
+      ]
+    },
+    "labelInputFieldControl": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/inputFieldControl"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "label": {
+              "type": "string",
+              "description": "Label that describes the field in the UI"
+            }
+          },
+          "required": ["label"]
+        }
+      ]
+    },
+    "checkBoxControl": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/labelInputFieldControl"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [ "checkbox" ]
+            }
+          }
+        }
+      ]
+    },
+    "columnSelectFilter": {
+      "type": "object",
+      "properties": {
+        "dataType": {
+          "oneOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": ["binary", "bool", "double", "decimal", "float", "int", "long", "string"]
+              }
+            },
+            {
+              "type": "string",
+              "enum": ["binary", "bool", "double", "decimal", "float", "int", "long", "string"]
+            }
+          ]
+        },
+        "contentType": {
+          "oneOf": [
+            { "type": "array", "items": "string" },
+            { "type": "string" }
+          ]
+        }
+      },
+      "required": ["dataType", "contentType"]
+    },
+    "columnSelectControl": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/labelInputFieldControl"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [ "columnselect" ]
+            },
+            "filters": {
+              "type": "array",
+              "items": { "$ref": "#/definitions/columnSelectFilter" },
+              "description": "Optional set of filters that can reduce the columns displayed in the select box by data type and/or content type"
+            },
+            "multi": {
+              "type": "boolean",
+              "description": "Optional boolean when true allows users to select multiple columns"
+            }
+          }
+        }
+      ]
+    },
+    "fileType": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Description of the file type"
+        },
+        "contentType": {
+          "type": "string",
+          "description": "Optional content type for the file type"
+        },
+        "extension": {
+          "type": "string",
+          "description": "Extension for the file type must of the format *.smi, *.txt etc."
+        }
+      },
+      "required": ["name", "extension"]
+    },
+    "fileControl": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/labelInputFieldControl"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [ "file" ]
+            },
+            "fileTypes": {
+              "type": "array",
+              "items": { "$ref": "#/definitions/fileType" },
+              "description": "Optional array of allowed file types"
+            },
+            "mode": {
+              "type": "string",
+              "enum": ["contents", "path"],
+              "description": "Optional mode. Setting mode to 'contents' means the contents of the file are provided to the data function, 'path' means the path to the file or folder is provided to the data function. If not defined the default is 'contents'."
+            },
+            "pathType": {
+              "type": "string",
+              "enum": ["file", "folder"],
+              "description": "Optional pathType. Setting pathType top 'file' means a path to a file must be chosen. 'folder' means the path to a directory or folder must be chosen. If not defined the default is 'file'"
+            }
+          }
+        }
+      ]
+    },
+    "hiddenControl": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/inputFieldControl"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [ "hidden" ]
+            }
+          }
+        }
+      ]
+    },
+    "moleculeControl": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/labelInputFieldControl"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [ "molecule" ]
+            },
+            "molTypes": {
+              "type": "array",
+              "items": { "$ref": "#/definitions/fileType" },
+              "description": "Optional array of allowed molecule types"
+            },
+            "tabs": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": ["sketcher", "paste", "file"]
+              }
+            },
+            "sketcherContentType": {
+              "type": "string",
+              "description": "Optional content type for molecule retrieved from the sketcher tab of the molecule control. If not defined, default is 'chemical/x-mdl-molfile'."
+            }
+          },
+          "required": ["molTypes"]
+        }
+      ]
+    },
+    "selectItem": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "description": "Text displayed to the user in the select/radio UI control"
+        },
+        "value": {
+          "type": ["string", "integer", "double" ],
+          "description": "Value for the selected item in the select/radio UI control"
+        }
+      },
+      "required": ["text", "value"]
+    },
+    "radioGroupControl": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/labelInputFieldControl"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [ "radiogroup" ]
+            },
+            "radios": {
+              "type": "array",
+              "items": { "$ref": "#/definitions/selectItem" }
+            }
+          },
+          "required": ["radios"]
+        }
+      ]
+    },
+    "selectControl": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/labelInputFieldControl"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [ "select" ]
+            },
+            "multi": {
+              "type": "boolean"
+            },
+            "options": {
+              "type": "array",
+              "items": { "$ref": "#/definitions/selectItem" }
+            }
+          },
+          "required": ["options"]
+        }
+      ]
+    },
+    "sketcherControl": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/labelInputFieldControl"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [ "sketcher" ]
+            }
+          }
+        }
+      ]
+    },
+    "textControl": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/labelInputFieldControl"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [ "text" ]
+            }
+          }
+        }
+      ]
+    },
+    "textAreaControl": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/labelInputFieldControl"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [ "textarea" ]
+            },
+            "height": {
+              "type": "integer"
+            }
+          }
+        }
+      ]
+    },
+    "inputField": {
+      "type": "object",
+      "properties": {
+        "control": {
+          "anyOf": [
+            { "$ref": "#/definitions/checkBoxControl" },
+            { "$ref": "#/definitions/columnSelectControl" },
+            { "$ref": "#/definitions/fileControl" },
+            { "$ref": "#/definitions/hiddenControl" },
+            { "$ref": "#/definitions/moleculeControl" },
+            { "$ref": "#/definitions/radioGroupControl" },
+            { "$ref": "#/definitions/selectControl" },
+            { "$ref": "#/definitions/sketcherControl" },
+            { "$ref": "#/definitions/textControl" },
+            { "$ref": "#/definitions/textAreaControl" }
+          ]
+        },
+        "request": {
+          "$ref": "#/definitions/inputFieldRequest"
+        }
+      },
+      "required": [ "control", "request" ]
+    }
+  },
+  "properties": {
+    "id": {
+      "description": "The unique identifier for a data function definition (should be an UUID)",
+      "type": "string"
+    },
+    "name": {
+      "description": "Human readable name for the data function",
+      "type": "string"
+    },
+    "description": {
+      "description": "Human readable description for the data function",
+      "type": "string"
+    },
+    "category": {
+      "description": "Dot separated list of strings used to create tree-like structure of data function definitions e.g chemistry.2D.structure",
+      "type": "string"
+    },
+    "serviceName": {
+      "description": "Unique service name for the data function, no spaces are allowed",
+      "type": "string"
+    },
+    "executorId": {
+      "description": "Type of executor used to execute the data function",
+      "type": "string",
+      "enum": [
+        "Glysade.CPythonDataFxn",
+        "Glysade.CSharpDataFxn",
+        "Glysade.PipelinePilotDataFxn",
+        "Glysade.KnimeDataFxn"
+      ]
+    },
+    "serviceUri": {
+      "description": "Service URI description",
+      "type": "string"
+    },
+    "version": {
+      "description": "Version number for the data function definition in the format major.minor.revision e.g. 1.2.0",
+      "type": "string"
+    },
+    "script": {
+      "description": "Optional Python script executed by data functions that have the executorId = Glysade.CPythonDataFxn",
+      "type": "string"
+    },
+    "ironPython": {
+      "description": "Optional IronPython script executed by the data function after execution used to configure Spotfire visuals",
+      "type": "string"
+    },
+    "allowedClients": {
+      "description": "Optional array defining whether the data function can execute on the 'Analyst' or 'WebPlayer' Spotfire environments. If not defined the default is both.",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["Analyst", "WebPlayer"]
+      }
+    },
+    "limitBy": {
+      "description": "Optional value defining the limit by behavior of the data function. If not defined the default is 'none'.",
+      "type": "string",
+      "enum": [
+        "none",
+        "filteredRows",
+        "markedRows",
+        "both"
+      ]
+    },
+    "maximumOutputColumns": {
+      "description": "Optional value defining the maximum number of columns generated by the data function. If not defined the default is 10.",
+      "type": "integer",
+      "default" : 10
+    },
+    "maximumOutputTables": {
+      "description": "Optional value defining the maximum number of data tables generated by the data function. If not defined the default is 1.",
+      "type": "number",
+      "default" : 1
+    },
+    "updateBehavior": {
+      "description": "Optional value defining whether the data function updates automatically when data table data changes or manually. If not defined, the deafult is 'automatic'.",
+      "type": "string",
+      "enum": [ "automatic", "manual" ]
+    },
+    "chemistryFunction": {
+      "description": "Optional boolean representing whether this data function definition replaces a legacy chemistry data function. If not defined the default is false.",
+      "type": "boolean"
+    },
+    "tkid": {
+      "description": "Optional string representing whether the ID of the chemistry toolkit used in the replacement of a legacy chemistry data function.",
+      "type": "string"
+    },
+    "assembly": {
+      "description": "Optional value representing the assembly where Glysade.CSharpDataFxn are run",
+      "type": "string"
+    },
+    "inputFields": {
+      "description": "Input fields definint expected data function input and UI",
+      "type": "array",
+      "items": { "$ref": "#/definitions/inputField" }
+    },
+    "tags": {
+      "type": "array"
+    }
+
+  },
+  "required": [
+    "id",
+    "name",
+    "description",
+    "category",
+    "serviceName",
+    "executorId",
+    "serviceUri",
+    "version"
+  ]
+}
