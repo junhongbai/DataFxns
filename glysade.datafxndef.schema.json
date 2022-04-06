@@ -5,7 +5,7 @@
   "description": "Schema for the Glysade data function YAML file",
   "type": "object",
   "definitions": {
-    "inputFieldRequest":{
+    "request":{
       "type": "object",
       "properties": {
         "id": {
@@ -74,7 +74,7 @@
         "type"
       ]
     },
-    "inputFieldControl": {
+    "control": {
       "type": "object",
       "properties": {
         "id": {
@@ -108,10 +108,10 @@
         "type"
       ]
     },
-    "labelInputFieldControl": {
+    "labelControl": {
       "allOf": [
         {
-          "$ref": "#/definitions/inputFieldControl"
+          "$ref": "#/definitions/control"
         },
         {
           "type": "object",
@@ -128,7 +128,7 @@
     "checkBoxControl": {
       "allOf": [
         {
-          "$ref": "#/definitions/labelInputFieldControl"
+          "$ref": "#/definitions/labelControl"
         },
         {
           "type": "object",
@@ -166,12 +166,12 @@
           ]
         }
       },
-      "required": ["dataType", "contentType"]
+      "required": ["dataType"]
     },
     "columnSelectControl": {
       "allOf": [
         {
-          "$ref": "#/definitions/labelInputFieldControl"
+          "$ref": "#/definitions/labelControl"
         },
         {
           "type": "object",
@@ -214,7 +214,7 @@
     "fileControl": {
       "allOf": [
         {
-          "$ref": "#/definitions/labelInputFieldControl"
+          "$ref": "#/definitions/labelControl"
         },
         {
           "type": "object",
@@ -245,7 +245,7 @@
     "hiddenControl": {
       "allOf": [
         {
-          "$ref": "#/definitions/inputFieldControl"
+          "$ref": "#/definitions/control"
         },
         {
           "type": "object",
@@ -261,7 +261,7 @@
     "moleculeControl": {
       "allOf": [
         {
-          "$ref": "#/definitions/labelInputFieldControl"
+          "$ref": "#/definitions/labelControl"
         },
         {
           "type": "object",
@@ -308,7 +308,7 @@
     "radioGroupControl": {
       "allOf": [
         {
-          "$ref": "#/definitions/labelInputFieldControl"
+          "$ref": "#/definitions/labelControl"
         },
         {
           "type": "object",
@@ -329,7 +329,7 @@
     "selectControl": {
       "allOf": [
         {
-          "$ref": "#/definitions/labelInputFieldControl"
+          "$ref": "#/definitions/labelControl"
         },
         {
           "type": "object",
@@ -353,7 +353,7 @@
     "sketcherControl": {
       "allOf": [
         {
-          "$ref": "#/definitions/labelInputFieldControl"
+          "$ref": "#/definitions/labelControl"
         },
         {
           "type": "object",
@@ -369,7 +369,7 @@
     "textControl": {
       "allOf": [
         {
-          "$ref": "#/definitions/labelInputFieldControl"
+          "$ref": "#/definitions/labelControl"
         },
         {
           "type": "object",
@@ -385,7 +385,7 @@
     "textAreaControl": {
       "allOf": [
         {
-          "$ref": "#/definitions/labelInputFieldControl"
+          "$ref": "#/definitions/labelControl"
         },
         {
           "type": "object",
@@ -419,10 +419,46 @@
           ]
         },
         "request": {
-          "$ref": "#/definitions/inputFieldRequest"
+          "$ref": "#/definitions/request"
         }
       },
       "required": [ "control", "request" ]
+    },
+    "outputField": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Optional output field name. If not defined the output field name will be taken from the source of the output field."
+        },
+        "id": {
+          "type": "string",
+          "description": "Column, table or input field request ID"
+        },
+        "source": {
+          "type": "string",
+          "enum": ["column", "table", "inputField"]
+        },
+        "type": {
+          "type": "string",
+          "enum": ["default", "molecule", "sequence", "filter"]
+        }
+      },
+      "required": [ "id", "source", "type" ]
+    },
+    "tag": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "description": "Text displayed in the tag"
+        },
+        "color": {
+          "type": "string",
+          "description": "Optional color for the tag"
+        }
+      },
+      "required": ["text"]
     }
   },
   "properties": {
@@ -518,14 +554,20 @@
       "type": "string"
     },
     "inputFields": {
-      "description": "Input fields definint expected data function input and UI",
       "type": "array",
-      "items": { "$ref": "#/definitions/inputField" }
+      "items": { "$ref": "#/definitions/inputField" },
+      "description": "Input fields defining expected data function input and UI"
+    },
+    "outputFields": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/outputField" },
+      "description": "Optional output field defining expected data function result UI"
     },
     "tags": {
-      "type": "array"
+      "type": "array",
+      "items": { "$ref": "#/definitions/tag" },
+      "description": "Colored tags that can be used to further categorize data function definitions"
     }
-
   },
   "required": [
     "id",
