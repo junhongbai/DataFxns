@@ -51,6 +51,7 @@ outputFields:
   - id: column1
     source: column
     type: filter
+    name: Output exact mass column
 description: Calculates exact mass for structures using Python code in data function definition
 category: python-local.chem.2D
 comments: ''
