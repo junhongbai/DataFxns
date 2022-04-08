@@ -33,7 +33,6 @@ inputFields:
         - type: required
           message: Must select something from 'Numbering scheme'
     request:
-      field: scheme
       id: scheme
       dataType: string
       data: kabat
@@ -41,7 +40,7 @@ description: Identifies antibody chain numbering and aligns chains
 category: python-remote.bio.sequence
 comments: ''
 ironPython: ''
-tags: 
+tags:
   - color : '#dddddd'
     text  : MAB
   - color : '#337abc'

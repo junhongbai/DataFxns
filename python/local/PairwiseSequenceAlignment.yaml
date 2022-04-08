@@ -45,7 +45,6 @@ inputFields:
         - type: required
           message: Must select something from 'Alignment method'
     request:
-      field: method
       id: method
       dataType: string
       data: NEEDLE

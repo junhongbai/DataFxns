@@ -35,7 +35,8 @@
           "enum": [ "column", "table" ]
         },
         "field": {
-          "type": "string"
+          "type": "string",
+          "enum": [ "structure", "atomSelection", "bondSelection" ]
         }
       },
       "required": [
@@ -419,7 +420,17 @@
           ]
         },
         "request": {
-          "$ref": "#/definitions/request"
+          "oneOf": [
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/request"
+              }
+            },
+            {
+              "$ref": "#/definitions/request"
+            }
+          ]
         }
       },
       "required": [ "control", "request" ]

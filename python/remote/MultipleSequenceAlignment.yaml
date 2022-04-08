@@ -33,7 +33,6 @@ inputFields:
         - type: required
           message: Must select something from 'Alignment method'
     request:
-      field: alignmentMethod
       id: alignmentMethod
       dataType: string
       data: CLUSTALO

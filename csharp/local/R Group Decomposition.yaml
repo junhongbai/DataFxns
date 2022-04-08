@@ -70,7 +70,7 @@ inputFields:
         - type: required
           message: Must select something from 'Output format'
     request:
-      field: outputFormat
+      field: structure
       id: outputFormat
       dataType: string
       data: chemical/x-mdl-molfile

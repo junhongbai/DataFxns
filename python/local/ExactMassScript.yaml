@@ -43,6 +43,14 @@ inputFields:
       id: structureColumn
       dataType: string
       selectorType: column
+outputFields:
+  - id: structureColumn
+    source: inputField
+    type: default
+    name: Structure column
+  - id: column1
+    source: column
+    type: filter
 description: Calculates exact mass for structures using Python code in data function definition
 category: python-local.chem.2D
 comments: ''
