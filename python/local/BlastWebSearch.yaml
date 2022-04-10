@@ -68,7 +68,7 @@ inputFields:
       id: showMultipleAlignments
       dataType: boolean
       data: !!bool false
-description: Pairwise sequence alignment service, aligning a set of sequences to a query sequence
+description: Blast sequence search against Entrez database
 category: python-local.bio.sequence
 comments: ""
 updateBehavior: manual
