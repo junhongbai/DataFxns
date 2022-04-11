@@ -3,7 +3,7 @@ name: Exact Mass Script
 serviceName: Script
 executorId: Glysade.CPythonDataFxn
 serviceUri: glysade.python
-version: 0.0.1
+version: 1.0.0
 script: |
   from rdkit.Chem.Descriptors import ExactMolWt
   from df.chem_helper import column_to_molecules
@@ -54,5 +54,6 @@ outputFields:
     name: Output exact mass column
 description: Calculates exact mass for structures using Python code in data function definition
 category: python-local.chem.2D
-comments: ''
+maximumOutputColumns: !!int 1
+maximumOutputTables: !!int 0
 ironPython: ''

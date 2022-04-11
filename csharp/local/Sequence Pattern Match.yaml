@@ -4,7 +4,7 @@ serviceName: PublisherCore.SequencePatternMatchDataFunction
 assembly: PublisherCore
 executorId: Glysade.CSharpDataFxn
 serviceUri: glysade.csharp
-version: 0.0.1
+version: 1.0.0
 inputFields:
   - control:
       id: sequenceColumn
@@ -42,5 +42,6 @@ inputFields:
 description: Create a set of boolean columns indicating the presence or absence of
   predefined regular expression patterns.
 category: csharp-local.bio.sequence
-comments: 
+maximumOutputColumns: !!int 10
+maximumOutputTables: !!int 0
 ironPython: ''

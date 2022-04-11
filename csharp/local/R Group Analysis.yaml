@@ -3,7 +3,7 @@ name: R Group Analysis
 serviceName: RGroupAnalysis
 executorId: Glysade.CSharpDataFxn
 serviceUri: glysade.csharp
-version: 0.0.1
+version: 1.0.0
 inputFields:
   - control:
       id: parentStructureColumn
@@ -80,7 +80,8 @@ inputFields:
       selectorType: column
 description: R Group Analysis Service
 category: csharp-local.chem.2D
-comments:
+maximumOutputColumns: !!int 0
+maximumOutputTables: !!int 1
 ironPython: |
   ############################################
   #  Copyright 2018, 2019, 2020 Glysade LLC  #

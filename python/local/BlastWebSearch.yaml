@@ -70,7 +70,8 @@ inputFields:
       data: !!bool false
 description: Blast sequence search against Entrez database
 category: python-local.bio.sequence
-comments: ""
+maximumOutputColumns: !!int 0
+maximumOutputTables: !!int 1
 updateBehavior: manual
 ironPython: |
   ############################################

@@ -3,7 +3,7 @@ name: Sequence Regular Expression Match
 serviceName: SequenceRegularExpressionMatch
 executorId: Glysade.CSharpDataFxn
 serviceUri: glysade.csharp
-version: 0.0.1
+version: 1.0.0
 inputFields:
   - control:
       id: sequenceColumn
@@ -41,5 +41,6 @@ inputFields:
       dataType: string
 description: Creates boolean columns indicating the presence or absence of input regular expressions in a sequence column.
 category: csharp-local.bio.sequence
-comments: 
+maximumOutputColumns: !!int 10
+maximumOutputTables: !!int 0
 ironPython: ''

@@ -4,7 +4,7 @@ serviceName: RGroupDecomposition
 executorId: Glysade.CSharpDataFxn
 serviceUri: glysade.csharp
 maximumOutputColumns: 50
-version: 0.0.1
+version: 1.0.0
 inputFields:
   - control:
       id: queryData
@@ -92,6 +92,7 @@ inputFields:
       data: ""
 description: Performs R group decomposition on the  structures in a data table column
 category: csharp-local.chem.2D
-comments: ''
 ironPython: ''
 chemistryFunction: true
+maximumOutputColumns: !!int 20
+maximumOutputTables: !!int 0

@@ -3,7 +3,7 @@ name: Translate Sequences From All Open Reading Frames
 serviceName: TranslateOpenReadingFrames
 executorId: Glysade.CPythonDataFxn
 serviceUri: glysade.python
-version: 0.0.1
+version: 1.0.0
 inputFields:
   - control:
       id: sequenceColumn
@@ -147,8 +147,9 @@ inputFields:
       data: Standard
 description: Translates DNA using all open reading frames
 category: python-local.bio.sequence
-comments: ''
 ironPython: ''
+maximumOutputColumns: !!int 0
+maximumOutputTables: !!int 1
 # to generate all codon table names
 # from Bio.Data import CodonTable
 # for k in CodonTable.ambiguous_generic_by_name:

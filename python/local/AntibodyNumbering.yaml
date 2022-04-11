@@ -3,7 +3,7 @@ name: Antibody Numbering
 serviceName: AntibodyNumbering
 executorId: Glysade.CPythonDataFxn
 serviceUri: glysade.python
-version: 0.0.2
+version: 1.0.0
 inputFields:
   - control:
       id: sequenceColumn
@@ -63,8 +63,9 @@ inputFields:
       data: kabat
 description: Identifies antibody chain numbering and aligns chains
 category: python-local.bio.sequence
-comments: ''
 ironPython: ''
+maximumOutputColumns: !!int 1
+maximumOutputTables: !!int 0
 tags:
   - color : '#dddddd'
     text  : MAB

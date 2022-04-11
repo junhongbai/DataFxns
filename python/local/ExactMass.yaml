@@ -3,7 +3,7 @@ name: Exact Mass
 serviceName: ExactMass
 executorId: Glysade.CPythonDataFxn
 serviceUri: glysade.python
-version: 0.0.1
+version: 1.0.0
 inputFields:
   - control:
       id: structureColumn
@@ -29,5 +29,6 @@ inputFields:
       selectorType: column
 description: Calculates exact mass for structures 
 category: python-local.chem.2D
-comments: ''
+maximumOutputColumns: !!int 1
+maximumOutputTables: !!int 0
 ironPython: ''

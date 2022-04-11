@@ -3,7 +3,7 @@ name: Identify Enzyme Restriction Sites
 serviceName: EnzymeRestriction
 executorId: Glysade.CPythonDataFxn
 serviceUri: glysade.python
-version: 0.0.1
+version: 1.0.0
 inputFields:
   - control:
       id: sequenceColumn
@@ -1995,7 +1995,8 @@ inputFields:
         - Common
 description: Performs restriction analysis using codes from REBASE
 category: python-local.bio.sequence
-comments: ''
+maximumOutputColumns: !!int 1
+maximumOutputTables: !!int 0
 ironPython: ''
 # to create options (except all and common)
 # from Bio.Restriction import *

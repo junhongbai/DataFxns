@@ -118,7 +118,6 @@ inputFields:
     data: C:\db\ncbi
 assembly: 
 tags: 
-comments: ''
 ironPython: |
   ############################################
   #  Copyright 2019 Glysade LLC             #
@@ -169,7 +168,7 @@ ironPython: |
   tableVis.SetActiveVisual()
   page.AutoConfigure()
 updateBehavior: automatic
-maximumOutputColumns: !!int 10
+maximumOutputColumns: !!int 0
 maximumOutputTables: !!int 1
 chemistryFunction: !!bool false
 tkid: 

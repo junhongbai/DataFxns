@@ -62,9 +62,8 @@ inputFields:
     selectorType: column
 assembly: 
 tags: 
-comments: ''
 updateBehavior: automatic
-maximumOutputColumns: !!int 10
+maximumOutputColumns: !!int 0
 maximumOutputTables: !!int 1
 chemistryFunction: !!bool false
 tkid: 

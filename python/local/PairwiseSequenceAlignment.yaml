@@ -50,5 +50,6 @@ inputFields:
       data: NEEDLE
 description: Pairwise sequence alignment service, aligning a set of sequences to a query sequence
 category: python-local.bio.sequence
-comments: ''
+maximumOutputColumns: !!int 4
+maximumOutputTables: !!int 0
 ironPython: ''

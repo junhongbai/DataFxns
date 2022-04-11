@@ -37,7 +37,6 @@ inputFields:
       data: C:\db\mmp\AID_1341_datatable_all.mmpdb
 assembly: 
 tags: 
-comments: ''
 ironPython: |
   ############################################
   #  Copyright 2020 Glysade LLC             #
@@ -134,7 +133,7 @@ ironPython: |
   layout.EndSection()
   page.ApplyLayout(layout)
 updateBehavior: automatic
-maximumOutputColumns: !!int 10
+maximumOutputColumns: !!int 0
 maximumOutputTables: !!int 1
 chemistryFunction: !!bool false
 tkid: 

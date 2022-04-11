@@ -3,7 +3,7 @@ name: Multiple Sequence Alignment
 serviceName: MultipleSequenceAlignment
 executorId: Glysade.CPythonDataFxn
 serviceUri: glysade.python
-version: 0.0.3
+version: 1.0.0
 inputFields:
   - control:
       id: sequenceColumn
@@ -38,7 +38,8 @@ inputFields:
       data: CLUSTALO
 description: Performs multiple sequence alignment using a variety of algorithms
 category: python-local.bio.sequence
-comments: ''
+maximumOutputColumns: !!int 3
+maximumOutputTables: !!int 0
 ironPython: |
     ############################################
     #  Copyright 2017, 2018, 2019 Glysade LLC  #

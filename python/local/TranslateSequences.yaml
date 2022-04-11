@@ -3,7 +3,7 @@ name: Translate Sequences
 serviceName: TranslateSequences
 executorId: Glysade.CPythonDataFxn
 serviceUri: glysade.python
-version: 0.0.1
+version: 1.0.0
 inputFields:
   - control:
       id: sequenceColumn
@@ -123,7 +123,8 @@ inputFields:
       data: Standard
 description: Translates DNA To Protein
 category: python-local.bio.sequence
-comments: ''
+maximumOutputColumns: !!int 1
+maximumOutputTables: !!int 0
 ironPython: ''
 # to generate all codon table names
 # from Bio.Data import CodonTable

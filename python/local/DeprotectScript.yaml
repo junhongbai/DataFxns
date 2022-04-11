@@ -2,7 +2,7 @@ id: 0df8f3c7-f3b9-f98d-7285-c74791149f7f
 name: Deprotect Script
 description: Deprotects structures in an input column
 category: python-local.chem.2D
-version: 0.0.1
+version: 1.0.0
 serviceName: Script
 serviceUri: glysade.python
 executorId: Glysade.CPythonDataFxn
@@ -31,11 +31,10 @@ inputFields:
     selectorType: column
 assembly: 
 tags: 
-comments: ''
 ironPython: ''
 updateBehavior: automatic
 maximumOutputColumns: !!int 10
-maximumOutputTables: !!int 1
+maximumOutputTables: !!int 0
 chemistryFunction: !!bool false
 tkid: 
 script: |
