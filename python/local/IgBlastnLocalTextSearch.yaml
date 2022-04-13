@@ -7,7 +7,7 @@ version: 1.0.0
 inputFields:
   - control:
       id: query
-      label: Enter query nucleotide acid sequence
+      label: Enter query nucleotide sequence
       type: textarea
       rows: !!int 5
       validationRules:
