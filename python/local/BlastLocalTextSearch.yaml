@@ -153,3 +153,6 @@ ironPython: |
 
   tableVis.SetActiveVisual()
   page.AutoConfigure()
+tags:
+  - color : '#337abc'
+    text  : sequence
