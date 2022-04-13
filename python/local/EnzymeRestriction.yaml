@@ -1997,6 +1997,11 @@ description: Performs restriction analysis using codes from REBASE
 category: python-local.bio.sequence
 maximumOutputColumns: !!int 1
 maximumOutputTables: !!int 0
+tags:
+- color: '#337abc'
+  text: sequence
+- color: '#1BE2D4'
+  text: nucleotide
 ironPython: ''
 # to create options (except all and common)
 # from Bio.Restriction import *
