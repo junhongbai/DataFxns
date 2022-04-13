@@ -75,4 +75,7 @@ description: Analyze immunoglobulin (Ig) sequences using blastp
 category: python-local.bio.sequence
 maximumOutputColumns: !!int 0
 maximumOutputTables: !!int 1
+tags:
+- color: '#337abc'
+  text: sequence
 ironPython: ''
