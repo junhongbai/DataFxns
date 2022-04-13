@@ -1,7 +1,7 @@
 id: 98445748-0e43-43cb-a5d1-5b0e7a2d8677
 name: MMPDB Table Column Search
 description: Finds MMP transformations and associated property predictions for a query structure
-category: python-local.chem.2D
+category: Chemistry
 version: 1.0.0
 serviceName: MmpdbColumnSearch
 serviceUri: glysade.python
@@ -61,7 +61,9 @@ inputFields:
     dataType: list(string)
     selectorType: column
 assembly: 
-tags: 
+tags:
+- color: '#50AF28'
+  text: chemistry 
 updateBehavior: automatic
 maximumOutputColumns: !!int 0
 maximumOutputTables: !!int 1
@@ -91,11 +93,7 @@ ironPython: |
   from Charts import ChartsModel
 
   #tableId pass in args
-  dataTable = None
-
-  tableGuid = Guid(tableId)
-  if Document.Data.Tables.Contains(tableGuid):
-    dataTable = Document.Data.Tables[tableGuid]
+  dataTable = ResultTables[0]
 
   if not dataTable:
       raise Exception('target table not found')
