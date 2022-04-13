@@ -97,10 +97,6 @@ ironPython: |
 
   dataTable = ResultTables[0]
 
-  for table in Document.Data.Tables:
-      if str(table.Id) == tableId:
-          dataTable = table
-
   if not dataTable:
       raise Exception('target table not found')
 
