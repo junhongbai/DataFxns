@@ -33,6 +33,8 @@ assembly:
 tags:
 - color: '#BE33FF'
   text: PipelinePilot
+- text: chemistry
+  color: '#50AF28'
 comments: ''
 ironPython: |-
   import sys

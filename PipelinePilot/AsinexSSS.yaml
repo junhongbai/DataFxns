@@ -37,9 +37,11 @@ inputFields:
     dataType: integer
     data: !!int 100
 assembly: 
-tags: 
-  - color : '#BE33FF'
-    text  : PipelinePilot
+tags:
+- color: '#BE33FF'
+  text: PipelinePilot
+- text: chemistry
+  color: '#50AF28'
 comments: ''
 updateBehavior: automatic
 maximumOutputColumns: !!int 0
