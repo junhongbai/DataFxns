@@ -141,6 +141,11 @@ description: Translates DNA To Protein
 category: python-local.bio.sequence
 maximumOutputColumns: !!int 1
 maximumOutputTables: !!int 0
+tags:
+- color: '#337abc'
+  text: sequence
+- color: '#1BE2D4'
+  text: nucleotide
 ironPython: ''
 # to generate all codon table names
 # from Bio.Data import CodonTable
