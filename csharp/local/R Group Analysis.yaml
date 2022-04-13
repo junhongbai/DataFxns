@@ -82,6 +82,9 @@ description: R Group Analysis Service
 category: Chemistry
 maximumOutputColumns: !!int 0
 maximumOutputTables: !!int 1
+tags:
+- text: chemistry
+  color: '#50AF28'
 ironPython: |
   ############################################
   #  Copyright 2018, 2019, 2020 Glysade LLC  #
