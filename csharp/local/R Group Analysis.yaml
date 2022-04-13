@@ -146,7 +146,7 @@ ironPython: |
   sarMapVis.ConfigureColumns()
   if resultTable.Columns.Contains('RHS'):
       sarMapVis.ValueGroup1Column = resultTable.Columns['RHS']
-  if resultTable.Columns.Contains('LHS RGroup'):
+  if resultTable.Columns.Contains('LHS'):
       sarMapVis.ValueGroup2Column = resultTable.Columns['LHS']
   sarMapVis.Marking = Document.Data.Markings.DefaultMarkingReference
   sarMapVis.Title = "R group replacements"
