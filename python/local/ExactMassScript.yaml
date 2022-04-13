@@ -1,5 +1,5 @@
 id: 224d9521-4c9a-4c37-8e88-f29f467e5ee4
-name: Exact Mass Script
+name: Exact Mass (Python)
 serviceName: Script
 executorId: Glysade.CPythonDataFxn
 serviceUri: glysade.python
@@ -53,7 +53,10 @@ outputFields:
     type: filter
     name: Output exact mass column
 description: Calculates exact mass for structures using Python code in data function definition
-category: python-local.chem.2D
+category: Chemistry
 maximumOutputColumns: !!int 1
 maximumOutputTables: !!int 0
+tags:
+- color: '#50AF28'
+  text: chemistry
 ironPython: ''
