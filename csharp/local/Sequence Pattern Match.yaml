@@ -6,39 +6,40 @@ executorId: Glysade.CSharpDataFxn
 serviceUri: glysade.csharp
 version: 1.0.0
 inputFields:
-  - control:
-      id: sequenceColumn
-      label: Select sequence column
-      type: columnselect
-      filters:
-        - dataType: string
-          contentType: chemical/x-sequence
-        - dataType: binary
-          contentType: chemical/x-genbank
-      validationRules:
-        - type: required
-    request:
-      id: sequenceColumn
-      dataType: integer
-      selectorType: column
-  - control:
-      id: patterns
-      label: Match patterns
-      type: select
-      multi: !!bool true
-      options:
-        - text: Cysteine
-          value: Cysteine,C
-        - text: Oxidation
-          value: Oxidation,M
-      validationRules:
-        - type: required
-    request:
-      id: patterns
-      dataType: list(string)
-      data:
-        - Cysteine,C
-        - Oxidation,M
+- control:
+    id: sequenceColumn
+    label: Select sequence column
+    type: columnselect
+    filters:
+    - dataType: string
+      contentType: chemical/x-sequence
+    - dataType: binary
+      contentType: chemical/x-genbank
+    validationRules:
+    - type: required
+    multi: !!bool false
+  request:
+    id: sequenceColumn
+    dataType: string
+    selectorType: column
+- control:
+    id: patterns
+    label: Match patterns
+    type: select
+    multi: !!bool true
+    options:
+    - text: Cysteine
+      value: Cysteine,C
+    - text: Oxidation
+      value: Oxidation,M
+    validationRules:
+    - type: required
+  request:
+    id: patterns
+    dataType: list(string)
+    data:
+    - Cysteine,C
+    - Oxidation,M
 description: Create a set of boolean columns indicating the presence or absence of
   predefined regular expression patterns.
 category: Biopolymer
