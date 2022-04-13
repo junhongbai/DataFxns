@@ -1,5 +1,5 @@
 id: 60f4da90-cf62-4d64-9fd6-f84a766da0e2
-name: Translate Sequences
+name: Translate Sequences (bidirectional)
 serviceName: TranslateSequences
 executorId: Glysade.CPythonDataFxn
 serviceUri: glysade.python
@@ -121,7 +121,7 @@ inputFields:
       id: codonTableName
       dataType: string
       data: Standard
-description: Translates DNA To Protein
+description: Translates DNA To protein, and protein to DNA
 category: python-local.bio.sequence
 maximumOutputColumns: !!int 1
 maximumOutputTables: !!int 0
