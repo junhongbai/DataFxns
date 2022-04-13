@@ -109,9 +109,9 @@ category: python-local.bio.sequence
 maximumOutputColumns: !!int 0
 maximumOutputTables: !!int 1
 ironPython: |
-  ############################################
-  #  Copyright 2019 Glysade LLC             #
-  ############################################
+  ####################################################
+  #  Copyright 2022 Glysade LLC, All Rights Reserved #
+  ####################################################
 
   import sys,clr
   from Spotfire.Dxp.Data import DataTable, DataManager
@@ -128,11 +128,7 @@ ironPython: |
   model_type = ChartsModel
 
   #tableId pass in args
-  dataTable = None
-
-  for table in Document.Data.Tables:
-      if str(table.Id) == tableId:
-          dataTable = table
+  dataTable = ResultTables[0]
 
   if not dataTable:
       raise Exception('target table not found')
