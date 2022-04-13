@@ -52,4 +52,7 @@ description: Pairwise sequence alignment service, aligning a set of sequences to
 category: python-local.bio.sequence
 maximumOutputColumns: !!int 4
 maximumOutputTables: !!int 0
+tags:
+  - color : '#337abc'
+    text  : sequence
 ironPython: ''
