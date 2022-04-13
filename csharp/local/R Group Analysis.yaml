@@ -86,9 +86,9 @@ tags:
 - text: chemistry
   color: '#50AF28'
 ironPython: |
-  ############################################
-  #  Copyright 2018, 2019, 2020 Glysade LLC  #
-  ############################################
+  #####################################################
+  #  Copyright 2022 Glysade LLC, All Rights Reserved  #
+  #####################################################
   import sys,clr
   from Spotfire.Dxp.Data import DataTable, DataManager, DataType
   from Spotfire.Dxp.Application import PanelTypeIdentifiers
@@ -144,10 +144,10 @@ ironPython: |
   sarMapVis.SetKeyValue('visualization','sar-map-visualization')
   sarMapVis.DataTable = resultTable
   sarMapVis.ConfigureColumns()
-  if resultTable.Columns.Contains('RHS RGroup'):
-      sarMapVis.ValueGroup1Column = resultTable.Columns['RHS RGroup']
+  if resultTable.Columns.Contains('RHS'):
+      sarMapVis.ValueGroup1Column = resultTable.Columns['RHS']
   if resultTable.Columns.Contains('LHS RGroup'):
-      sarMapVis.ValueGroup2Column = resultTable.Columns['LHS RGroup']
+      sarMapVis.ValueGroup2Column = resultTable.Columns['LHS']
   sarMapVis.Marking = Document.Data.Markings.DefaultMarkingReference
   sarMapVis.Title = "R group replacements"
 
@@ -159,7 +159,7 @@ ironPython: |
   #build YAxis expression
   yAxisExpr = ""
   for column in resultTable.Columns:
-      if column.Properties.DataType.IsNumeric and column.Name.StartsWith("d("):
+      if column.Properties.DataType.IsNumeric and column.Name.StartsWith('Delta '):
           if len(yAxisExpr) != 0:
               yAxisExpr += ", "
           yAxisExpr += "Sum(" + column.NameEscapedForExpression + ")"
