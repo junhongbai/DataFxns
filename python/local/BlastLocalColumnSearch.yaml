@@ -1,7 +1,7 @@
 id: b486f3d0-e778-ace1-51a2-63934f1910a5
 name: Blast Local Column Search
 description: Performs a BLAST search of user selected databases using a queries from a sequence column
-category: python-local.bio.sequence
+category: Biopolymer
 version: 1.0.0
 serviceName: BlastLocalColumnSearch
 serviceUri: glysade.python

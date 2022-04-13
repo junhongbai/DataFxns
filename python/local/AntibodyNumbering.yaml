@@ -62,7 +62,7 @@ inputFields:
       dataType: string
       data: kabat
 description: Identifies antibody chain numbering and aligns chains
-category: python-local.bio.sequence
+category: Biopolymer
 ironPython: ''
 maximumOutputColumns: !!int 1
 maximumOutputTables: !!int 0

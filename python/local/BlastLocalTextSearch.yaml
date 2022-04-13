@@ -105,7 +105,7 @@ inputFields:
       dataType: string
       data: C:\db\ncbi
 description: Performs a BLAST search of user selected databases using a query entered as text
-category: python-local.bio.sequence
+category: Biopolymer
 maximumOutputColumns: !!int 0
 maximumOutputTables: !!int 1
 ironPython: |

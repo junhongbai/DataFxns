@@ -146,7 +146,7 @@ inputFields:
       dataType: string
       data: Standard
 description: Translates DNA using all open reading frames
-category: python-local.bio.sequence
+category: Biopolymer
 ironPython: ''
 maximumOutputColumns: !!int 0
 maximumOutputTables: !!int 1

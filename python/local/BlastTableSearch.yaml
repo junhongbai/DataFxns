@@ -51,7 +51,7 @@ outputFields:
     source: column
     type: filter
 description: Performs a blast search of the sequences in the provided table using the provided query sequence
-category: python-local.bio.sequence
+category: Biopolymer
 maximumOutputColumns: !!int 10
 maximumOutputTables: !!int 0
 ironPython: ''

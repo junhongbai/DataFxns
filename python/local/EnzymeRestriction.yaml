@@ -1994,7 +1994,7 @@ inputFields:
       data:
         - Common
 description: Performs restriction analysis using codes from REBASE
-category: python-local.bio.sequence
+category: Biopolymer
 maximumOutputColumns: !!int 1
 maximumOutputTables: !!int 0
 tags:

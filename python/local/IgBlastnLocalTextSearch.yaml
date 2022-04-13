@@ -98,7 +98,7 @@ inputFields:
       dataType: string
       data: C:\db\ncbi-igblast
 description: Analyze immunoglobulin (Ig) sequences using blastn
-category: python-local.bio.sequence
+category: Biopolymer
 maximumOutputColumns: !!int 0
 maximumOutputTables: !!int 1
 tags:

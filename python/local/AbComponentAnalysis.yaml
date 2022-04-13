@@ -1,7 +1,7 @@
 id: f029862d-9c37-463b-e732-3561998d60a6
 name: Ab Component Analysis
 description: Creates analysis of property changes in one part of an antibody while other parts are held constant
-category: python-local.bio.sequence
+category: Biopolymer
 version: 1.0.0
 serviceName: AbComponentAnalysis
 serviceUri: glysade.python
