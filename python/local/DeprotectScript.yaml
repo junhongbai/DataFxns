@@ -1,7 +1,7 @@
 id: 0df8f3c7-f3b9-f98d-7285-c74791149f7f
-name: Deprotect Script
+name: Deprotect Structures
 description: Deprotects structures in an input column
-category: python-local.chem.2D
+category: Chemistry
 version: 1.0.0
 serviceName: Script
 serviceUri: glysade.python
@@ -71,5 +71,4 @@ allowedClients:
 - WebPlayer
 demoUrl: 
 limitBy: none
-creationTime: 2022-01-26T22:41:35.0000000-07:00
-lastModificationTime: 2022-03-19T09:12:29.0000000-06:00
+
