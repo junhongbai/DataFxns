@@ -150,6 +150,11 @@ category: python-local.bio.sequence
 ironPython: ''
 maximumOutputColumns: !!int 0
 maximumOutputTables: !!int 1
+tags:
+- color: '#337abc'
+  text: sequence
+- color: '#1BE2D4'
+  text: nucleotide
 # to generate all codon table names
 # from Bio.Data import CodonTable
 # for k in CodonTable.ambiguous_generic_by_name:
