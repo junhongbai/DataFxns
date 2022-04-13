@@ -1,7 +1,7 @@
 id: 8ac0fdad-e8d4-4e6a-b013-8ac8ff74a80a
 name: Core Decomposition Analysis
 description: Perform core decomposition analysis on a structure column
-category: csharp-local.chem.2D
+category: Chemistry
 version: 1.0.0
 serviceName: CoreDecomposition
 serviceUri: glysade.csharp
@@ -70,11 +70,7 @@ ironPython: |
   from Charts import ChartsModel
 
   #tableId pass in args
-  dataTable = None
-
-  for table in Document.Data.Tables:
-      if str(table.Id) == tableId:
-          dataTable = table
+  dataTable = InputTables[0]
 
   if not dataTable:
       raise Exception('target table not found')
