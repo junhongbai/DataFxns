@@ -1,6 +1,6 @@
 id: 0df8f3c7-f3b9-f98d-7285-c74791149f7f
 name: Deprotect Structures
-description: Deprotects structures in an input column
+description: Creates a new structure column with protecting groups removed
 category: Chemistry
 version: 1.0.0
 serviceName: Script
@@ -30,7 +30,9 @@ inputFields:
     dataType: string
     selectorType: column
 assembly: 
-tags: 
+tags:
+- color: '#50AF28'
+  text: chemistry
 ironPython: ''
 updateBehavior: automatic
 maximumOutputColumns: !!int 10
@@ -39,21 +41,21 @@ chemistryFunction: !!bool false
 tkid: 
 script: |
   from typing import Optional
-  
+
   from df.chem_helper import column_to_molecules, molecules_to_column
   from df.data_transfer import DataFunctionRequest, DataFunctionResponse, DataType, ColumnData, \
       string_input_field
   from rdkit import Chem
   from rdkit.Chem.rdDeprotect import Deprotect
   from rdkit.Chem.rdchem import Mol
-  
-  
+
+
   def compare_molecules(mol1: Optional[Mol], mol2: Optional[Mol]) -> bool:
       if not mol1 or not mol2:
           return False
       return Chem.MolToSmiles(mol1, True) != Chem.MolToSmiles(mol2, True)
-  
-  
+
+
   def execute(request: DataFunctionRequest) -> DataFunctionResponse:
       column_id = string_input_field(request, 'structureColumn')
       input_column = request.inputColumns[column_id]
@@ -64,8 +66,11 @@ script: |
       changed_column = ColumnData(name='Changed', dataType=DataType.BOOLEAN, values=changed)
       response = DataFunctionResponse(outputColumns=[output_molecules_column, changed_column])
       return response
-
 outputFields:
+- id: column2
+  name: Changed
+  source: column
+  type: filter
 allowedClients:
 - Analyst
 - WebPlayer
