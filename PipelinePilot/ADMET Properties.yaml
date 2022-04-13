@@ -1,7 +1,7 @@
 id: 0249d181-f9a8-4075-b6cc-7d900aca571e
 name: ADMET Properties
 description: Compute ADMET Properties using a Pipeline Pilot protocol
-category: PipelinePilot
+category: Chemistry
 version: 0.0.1
 serviceName: ADMET Properties
 serviceUri: http://localhost:8844

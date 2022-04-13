@@ -1,7 +1,7 @@
 id: c45375a0-7fff-4089-bb06-4d0d6eda5324
 name: Substructure Search Asinex
 description: Perform substructure search on the Asinex library
-category: PipelinePilot
+category: Chemistry
 version: 1.0.0
 serviceName: Asinex SSS
 serviceUri: http://localhost:8844
