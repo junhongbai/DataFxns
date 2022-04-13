@@ -1,5 +1,5 @@
 id: a94e9f2a-fbef-400a-80fa-dad7f5335321
-name: Translate Sequences Script
+name: Translate DNA to Protein
 serviceName: Script
 executorId: Glysade.CPythonDataFxn
 serviceUri: glysade.python
