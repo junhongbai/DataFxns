@@ -1,0 +1,79 @@
+id: 0249d181-f9a8-4075-b6cc-7d900aca571e
+name: ADMET Properties
+description: Compute ADMET Properties using a Pipeline Pilot protocol
+category: PipelinePilot
+version: 0.0.1
+serviceName: ADMET Properties
+serviceUri: http://localhost:8844
+executorId: Glysade.PipelinePilotDataFxn
+inputFields:
+- control:
+    id: structureColumn
+    label: Select structure column
+    type: columnselect
+    filters:
+    - dataType: string
+      contentType:
+      - chemical/x-mdl-molfile
+      - chemical/x-mdl-molfile-v3000
+      - chemical/x-smiles
+      - chemical/x-daylight-smiles
+    - dataType: binary
+      contentType:
+      - chemical/x-mdl-molfile
+      - chemical/x-mdl-molfile-v3000
+    validationRules:
+    - type: required
+      message: Must select column of 2D structures
+  request:
+    id: structureColumn
+    dataType: string
+    selectorType: column
+assembly: 
+tags:
+- color: '#BE33FF'
+  text: PipelinePilot
+comments: ''
+ironPython: |-
+  import sys
+  import clr
+
+  print('datafxn = ', DataFxn)
+  print('itables = ', InputTables.Length)
+  print('icolumns = ', InputColumns.Length)
+  print('rtables = ', ResultTables.Length)
+  print('rcolumns =', ResultColumns.Length)
+updateBehavior: automatic
+maximumOutputColumns: !!int 10
+maximumOutputTables: !!int 0
+chemistryFunction: !!bool false
+tkid: 
+script: ''
+outputFields:
+- id: column1
+  name: Column1
+  source: column
+  type: default
+- id: column2
+  name: Column2
+  source: column
+  type: default
+- id: column3
+  name: Column3
+  source: column
+  type: default
+- id: column4
+  name: Column4
+  source: column
+  type: default
+- id: column5
+  name: Column5
+  source: column
+  type: default
+allowedClients:
+- Analyst
+- WebPlayer
+demoUrl: 
+limitBy: none
+creationTime: 
+lastModificationTime: 

@@ -1,0 +1,54 @@
+id: c45375a0-7fff-4089-bb06-4d0d6eda5324
+name: Substructure Search Asinex
+description: Perform substructure search on the Asinex library
+category: PipelinePilot
+version: 1.0.0
+serviceName: Asinex SSS
+serviceUri: http://localhost:8844
+executorId: Glysade.PipelinePilotDataFxn
+inputFields:
+- control:
+    id: Query
+    label: Enter query structure
+    type: sketcher
+    validationRules:
+    - type: structure
+      message: Must enter a structure
+  request:
+    id: Query
+    dataType: string
+    contentType: chemical/x-mdl-molfile
+    field: structure
+- control:
+    id: MaxHits
+    label: Maximum number of hits
+    type: text
+    validationRules:
+    - type: required
+      message: ''
+    - type: range
+      message: ''
+      min: !!int 1
+      max: !!int 1001
+    - type: numeric
+      message: ''
+  request:
+    id: MaxHits
+    dataType: integer
+    data: !!int 100
+assembly: 
+tags: 
+  - color : '#BE33FF'
+    text  : PipelinePilot
+comments: ''
+ironPython: ''
+updateBehavior: automatic
+maximumOutputColumns: !!int 0
+maximumOutputTables: !!int 1
+chemistryFunction: !!bool false
+tkid: 
+script: 
+outputFields: 
+allowedClients:
+- Analyst
+- WebPlayer
