@@ -91,8 +91,11 @@ inputFields:
       dataType: string
       data: ""
 description: Performs R group decomposition on the  structures in a data table column
-category: csharp-local.chem.2D
+category: Chemistry
 ironPython: ''
 chemistryFunction: true
 maximumOutputColumns: !!int 20
 maximumOutputTables: !!int 0
+tags:
+- text: chemistry
+  color: '#50AF28'

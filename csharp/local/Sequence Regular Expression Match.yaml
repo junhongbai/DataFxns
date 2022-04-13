@@ -40,7 +40,10 @@ inputFields:
       id: expression
       dataType: string
 description: Creates boolean columns indicating the presence or absence of input regular expressions in a sequence column.
-category: csharp-local.bio.sequence
+category: Biopolymer
 maximumOutputColumns: !!int 10
 maximumOutputTables: !!int 0
 ironPython: ''
+tags:
+- color: '#337abc'
+  text: sequence

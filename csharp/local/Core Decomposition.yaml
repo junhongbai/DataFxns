@@ -47,7 +47,9 @@ inputFields:
     dataType: string
     data: Brics
 assembly: 
-tags: 
+tags:
+- text: chemistry
+  color: '#50AF28' 
 ironPython: |
   ############################################
   #  Copyright 2020 Glysade LLC             #

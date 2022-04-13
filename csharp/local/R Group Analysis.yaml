@@ -79,7 +79,7 @@ inputFields:
       dataType: list(string)
       selectorType: column
 description: R Group Analysis Service
-category: csharp-local.chem.2D
+category: Chemistry
 maximumOutputColumns: !!int 0
 maximumOutputTables: !!int 1
 ironPython: |
@@ -103,10 +103,7 @@ ironPython: |
   from Charts import ChartsModel
 
   #tableId passed in args
-  resultTable = None
-  for table in Document.Data.Tables:
-      if str(table.Id) == tableId:
-          resultTable = table
+  resultTable = ResultTables[0]
 
   if not resultTable:
       raise Exception('target table not found')

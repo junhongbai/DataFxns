@@ -41,7 +41,10 @@ inputFields:
         - Oxidation,M
 description: Create a set of boolean columns indicating the presence or absence of
   predefined regular expression patterns.
-category: csharp-local.bio.sequence
+category: Biopolymer
 maximumOutputColumns: !!int 10
 maximumOutputTables: !!int 0
 ironPython: ''
+tags:
+- color: '#337abc'
+  text: sequence
