@@ -117,7 +117,9 @@ inputFields:
     dataType: string
     data: C:\db\ncbi
 assembly: 
-tags: 
+tags:
+  - color : '#337abc'
+    text  : sequence 
 ironPython: |
   ############################################
   #  Copyright 2019 Glysade LLC             #
