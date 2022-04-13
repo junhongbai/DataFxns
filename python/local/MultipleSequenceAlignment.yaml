@@ -40,10 +40,13 @@ description: Performs multiple sequence alignment using a variety of algorithms
 category: python-local.bio.sequence
 maximumOutputColumns: !!int 3
 maximumOutputTables: !!int 0
+tags:
+  - color : '#337abc'
+    text  : sequence
 ironPython: |
-    ############################################
-    #  Copyright 2017, 2018, 2019 Glysade LLC  #
-    ############################################
+    #####################################################
+    #  Copyright 2022 Glysade LLC, All Rights Reserved  #
+    #####################################################
 
     import sys,clr
     import json
@@ -60,23 +63,14 @@ ironPython: |
     from Charts import ChartsModel
     model_type = ChartsModel
 
-    def getDataFxnTables(dataFxnId):
-        tables = []
-        for table in Document.Data.Tables:
-            for column in table.Columns:
-                if column.Properties.HasPropertyValue('ChemCharts.DFResult'):
-                    dfJson = json.loads(str(column.Properties.GetProperty('ChemCharts.DFResult')))
-                    if dfJson['dataFxnId'] == dataFxnId:
-                        tables.append(table)
-        return tables
-
     #dataFxnId passed as arg
-    dataTable = getDataFxnTables(dataFxnId)[0]
+    dataTable = InputTables[0]
 
     if not dataTable:
         raise Exception('target table not found')
 
     tableId = dataTable.Id.ToString()
+    dataFxnId = DataFxn.DataFunctionDefinition.Settings['Id']
 
     page = Document.Pages.AddNew('Clustal Results')
     panelsToHide = [PanelTypeIdentifiers.DataPanel, PanelTypeIdentifiers.DetailsOnDemandPanel]
