@@ -5,40 +5,41 @@ executorId: Glysade.CSharpDataFxn
 serviceUri: glysade.csharp
 version: 1.0.0
 inputFields:
-  - control:
-      id: sequenceColumn
-      label: Select sequence column
-      type: columnselect
-      filters:
-        - dataType: string
-          contentType: chemical/x-sequence
-        - dataType: binary
-          contentType: chemical/x-genbank
-      validationRules:
-        - type: required
-    request:
-      id: sequenceColumn
-      dataType: integer
-      selectorType: column
-  - control:
-      id: columnName
-      label: Column Name
-      type: text
-      validationRules:
-        - type: required
-    request:
-      id: columnName
-      dataType: string
-  - control:
-      id: expression
-      label: Regular Expression
-      type: text
-      rows: !!int 1
-      validationRules:
-        - type: required
-    request:
-      id: expression
-      dataType: string
+- control:
+    id: sequenceColumn
+    label: Select sequence column
+    type: columnselect
+    filters:
+    - dataType: string
+      contentType: chemical/x-sequence
+    - dataType: binary
+      contentType: chemical/x-genbank
+    validationRules:
+    - type: required
+    multi: !!bool false
+  request:
+    id: sequenceColumn
+    dataType: string
+    selectorType: column
+- control:
+    id: columnName
+    label: Column Name
+    type: text
+    validationRules:
+    - type: required
+  request:
+    id: columnName
+    dataType: string
+- control:
+    id: expression
+    label: Regular Expression
+    type: text
+    rows: !!int 1
+    validationRules:
+    - type: required
+  request:
+    id: expression
+    dataType: string
 description: Creates boolean columns indicating the presence or absence of input regular expressions in a sequence column.
 category: Biopolymer
 maximumOutputColumns: !!int 10
