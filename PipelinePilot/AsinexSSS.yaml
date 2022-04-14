@@ -42,6 +42,8 @@ tags:
   text: PipelinePilot
 - text: chemistry
   color: '#50AF28'
+- color: '#f7cb2d'
+  text: search
 comments: ''
 updateBehavior: automatic
 maximumOutputColumns: !!int 0

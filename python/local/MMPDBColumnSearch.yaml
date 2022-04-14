@@ -1,5 +1,5 @@
 id: 98445748-0e43-43cb-a5d1-5b0e7a2d8677
-name: MMPDB Table Column Search
+name: MMPDB Project Search
 description: Finds MMP transformations and associated property predictions for a query structure
 category: Chemistry
 version: 1.0.0
@@ -64,6 +64,8 @@ assembly:
 tags:
 - color: '#50AF28'
   text: chemistry 
+- color: '#f7cb2d'
+  text: search
 updateBehavior: automatic
 maximumOutputColumns: !!int 0
 maximumOutputTables: !!int 1

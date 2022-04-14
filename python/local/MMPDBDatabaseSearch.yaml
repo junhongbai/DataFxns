@@ -36,7 +36,9 @@ inputFields:
       dataType: string
       data: C:\db\mmp\AID_1341_datatable_all.mmpdb
 assembly: 
-tags: 
+tags:
+  - color : '#f7cb2d'
+    text  : search
 ironPython: |
   ############################################
   #  Copyright 2020 Glysade LLC             #

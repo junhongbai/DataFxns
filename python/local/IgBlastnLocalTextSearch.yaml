@@ -106,6 +106,8 @@ tags:
   text: sequence
 - color: '#1BE2D4'
   text: nucleotide
+- color: '#f7cb2d'
+  text: search   
 ironPython: |
   ####################################################
   #  Copyright 2022 Glysade LLC, All Rights Reserved #

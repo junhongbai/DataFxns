@@ -156,3 +156,5 @@ ironPython: |
 tags:
   - color : '#337abc'
     text  : sequence
+  - color : '#f7cb2d'
+    text  : search    

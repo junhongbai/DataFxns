@@ -78,6 +78,8 @@ maximumOutputTables: !!int 1
 tags:
 - color: '#337abc'
   text: sequence
+- color: '#f7cb2d'
+  text: search
 ironPython: |
   ####################################################
   #  Copyright 2022 Glysade LLC, All Rights Reserved #
