@@ -80,7 +80,10 @@ inputFields:
     dataType: list(string)
     selectorType: column
 assembly: 
-tags: 
+- text: chemistry
+  color: '#50AF28'
+- color: '#f7cb2d'
+  text: search
 ironPython: |
   ####################################################
   #  Copyright 2022 Glysade LLC, All Rights Reserved #
