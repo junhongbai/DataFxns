@@ -80,6 +80,7 @@ inputFields:
     dataType: list(string)
     selectorType: column
 assembly: 
+tags:
 - text: chemistry
   color: '#50AF28'
 - color: '#f7cb2d'
