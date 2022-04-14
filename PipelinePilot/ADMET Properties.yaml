@@ -35,6 +35,8 @@ tags:
   text: PipelinePilot
 - text: chemistry
   color: '#50AF28'
+- text: calcprop
+  color: '#a6ba0b'
 comments: ''
 ironPython: |-
   import sys
