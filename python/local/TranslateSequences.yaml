@@ -130,6 +130,8 @@ tags:
   text: sequence
 - color: '#1BE2D4'
   text: nucleotide
+- color: '#e2f062'
+  text: tform
 ironPython: ''
 # to generate all codon table names
 # from Bio.Data import CodonTable
