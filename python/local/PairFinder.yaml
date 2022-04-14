@@ -1,5 +1,5 @@
 id: d358bb04-ed05-4693-9a9b-5dd0da4fc8c3
-name: Pair Finder
+name: RXN Pair Finder
 description: Select reactant and product compound pairs in the input data table using a reaction. The reaction must include atom maps.
 category: python-local.chem.2D
 version: 1.0.0
