@@ -48,3 +48,5 @@ ironPython: ''
 tags:
 - color: '#337abc'
   text: sequence
+- color: '#f1f72d'
+  text: filter
