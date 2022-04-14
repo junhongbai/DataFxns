@@ -83,6 +83,8 @@ assembly:
 tags:
 - text: chemistry
   color: '#50AF28'
+- color: '#ba660b'
+  text: analyze
 ironPython: |
   ####################################################
   #  Copyright 2022 Glysade LLC, All Rights Reserved #
