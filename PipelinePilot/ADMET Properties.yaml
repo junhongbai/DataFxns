@@ -36,7 +36,7 @@ tags:
 - text: chemistry
   color: '#50AF28'
 - text: calcprop
-  color: '#dffc00'
+  color: '#c6fc00'
 comments: ''
 ironPython: |-
   import sys
