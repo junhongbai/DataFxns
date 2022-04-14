@@ -79,6 +79,8 @@ tags:
   text: MAB
 - color: '#337abc'
   text: sequence
+- color: '#ba660b'
+  text: analyze
 ironPython: |
   ################################################################
   #  Copyright 2022 Glysade LLC, All Rights Reserved             #
