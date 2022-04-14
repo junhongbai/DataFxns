@@ -34,4 +34,6 @@ maximumOutputTables: !!int 0
 tags:
 - color: '#50AF28'
   text: chemistry
+- text: calcprop
+  color: '#c6fc00'
 ironPython: ''
