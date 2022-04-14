@@ -120,6 +120,8 @@ assembly:
 tags:
   - color : '#337abc'
     text  : sequence 
+  - color : '#f28705'
+    text  : search
 ironPython: |
   ####################################################
   #  Copyright 2022 Glysade LLC, All Rights Reserved #
