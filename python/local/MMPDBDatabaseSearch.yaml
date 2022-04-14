@@ -37,6 +37,8 @@ inputFields:
       data: C:\db\mmp\AID_1341_datatable_all.mmpdb
 assembly: 
 tags:
+  - color: '#50AF28'
+    text: chemistry
   - color : '#f7cb2d'
     text  : search
 ironPython: |
