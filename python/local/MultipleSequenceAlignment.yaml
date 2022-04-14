@@ -43,7 +43,7 @@ maximumOutputTables: !!int 0
 tags:
   - color : '#337abc'
     text  : sequence
-  - color : '#f7d52d'
+  - color : '#f0c862'
     text  : tform    
 ironPython: |
     #####################################################
