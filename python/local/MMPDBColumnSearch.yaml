@@ -73,6 +73,7 @@ chemistryFunction: !!bool false
 tkid: 
 script: 
 outputFields: 
+testScriptPath: 'C:/Users/mstah/Desktop/tmp.py'
 ironPython: |
   ############################################
   #  Copyright 2020 Glysade LLC             #
