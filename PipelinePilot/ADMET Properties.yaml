@@ -38,15 +38,7 @@ tags:
 - text: calcprop
   color: '#c6fc00'
 comments: ''
-ironPython: |-
-  import sys
-  import clr
-
-  print('datafxn = ', DataFxn)
-  print('itables = ', InputTables.Length)
-  print('icolumns = ', InputColumns.Length)
-  print('rtables = ', ResultTables.Length)
-  print('rcolumns =', ResultColumns.Length)
+ironPython:
 updateBehavior: automatic
 maximumOutputColumns: !!int 10
 maximumOutputTables: !!int 0
