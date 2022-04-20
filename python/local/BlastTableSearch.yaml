@@ -24,11 +24,16 @@ inputFields:
   - control:
       id: query
       label: Query sequence
-      type: textarea
-      rows: !!int 5
+      type: sequencetextarea
       validationRules:
-        - type: sequence
         - type: required
+      fileTypes:
+        - name: Genbank
+          contentType: chemical/x-genbank
+        - name: FASTA
+          contentType: chemical/x-fasta
+        - name: Sequence string
+          contentType: chemical/x-sequence
     request:
       id: query
       dataType: string

@@ -7,12 +7,17 @@ version: 1.0.0
 inputFields:
   - control:
       id: query
-      label: Enter query amino acid sequence
-      type: textarea
-      rows: !!int 5
+      label: Query amino acid sequence
+      type: sequencetextarea
       validationRules:
-        - type: sequence
         - type: required
+      fileTypes:
+        - name: Genbank
+          contentType: chemical/x-genbank
+        - name: FASTA
+          contentType: chemical/x-fasta
+        - name: Sequence string
+          contentType: chemical/x-sequence
     request:
       id: query
       dataType: string
