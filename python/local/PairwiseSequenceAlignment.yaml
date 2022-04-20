@@ -7,12 +7,13 @@ version: 1.0.0
 inputFields:
   - control:
       id: query
-      label: Enter reference sequence
-      type: textarea
-      rows: !!int 5
+      label: Reference sequence
+      type: sequencetextarea
       validationRules:
-        - type: sequence
         - type: required
+      fileTypes:
+        - name: Sequence string
+          contentType: chemical/x-sequence
     request:
       id: query
       dataType: string
