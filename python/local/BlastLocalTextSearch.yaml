@@ -113,6 +113,8 @@ description: Performs a BLAST search of user selected databases using a query en
 category: Biopolymer
 maximumOutputColumns: !!int 0
 maximumOutputTables: !!int 1
+allowedClients:
+- Analyst
 ironPython: |
   ####################################################
   #  Copyright 2022 Glysade LLC, All Rights Reserved #

@@ -113,6 +113,8 @@ tags:
   text: nucleotide
 - color: '#f7cb2d'
   text: search   
+allowedClients:
+- Analyst
 ironPython: |
   ####################################################
   #  Copyright 2022 Glysade LLC, All Rights Reserved #

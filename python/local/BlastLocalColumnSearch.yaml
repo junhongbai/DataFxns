@@ -175,8 +175,5 @@ script:
 outputFields: 
 allowedClients:
 - Analyst
-- WebPlayer
 demoUrl: 
 limitBy: none
-creationTime: 2022-01-15T14:08:35.0000000-07:00
-lastModificationTime: 2022-03-28T21:56:19.0000000-06:00
