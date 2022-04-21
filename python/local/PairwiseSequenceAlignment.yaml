@@ -14,6 +14,12 @@ inputFields:
       fileTypes:
         - name: Sequence string
           contentType: chemical/x-sequence
+        - name: Genbank
+          contentType: chemical/x-genbank
+        - name: FASTA
+          contentType: chemical/x-fasta
+        - name: Sequence string
+          contentType: chemical/x-sequence
     request:
       id: query
       dataType: string
