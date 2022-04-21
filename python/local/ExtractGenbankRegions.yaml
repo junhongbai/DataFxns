@@ -1,0 +1,76 @@
+id: fa95f9fa-27b8-67cc-9b3d-583f7ee9c82f
+name: Extract Genbank Regions
+description: Extracts all regions from a column of genbank sequences into new columns
+category: Biopolymer
+version: 1.0.0
+serviceName: ExtractGenbankRegions
+serviceUri: glysade.python
+executorId: Glysade.CPythonDataFxn
+inputFields:
+- control:
+    id: sequenceColumn
+    label: Select sequence column
+    type: columnselect
+    filters:
+    - dataType:
+      - binary
+      contentType: chemical/x-genbank
+    validationRules:
+    - type: required
+  request:
+    id: sequenceColumn
+    dataType: string
+    selectorType: column
+- control:
+    id: featureKey
+    label: Feature key
+    type: text
+    tooltip: Regions with this feature key will be extracted into new columns
+    validationRules:
+    - type: required
+      message: ''
+  request:
+    id: featureKey
+    dataType: string
+    data: region
+- control:
+    id: featureQualifier
+    label: Feature qualifier
+    type: text
+    tooltip: The qualifier whose value will be used as the region name
+    validationRules:
+    - type: required
+      message: ''
+  request:
+    id: featureQualifier
+    dataType: string
+    data: region_name
+- control:
+    id: maximumNumberRegions
+    label: Maximum number of regions
+    type: text
+    validationRules:
+    - type: required
+      message: ''
+    - type: numeric
+      message: ''
+    - type: range
+      message: ''
+      max: !!int 100
+  request:
+    id: maximumNumberRegions
+    dataType: integer
+    data: !!int 25
+tags:
+- color: '#337abc'
+  text: sequence
+- color: '#e2f062'
+  text: tform
+updateBehavior: automatic
+maximumOutputColumns: !!int 100
+maximumOutputTables: !!int 0
+chemistryFunction: !!bool false
+allowedClients:
+- Analyst
+- WebPlayer
+limitBy: none
