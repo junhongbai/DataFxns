@@ -75,6 +75,22 @@
         "type"
       ]
     },
+    "sequenceTextAreaFileType": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Displayed text for sequence text area file type",
+          "enum": ["Genbank", "FASTA", "Sequence string"]
+        },
+        "contentType": {
+          "type": "string",
+          "description": "Content type for sequence text area file type",
+          "enum": ["chemical/x-genbank", "chemical/x-fasta", "chemical/x-sequence"]
+        }
+      },
+      "required": ["name", "contentType"]
+    },
     "control": {
       "type": "object",
       "properties": {
@@ -91,6 +107,7 @@
             "molecule",
             "radiogroup",
             "select",
+            "sequencetextarea",
             "sketcher",
             "text",
             "textarea"
@@ -351,6 +368,32 @@
         }
       ]
     },
+    "sequenceTextAreaControl": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/labelControl"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [ "sequencetextarea" ]
+            },
+            "height": {
+              "type": "integer"
+            },
+            "fileTypes": {
+              "type": "array",
+              "items": { "$ref": "#/definitions/sequenceTextAreaFileType" },
+              "description": "Allowed sequence file formats. The contentType in the request should be set to one of the contentTypes defined in this list.",
+              "minItems": 1
+            }
+          },
+          "required": ["fileTypes"]
+        }
+      ]
+    },
     "sketcherControl": {
       "allOf": [
         {
@@ -361,7 +404,7 @@
           "properties": {
             "type": {
               "type": "string",
-              "enum": [ "sketcher" ]
+              "enum": [ "sketcher"]
             }
           }
         }
@@ -414,6 +457,7 @@
             { "$ref": "#/definitions/moleculeControl" },
             { "$ref": "#/definitions/radioGroupControl" },
             { "$ref": "#/definitions/selectControl" },
+            { "$ref": "#/definitions/sequenceTextAreaControl" },
             { "$ref": "#/definitions/sketcherControl" },
             { "$ref": "#/definitions/textControl" },
             { "$ref": "#/definitions/textAreaControl" }
