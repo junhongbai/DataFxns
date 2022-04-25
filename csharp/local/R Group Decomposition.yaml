@@ -93,7 +93,7 @@ description: Performs R group decomposition on the  structures in a data table c
 category: Chemistry
 ironPython: ''
 chemistryFunction: true
-maximumOutputColumns: !!int 20
+maximumOutputColumns: !!int 50
 maximumOutputTables: !!int 0
 tags:
 - text: chemistry
