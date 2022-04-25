@@ -3,7 +3,6 @@ name: R Group Decomposition
 serviceName: RGroupDecomposition
 executorId: Glysade.CSharpDataFxn
 serviceUri: glysade.csharp
-maximumOutputColumns: 50
 version: 1.0.0
 inputFields:
   - control:

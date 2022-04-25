@@ -54,7 +54,6 @@
             "oneRequired",
             "range",
             "required",
-            "sequence",
             "structure"
           ]
         },
@@ -569,7 +568,9 @@
       "items": {
         "type": "string",
         "enum": ["Analyst", "WebPlayer"]
-      }
+      },
+      "minItems": 1,
+      "maxItems": 2
     },
     "limitBy": {
       "description": "Optional value defining the limit by behavior of the data function. If not defined the default is 'none'.",
@@ -592,7 +593,7 @@
       "default" : 1
     },
     "updateBehavior": {
-      "description": "Optional value defining whether the data function updates automatically when data table data changes or manually. If not defined, the deafult is 'automatic'.",
+      "description": "Optional value defining whether the data function updates automatically when data table data changes or manually. If not defined, the default is 'automatic'.",
       "type": "string",
       "enum": [ "automatic", "manual" ]
     },
@@ -622,6 +623,10 @@
       "type": "array",
       "items": { "$ref": "#/definitions/tag" },
       "description": "Colored tags that can be used to further categorize data function definitions"
+    },
+    "demoUrl": {
+      "description": "Optional URL for a demo video for the data function",
+      "type": "string"
     }
   },
   "required": [
@@ -632,6 +637,7 @@
     "serviceName",
     "executorId",
     "serviceUri",
-    "version"
+    "version",
+    "inputFields"
   ]
 }

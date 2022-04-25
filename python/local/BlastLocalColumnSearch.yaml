@@ -116,10 +116,9 @@ inputFields:
     id: blastDbPath
     dataType: string
     data: C:\db\ncbi
-assembly: 
 tags:
   - color : '#337abc'
-    text  : sequence 
+    text  : sequence
   - color : '#f7cb2d'
     text  : search
 ironPython: |
@@ -170,10 +169,6 @@ updateBehavior: automatic
 maximumOutputColumns: !!int 0
 maximumOutputTables: !!int 1
 chemistryFunction: !!bool false
-tkid: 
-script: 
-outputFields: 
 allowedClients:
 - Analyst
-demoUrl: 
 limitBy: none

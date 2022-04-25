@@ -57,7 +57,6 @@ inputFields:
         - type: required
           message: Must select something from 'CDR definition'
     request:
-      field: cdrDefinition
       id: cdrDefinition
       dataType: string
       data: kabat
@@ -72,4 +71,4 @@ tags:
   - color : '#337abc'
     text  : sequence
   - color : '#e2f062'
-    text  : tform    
+    text  : tform

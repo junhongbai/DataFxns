@@ -59,9 +59,8 @@ description: Performs a blast search of the sequences in the provided table usin
 category: Biopolymer
 maximumOutputColumns: !!int 10
 maximumOutputTables: !!int 0
-ironPython: ''
 tags:
   - color : '#337abc'
     text  : sequence
   - color : '#f7cb2d'
-    text  : search    
+    text  : search

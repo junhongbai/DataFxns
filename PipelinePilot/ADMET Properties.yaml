@@ -29,7 +29,6 @@ inputFields:
     id: structureColumn
     dataType: string
     selectorType: column
-assembly: 
 tags:
 - color: '#BE33FF'
   text: PipelinePilot
@@ -37,14 +36,10 @@ tags:
   color: '#50AF28'
 - text: calcprop
   color: '#c6fc00'
-comments: ''
-ironPython:
 updateBehavior: automatic
 maximumOutputColumns: !!int 10
 maximumOutputTables: !!int 0
 chemistryFunction: !!bool false
-tkid: 
-script: ''
 outputFields:
 - id: column1
   name: Column1
@@ -69,5 +64,4 @@ outputFields:
 allowedClients:
 - Analyst
 - WebPlayer
-demoUrl: 
 limitBy: none

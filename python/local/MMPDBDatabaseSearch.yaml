@@ -25,7 +25,7 @@ inputFields:
       type: file
       mode: path
       pathType: file
-      fileTypes: 
+      fileTypes:
         - name: MMPDB database
           extension: .mmpdb
       validationRules:
@@ -35,7 +35,6 @@ inputFields:
       id: mmpdbDatabasePath
       dataType: string
       data: C:\db\mmp\AID_1341_datatable_all.mmpdb
-assembly: 
 tags:
   - color: '#50AF28'
     text: chemistry
@@ -136,8 +135,5 @@ updateBehavior: automatic
 maximumOutputColumns: !!int 0
 maximumOutputTables: !!int 1
 chemistryFunction: !!bool false
-tkid: 
-script: 
-outputFields: 
 allowedClients:
 - Analyst

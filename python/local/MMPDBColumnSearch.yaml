@@ -60,19 +60,15 @@ inputFields:
     id: propertyFields
     dataType: list(string)
     selectorType: column
-assembly: 
 tags:
 - color: '#50AF28'
-  text: chemistry 
+  text: chemistry
 - color: '#f7cb2d'
   text: search
 updateBehavior: automatic
 maximumOutputColumns: !!int 0
 maximumOutputTables: !!int 1
 chemistryFunction: !!bool false
-tkid: 
-script: 
-outputFields: 
 ironPython: |
     ####################################################
     #  Copyright 2022 Glysade LLC, All Rights Reserved #

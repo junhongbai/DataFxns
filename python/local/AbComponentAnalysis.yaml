@@ -73,7 +73,6 @@ inputFields:
     id: gapMismatch
     dataType: float
     data: !!int -1
-assembly: 
 tags:
 - color: '#dddddd'
   text: MAB
@@ -132,11 +131,7 @@ updateBehavior: automatic
 maximumOutputColumns: !!int 0
 maximumOutputTables: !!int 1
 chemistryFunction: !!bool false
-tkid: 
-script: 
-outputFields: 
 allowedClients:
 - Analyst
 - WebPlayer
-demoUrl: 
 limitBy: none
