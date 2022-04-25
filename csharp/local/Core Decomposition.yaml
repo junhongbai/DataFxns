@@ -46,7 +46,6 @@ inputFields:
     id: method
     dataType: string
     data: Brics
-assembly: 
 tags:
 - text: chemistry
   color: '#50AF28'
@@ -106,6 +105,3 @@ updateBehavior: manual
 maximumOutputColumns: !!int 1
 maximumOutputTables: !!int 0
 chemistryFunction: !!bool false
-tkid: 
-script: 
-outputFields: 

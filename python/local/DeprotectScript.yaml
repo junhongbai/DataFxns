@@ -29,7 +29,6 @@ inputFields:
     id: structureColumn
     dataType: string
     selectorType: column
-assembly: 
 tags:
 - color: '#50AF28'
   text: chemistry
@@ -40,7 +39,6 @@ updateBehavior: automatic
 maximumOutputColumns: !!int 10
 maximumOutputTables: !!int 0
 chemistryFunction: !!bool false
-tkid: 
 script: |
   from typing import Optional
 
@@ -76,6 +74,5 @@ outputFields:
 allowedClients:
 - Analyst
 - WebPlayer
-demoUrl: 
 limitBy: none
 
