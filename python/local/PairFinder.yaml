@@ -1,6 +1,6 @@
 id: d358bb04-ed05-4693-9a9b-5dd0da4fc8c3
-name: RXN Pair Finder
-description: Select reactant and product compound pairs in the input data table using a reaction. The reaction must include atom maps.
+name: Reaction Matched Pairs
+description: Finds reactant and product pairs in the input data table using a reaction. The reaction must include atom maps.
 category: Chemistry
 version: 1.0.0
 serviceName: ReactionTableSearch
