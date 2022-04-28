@@ -67,12 +67,19 @@ script: |
       response = DataFunctionResponse(outputColumns=[output_molecules_column, changed_column])
       return response
 outputFields:
+- id: structureColumn
+  name: Input structure column
+  source: inputField
+  type: default
+- id: column1
+  name: Output deprotected structure column
+  source: column
+  type: default
 - id: column2
-  name: Changed
+  name: Output changed column
   source: column
   type: filter
 allowedClients:
 - Analyst
 - WebPlayer
 limitBy: none
-
