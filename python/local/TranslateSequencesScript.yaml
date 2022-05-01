@@ -5,14 +5,14 @@ executorId: Glysade.CPythonDataFxn
 serviceUri: glysade.python
 version: 1.0.0
 script: |
-    from df.bio_helper import values_to_sequences, sequences_to_column
-    from df.data_transfer import DataFunction, DataFunctionRequest, DataFunctionResponse, string_input_field
+    from df.bio_helper import column_to_sequences, sequences_to_column
+    from df.data_transfer import DataFunctionRequest, DataFunctionResponse, string_input_field
 
 
     def execute(request: DataFunctionRequest) -> DataFunctionResponse:
         column_id = string_input_field(request, 'sequenceColumn')
         input_column = request.inputColumns[column_id]
-        input_sequences = values_to_sequences(input_column)
+        input_sequences = column_to_sequences(input_column)
         codon_table_name = string_input_field(request, 'codonTableName', 'Standard')
         output_sequences = [None if s is None else s.translate(codon_table_name) for s in input_sequences]
         output_column = sequences_to_column(output_sequences, f'Translated {input_column.name}', genbank_output=False)
