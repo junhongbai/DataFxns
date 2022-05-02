@@ -73,7 +73,7 @@ inputFields:
       id: showMultipleAlignments
       dataType: boolean
       data: !!bool false
-description: Blast sequence search against Entrez database
+description: Perform a remote Blast sequence search against an Entrez database
 category: Biopolymer
 maximumOutputColumns: !!int 0
 maximumOutputTables: !!int 1
