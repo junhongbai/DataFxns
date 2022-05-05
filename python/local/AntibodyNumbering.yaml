@@ -65,6 +65,7 @@ category: Biopolymer
 ironPython: ''
 maximumOutputColumns: !!int 1
 maximumOutputTables: !!int 0
+demoUrl: http://www.google.com
 tags:
   - color : '#dddddd'
     text  : MAB
