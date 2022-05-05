@@ -1,6 +1,6 @@
 id: fa95f9fa-27b8-67cc-9b3d-583f7ee9c82f
 name: Extract Genbank Regions
-description: Extracts all regions from a column of genbank sequences into new columns
+description: Extracts all regions matching a feature key and qualifier from a column of genbank sequences into new columns
 category: Biopolymer
 version: 1.0.0
 serviceName: ExtractGenbankRegions
