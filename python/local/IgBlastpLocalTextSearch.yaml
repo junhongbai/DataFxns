@@ -76,7 +76,7 @@ inputFields:
       id: igBlastDataDirectory
       dataType: string
       data: C:\db\ncbi-igblast
-description: Analyze immunoglobulin (Ig) sequences using blastp
+description: Analyze immunoglobulin (Ig) sequences using Igblastp
 category: Biopolymer
 maximumOutputColumns: !!int 0
 maximumOutputTables: !!int 1
