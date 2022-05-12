@@ -40,11 +40,12 @@ description: Performs multiple sequence alignment using a variety of algorithms
 category: Biopolymer
 maximumOutputColumns: !!int 3
 maximumOutputTables: !!int 0
+demoUrl: https://youtu.be/rKS5HO36bvc
 tags:
   - color : '#337abc'
     text  : sequence
   - color : '#e2f062'
-    text  : tform    
+    text  : tform
 ironPython: |
     #####################################################
     #  Copyright 2022 Glysade LLC, All Rights Reserved  #
