@@ -163,3 +163,4 @@ chemistryFunction: !!bool false
 allowedClients:
 - Analyst
 - WebPlayer
+demoUrl: https://youtu.be/FbO0NRBNY20
