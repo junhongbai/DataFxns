@@ -7,7 +7,7 @@ version: 1.0.0
 script: |
   from rdkit.Chem.Descriptors import ExactMolWt
   from df.chem_helper import column_to_molecules
-  from df.data_transfer import column_to_sequences DataFunctionRequest, DataFunctionResponse, DataType, ColumnData, \
+  from df.data_transfer import DataFunctionRequest, DataFunctionResponse, DataType, ColumnData, \
       string_input_field
 
 
