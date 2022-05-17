@@ -57,6 +57,7 @@ description: Pairwise sequence alignment service, aligning a set of sequences to
 category: Biopolymer
 maximumOutputColumns: !!int 4
 maximumOutputTables: !!int 0
+demoUrl: https://youtu.be/TQQ0YY2QmJY
 tags:
   - color : '#337abc'
     text  : sequence
