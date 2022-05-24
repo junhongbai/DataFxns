@@ -1,0 +1,108 @@
+id: 91735f2c-083c-a1ea-65eb-defe328e5788
+name: Near Neighbors Free Wilson Transition Search
+description: 'Look for real compounds that have virtual near neighbors.  The compound can be constrained to an activity range.'
+category: Chemistry
+version: 1.0.0
+serviceName: NearNeighborsCategorySearch
+serviceUri: glysade.python
+executorId: Glysade.CPythonDataFxn
+inputFields:
+- control:
+    id: nearNeighborsColumn
+    label: Near neighbors column
+    type: columnselect
+    multi: !!bool false
+    validationRules:
+    - type: required
+      message: ''
+    filters:
+    - dataType: string
+      contentType: chemical/x-near-neighbors
+  request:
+    id: nearNeighborsColumn
+    dataType: string
+    selectorType: column
+- control:
+    id: categoryColumn
+    label: Real/virtual column
+    type: columnselect
+    multi: !!bool false
+    validationRules:
+    - type: required
+      message: ''
+    filters:
+    - dataType:
+      - string
+      - int
+      - long
+      contentType: []
+  request:
+    id: categoryColumn
+    dataType: string
+    selectorType: column
+- control:
+    id: experimentalActivityColumn
+    label: Experimental activity column
+    type: columnselect
+    multi: !!bool false
+    filters:
+    - dataType:
+      - double
+      - float
+      contentType: []
+    validationRules:
+    - type: required
+      message: ''
+  request:
+    id: experimentalActivityColumn
+    dataType: string
+    selectorType: column
+- control:
+    id: predictedActivityColumn
+    label: Predicted activity column
+    type: columnselect
+    multi: !!bool false
+    validationRules:
+    - type: required
+      message: ''
+    filters:
+    - dataType:
+      - double
+      - float
+      contentType: []
+  request:
+    id: predictedActivityColumn
+    dataType: string
+    selectorType: column
+- control:
+    id: minActivity
+    label: Minimum activity
+    type: text
+    validationRules:
+    - type: numeric
+      message: ''
+  request:
+    id: minActivity
+    dataType: float
+- control:
+    id: maxActivity
+    label: Maximum activity
+    type: text
+    validationRules:
+    - type: numeric
+      message: ''
+  request:
+    id: maxActivity
+    dataType: float
+tags:
+- color: '#f7cb2d'
+  text: search
+updateBehavior: automatic
+maximumOutputColumns: !!int 1
+maximumOutputTables: !!int 1
+chemistryFunction: !!bool false
+allowedClients:
+- Analyst
+- WebPlayer
+demoUrl: 
+limitBy: none
