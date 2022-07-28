@@ -1,0 +1,112 @@
+id: b18f93ed-9cf9-ced0-4954-cb152b828451
+name: Order by ID
+description: Order and filter a table to a list of corporate identifiers.
+category: General
+version: 1.0.0
+serviceName: Script
+serviceUri: glysade.python
+executorId: Glysade.CPythonDataFxn
+inputFields:
+- control:
+    id: idColumn
+    label: Select ID column
+    type: columnselect
+    filters:
+    - dataType: string
+      contentType: []
+    validationRules:
+    - type: required
+      message: Must select column of 2D structures
+  request:
+    id: idColumn
+    dataType: string
+    selectorType: column
+- control:
+    id: identifiers
+    label: IDs
+    type: textarea
+  request:
+    id: identifiers
+    dataType: string
+tags:
+- color: '#f1f72d'
+  text: filter
+ironPython: |-
+    import sys
+    import clr
+    import json
+    import __builtin__
+    from System import AppDomain
+    from Spotfire.Dxp.Data import *
+    from Spotfire.Dxp.Application.Filters import RangeFilter, FilterTypeIdentifiers
+
+    loadAssemblies = ['Charts', 'Common']
+    for asm in AppDomain.CurrentDomain.GetAssemblies():
+        if asm.GetName().Name in loadAssemblies:
+            clr.AddReference(asm.FullName)
+
+    from Charts import ChartsModel
+    from Common import ColumnIdService
+
+    idSvc = Application.GetService[ColumnIdService]()
+    page = Document.ActivePageReference
+
+    if len(InputTables) > 0 and len(ResultColumns) > 0:
+        columnId = idSvc.GetID(ResultColumns[0])
+        
+        for visual in page.Visuals:
+            if visual.TypeId.Name == 'Lead Discovery ChemCharts':
+                model = visual.As[ChartsModel]()
+                if model.GetKeyValue('visualization') == 'table-visualization' and model.DataTable.Equals(InputTables[0]):
+                    model.SetSortCriteria(columnId, 'asc', 0)
+                    
+        if page.FilterPanel:
+            for tableGrp in page.FilterPanel.TableGroups:
+                if tableGrp.FilterCollectionReference.DataTableReference.Equals(InputTables[0]):
+                    tableGrp.FilterCollectionReference.ResetAllFilters()
+                    for handle in tableGrp.FilterHandles:
+                        if handle.FilterReference.Name == ResultColumns[0].Name:
+                            if handle.FilterReference.TypeId != FilterTypeIdentifiers.RangeFilter:
+                                handle.FilterReference.TypeId = FilterTypeIdentifiers.RangeFilter
+                            filter = handle.FilterReference.As[RangeFilter]()
+                            filter.Reset()
+                            filter.IncludeEmpty = False
+updateBehavior: automatic
+maximumOutputColumns: !!int 1
+maximumOutputTables: !!int 0
+chemistryFunction: !!bool false
+script: |2+
+
+  # The contents of the data function definition script appear below
+  # the code should define an execute method
+
+  # Once this is working copy the code below to the script tag in the data function definition
+
+  from df.data_transfer import DataFunctionRequest, DataFunctionResponse, DataType, ColumnData, \
+      string_input_field
+
+
+  def execute(request: DataFunctionRequest) -> DataFunctionResponse:
+      ids = string_input_field(request, 'identifiers').splitlines()
+      idMap = {k.strip(): v for v, k in enumerate(ids)}
+      column_id = string_input_field(request, 'idColumn')
+      input_column = request.inputColumns[column_id]
+      values = [None if id is None else idMap[id] if id in idMap else None for id in input_column.values]
+      output_column = ColumnData(name=f'ID Order', dataType=DataType.INTEGER, values=values)
+      response = DataFunctionResponse(outputColumns=[output_column])
+      return response
+
+outputFields:
+- id: idColumn
+  source: inputField
+  type: default
+  name: Structure column
+- id: column1
+  name: Result column
+  source: column
+  type: default
+allowedClients:
+- Analyst
+- WebPlayer
+demoUrl: 
+limitBy: none
