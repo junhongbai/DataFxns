@@ -1,4 +1,4 @@
-id: b18f93ed-9cf9-ced0-4954-cb152b828451
+id: db5b66b8-6f7d-4ba3-aa84-905188794c46
 name: Order by ID
 description: Order and filter a table to a list of corporate identifiers.
 category: General
@@ -16,7 +16,7 @@ inputFields:
       contentType: []
     validationRules:
     - type: required
-      message: Must select column of 2D structures
+      message: Must select column of unique identifiers
   request:
     id: idColumn
     dataType: string
@@ -59,6 +59,7 @@ ironPython: |-
                 model = visual.As[ChartsModel]()
                 if model.GetKeyValue('visualization') == 'table-visualization' and model.DataTable.Equals(InputTables[0]):
                     model.SetSortCriteria(columnId, 'asc', 0)
+                    model.Invalidate()
                     
         if page.FilterPanel:
             for tableGrp in page.FilterPanel.TableGroups:
@@ -96,7 +97,7 @@ script: |2+
       column_id = string_input_field(request, 'idColumn')
       input_column = request.inputColumns[column_id]
       values = [None if id is None else idMap[id] if id in idMap else None for id in input_column.values]
-      output_column = ColumnData(name=f'ID Order', dataType=DataType.INTEGER, values=values)
+      output_column = ColumnData(name=f'{input_column.name} Order', dataType=DataType.INTEGER, values=values)
       response = DataFunctionResponse(outputColumns=[output_column])
       return response
 
@@ -104,7 +105,7 @@ outputFields:
 - id: idColumn
   source: inputField
   type: default
-  name: Structure column
+  name: ID column
 - id: column1
   name: Result column
   source: column
