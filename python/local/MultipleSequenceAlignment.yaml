@@ -75,7 +75,7 @@ ironPython: |
     tableId = dataTable.Id.ToString()
     dataFxnId = DataFxn.DataFunctionDefinition.Settings['Id']
 
-    page = Document.Pages.AddNew('Clustal Results')
+    page = Document.Pages.AddNew('MSA Results')
     panelsToHide = [PanelTypeIdentifiers.DataPanel, PanelTypeIdentifiers.DetailsOnDemandPanel]
 
     for panel in page.Panels:
