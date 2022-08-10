@@ -1,12 +1,12 @@
 id: a94e9f2a-fbef-400a-80fa-dad7f5335322
-name: Translate DNA to Protein2
+name: Translate DNA to Protein Script
 serviceName: Script
 executorId: Glysade.CPythonDataFxn
 serviceUri: glysade.python
 version: 1.0.0
 script: |
     from df.bio_helper import column_to_sequences, sequences_to_column
-    from df.data_transfer import DataFunctionRequest, DataFunctionResponse
+    from df.data_transfer import DataFunctionRequest, DataFunctionResponse, string_input_field
 
 
     def execute(request: DataFunctionRequest) -> DataFunctionResponse:
