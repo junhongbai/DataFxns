@@ -140,7 +140,7 @@ ironPython: |
   if not dataTable:
       raise Exception('target table not found')
 
-  page = Document.Pages.AddNew('Blast (local) text query Results')
+  page = Document.Pages.AddNew('IgBlastN Results')
   panelsToHide = [PanelTypeIdentifiers.DataPanel, PanelTypeIdentifiers.DetailsOnDemandPanel]
 
   for panel in page.Panels:
