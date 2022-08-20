@@ -147,7 +147,7 @@ script: |
       for i, mol in enumerate(mols):
           mol_hits = []
           for name, query in query_dict.items():
-              if mol.HasSubstructMatch(query['qmol']):
+              if mol and mol.HasSubstructMatch(query['qmol']):
                   mol_hits.append(name)
                   # try:
                   #     print(f'{mol.GetProp("_Name")} : {name}')
