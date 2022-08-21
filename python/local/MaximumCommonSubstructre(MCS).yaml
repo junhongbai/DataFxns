@@ -1,6 +1,6 @@
 id: c8cb100d-26b2-362a-f218-19a33091467a
 name: Maximum Common Substructre (MCS)
-description: Calculates exact mass for structures using Python code in data function definition
+description: Finds one or more MCSs for the structures
 category: Chemistry
 version: 1.0.0
 serviceName: Script
@@ -98,6 +98,21 @@ inputFields:
       id: maxTime
       dataType: integer
       data: !!int 300
+  - control:
+      id: numProcs
+      label: Number of parallel processes to use
+      type: text
+      tooltip: If negative, will use number of CPUs less this number, but at least 1.
+      validationRules:
+        - type: range
+          message: ''
+          max: !!int 61
+        - type: numeric
+          message: ''
+    request:
+      id: numProcs
+      dataType: integer
+      data: !!int -1
 tags:
   - color: '#50AF28'
     text: chemistry
@@ -108,103 +123,21 @@ maximumOutputColumns: !!int 2
 maximumOutputTables: !!int 1
 chemistryFunction: !!bool false
 script: |
-  from typing import Union
-  from rdkit import Chem
-  from df.chem_helper import column_to_molecules
-  from df.data_transfer import DataFunctionRequest, DataFunctionResponse, DataType, ColumnData, \
-      TableData, string_input_field, integer_input_field, boolean_input_field
-
-  #!/usr/bin/env python
-  #
-  # file pains.py
-  # David Cosgrove
-  # CozChemix Limited
-  # david@cozchemix.co.uk
-  #
-  # This script takes a set of molecules and attempts to find 1 or more
-  # Maximum Common Substructures (MCSs) using the RDKit FMCS
-  # functionality.  It reports the MCS structures and the number and
-  # names of the molecules with that substructure.
-  #
-  # This software is provided "as is" and any express or implied
-  # warranties including merchantability and fitness for a particular
-  # purpose is disclaimed.  In no event shall the authors be liable for
-  # any direct, indirect, incidental, special, exemplary, or
-  # consequential damages (including, but not limited to, procurement of
-  # substitute goods or services; loss of use, data, or profits; or
-  # business interruption) however caused and on any theory of liability,
-  # whether in contract, strict liability, or tort (including negligence
-  # or otherwise) arising in any way out of the use of this software, even
-  # if advised of the possibility of such damage.
-
-  import argparse
+  import concurrent.futures as cf
   import itertools
   import math
-  import time
-
-  from decimal import *
+  import os
   from typing import Union
   from rdkit import Chem
   from rdkit.Chem import rdFMCS
-
-
-  def parse_args() -> argparse.Namespace:
-      parser = argparse.ArgumentParser(description='Find MCSs for molecules.')
-      parser.add_argument('-I', '--input-file', dest='infile',
-                          required=True,
-                          help='Name of file containing molecules for'
-                              ' analysis.')
-      parser.add_argument('-O', '--output-file', dest='outfile',
-                          required=True,
-                          help='Name of output file.')
-      parser.add_argument('-M', '--min-mcs-molecules', dest='min_mcs_mols',
-                          default=2, type=int,
-                          help='Minimum number of molecules in the set that must'
-                              ' have the MCS for it to be reported.  Default='
-                              '%(default)s.')
-      parser.add_argument('--min-mcs-num-atoms', dest='min_num_atoms',
-                          default=6, type=int,
-                          help='Minimum number of atoms in an MCS for it to'
-                              ' be reported.  Default=%(default)s.')
-      parser.add_argument('--min-mcs-num-bonds', dest='min_num_bonds',
-                          default=6, type=int,
-                          help='Minimum number of bonds in an MCS for it to'
-                              ' be reported.  Default=%(default)s.')
-      parser.add_argument('--notCompleteRings', dest='complete_rings',
-                          action='store_false',
-                          help='Over-ride default setting that complete'
-                              ' rings must be matched.')
-      parser.add_argument('--max-time', dest='max_time',
-                          default=3600, type=int,
-                          help='Maximum amount of time to spend on the problem.'
-                              '  Default=%(default)s.')
-      args = parser.parse_args()
-      return args
-
-
-  def create_mol_supplier(infile: str, smiles_header: bool = False) -> Union[Chem.SDMolSupplier, Chem.SmilesMolSupplier]:
-      """
-      Take the input filename and based on extension, return the relevant RDKit
-      supplier object.
-
-      Args:
-          infile (string):  input molecule file
-          smiles_header (bool): whether the SMILES file has a header line.
-
-      Returns:
-          RDKit mol supplier
-      """
-
-      if infile.endswith('.smi'):
-          return Chem.SmilesMolSupplier(infile, titleLine=smiles_header)
-      elif infile.endswith('.sdf'):
-          return Chem.SDMolSupplier(infile)
-
-      return None
-
-
+  from df.chem_helper import column_to_molecules
+  from df.data_transfer import DataFunctionRequest, DataFunctionResponse, DataType, ColumnData, \
+      TableData, boolean_input_field, integer_input_field, string_input_field
+  from decimal import *
+  
+  
   def already_have_mcs(mcss: list[dict[str, Union[str, int, Chem.Mol, list[Chem.Mol]]]],
-                      new_mcs_dict: dict[str, Union[str, int, Chem.Mol, list[Chem.Mol]]]) -> bool:
+                       new_mcs_dict: dict[str, Union[str, int, Chem.Mol, list[Chem.Mol]]]) -> bool:
       """
       See if we already have the new_mcs_smarts as a substructure.
       Checking the SMARTS strings isn't enough because they aren't
@@ -212,7 +145,7 @@ script: |
       Args:
           mcss ([dict, ]):
           new_mcs_dict (dict):
-
+  
       Returns:
           bool
       """
@@ -221,7 +154,7 @@ script: |
       #       f' {new_mcs_dict["numBonds"]}')
       if new_mcs_dict['smartsString'] in mcss:
           return True
-
+  
       def extract_matches(mcs_dict):
           new_matches = []
           for mol in mcs_dict['mols']:
@@ -233,10 +166,10 @@ script: |
               new_matches.append(match_list)
           new_matches.sort()
           return new_matches
-
+  
       new_mcs_matches = extract_matches(new_mcs_dict)
       # print(f'new matches : {new_mcs_matches}')
-
+  
       for mcs in mcss:
           # print(f'Against {mcs["smartsString"]}'
           #       f' {mcs["numMols"]} {mcs["numAtoms"]}'
@@ -248,19 +181,18 @@ script: |
               if these_matches == new_mcs_matches:
                   # print(f'XXXXXX {mcs["smartsString"]} and {new_mcs_dict["smartsString"]} the same')
                   return True
-
+  
       return False
-
-
-  def findMCSs(mols: list[Chem.Mol], min_mol_num: int, min_atom_num: int,
-              min_bond_num: int, complete_rings: bool = True,
-              max_time: int = 3600) -> list[dict[str, Union[str, int, Chem.Mol, list[Chem.Mol]]]]:
+  
+  
+  def findSingleMCS(sub_mols: list[Chem.Mol], all_mols: list[Chem.Mol],
+                    min_atom_num: int, min_bond_num: int,
+                    complete_rings: bool, max_time: int) -> dict[str, Union[str, int, Chem.Mol, list[Chem.Mol]]]:
       """
-
+      Do a single MCS calculation on the given molecules.
       Args:
-          mols [Chem.Mol, ]: must be at least 2 molecules in set, obvs.
-          min_mol_num (int): minimum number of molecules having an MCS for
-                          it to be returned.
+          sub_mols [Chem.Mol, ]: must be at least 2 molecules in set, obvs.
+          all_mols [Chem.Mol, ]: must be at least 2 molecules in set, obvs.
           min_atom_num (int): minimum number of atoms in MCS for it to be
                               returned
           min_bond_num (int): minimum number of bonds in MCS for it to be
@@ -268,114 +200,117 @@ script: |
           complete_rings (bool): if True (default) partial ring matches
                                 won't be returned.
           max_time (int): maximum number of seconds to spend on the thing
-
+  
+      Returns:
+  
+      """
+      mcs_res = rdFMCS.FindMCS(sub_mols, completeRingsOnly=complete_rings,
+                               timeout=max_time)
+  
+      if (not mcs_res.smartsString
+              or mcs_res.numAtoms < min_atom_num
+              or mcs_res.numBonds < min_bond_num):
+          mcs_dict = {
+              'smartsString': '',
+              'numAtoms': 0,
+              'numBonds': 0,
+              'qmol': None,
+          }
+      else:
+          mcs_dict = {
+              'smartsString': mcs_res.smartsString,
+              'numAtoms': mcs_res.numAtoms,
+              'numBonds': mcs_res.numBonds,
+              'qmol': Chem.MolFromSmarts(mcs_res.smartsString)
+          }
+          # find any other molecules with this MCS
+          if mcs_dict['qmol'] is not None:
+              for mol in all_mols:
+                  if mol not in sub_mols and mol.GetSubstructMatch(mcs_dict['qmol']):
+                      sub_mols.append(mol)
+          mcs_dict['mols'] = sub_mols
+          mcs_dict['numMols'] = len(sub_mols)
+  
+      return mcs_dict
+  
+  
+  def findMCSs(mols: list[Chem.Mol], min_mol_num: int, min_atom_num: int,
+               min_bond_num: int, complete_rings: bool = True,
+               max_time: int = 600, num_procs: int = -1) -> list[dict[str, Union[str, int, Chem.Mol, list[Chem.Mol]]]]:
+      """
+  
+      Args:
+          mols [Chem.Mol, ]: must be at least 2 molecules in set, obvs.
+          min_mol_num (int): minimum number of molecules having an MCS for
+                           it to be returned.
+          min_atom_num (int): minimum number of atoms in MCS for it to be
+                              returned
+          min_bond_num (int): minimum number of bonds in MCS for it to be
+                              returned
+          complete_rings (bool): if True (default) partial ring matches
+                                won't be returned.
+          max_time (int): maximum number of seconds to spend on the
+                          thing. Defaults to 600s.
+          num_procs (int): number of parallel processes to use.  If -ve,
+                           uses os.cpu_count() - num_procs.  Default -1.
+                           Obviously final count must be at least 1.
       Returns:
           dict of {str: dict}: dict of dicts with results of different
-                              MCSs found.  Inner dict gives details of
-                              each MCS and molecules in it.
+                               MCSs found.  Inner dict gives details of
+                               each MCS and molecules in it.
       """
       mcss = []
       nmols = len(mols)
-
+  
       def stirling_fac(n):
           twopi = Decimal(2 * math.pi)
           e = Decimal(math.e)
           return Decimal.sqrt(twopi * n) * ((n / e) ** n)
-
+  
       nmol_fac = stirling_fac(Decimal(nmols))
       min_mol_num_fac = stirling_fac(Decimal(min_mol_num))
       diff_fac = stirling_fac(Decimal(nmols - min_mol_num))
       approx_ncomb = int(nmol_fac / (min_mol_num_fac * diff_fac))
       print(f'Approximate number of MCS determinations : {approx_ncomb}')
-
-      final_time = time.time() + max_time
-
-      for comb in itertools.combinations(mols, min_mol_num):
-          if time.time() > final_time:
-              print(f'INFO : timeout hit, returning with what has been'
-                    f' discovered so far.')
-              return mcss
-
-          sub_mols = list(comb)
-          mcs_res = rdFMCS.FindMCS(sub_mols, completeRingsOnly=complete_rings,
-                                  timeout=max_time)
-          if (not mcs_res.smartsString or mcs_res in mcss
-                  or mcs_res.numAtoms < min_atom_num
-                  or mcs_res.numBonds < min_bond_num):
-              continue
-
-          # find any other molecules with this MCS
-          mcs_qmol = Chem.MolFromSmarts(mcs_res.smartsString)
-          for mol in mols:
-              if mol not in sub_mols and mol.GetSubstructMatch(mcs_qmol):
-                  sub_mols.append(mol)
-
-          mcs_dict = {
-              'smartsString': mcs_res.smartsString,
-              'numAtoms': mcs_res.numAtoms,
-              'numBonds': mcs_res.numBonds,
-              'numMols': len(sub_mols),
-              'qmol': mcs_qmol,
-              'mols': sub_mols,
-          }
-          if not already_have_mcs(mcss, mcs_dict):
-              mcss.append(mcs_dict)
-
+  
+      if num_procs < 0:
+          num_procs = os.cpu_count() + num_procs
+      if num_procs < 1:
+          num_procs = 1
+  
+      with cf.ProcessPoolExecutor(num_procs) as executor:
+          futures = []
+  
+          for comb in itertools.combinations(mols, min_mol_num):
+              sub_mols = list(comb)
+              fut = executor.submit(findSingleMCS, sub_mols, mols, min_atom_num,
+                                    min_bond_num, complete_rings, max_time)
+              futures.append(fut)
+  
+          for fut in cf.as_completed(futures, max_time):
+              mcs_dict = fut.result()
+              if mcs_dict['smartsString'] and not already_have_mcs(mcss, mcs_dict):
+                  mcss.append(mcs_dict)
+  
       mcss.sort(key=lambda p: p['numBonds'], reverse=True)
       mcss.sort(key=lambda p: p['numAtoms'], reverse=True)
       mcss.sort(key=lambda p: p['numMols'], reverse=True)
       return mcss
-
-
-  def write_mcss(mcss: dict[str, dict[str, Union[str, int, Chem.Mol, list[Chem.Mol]]]],
-                outfile: str) -> None:
-      """
-
-      Args:
-          mcss (dict of {str: dict}:
-          outfile (str):
-
-      Returns:
-
-      """
-      try:
-          with open(outfile, 'w') as f:
-              for i, mcs in enumerate(mcss, 1):
-                  f.write(f'{mcs["smartsString"]} Smt_{i}  {mcs["numMols"]}\n')
-                  print(f'{mcs["smartsString"]} : {mcs["numMols"]} {mcs["numAtoms"]} {mcs["numBonds"]}')
-
-      except IOError as err:
-          print(f'ERROR: {err}')
-
-
-  def main() -> None:
-      args = parse_args()
-      suppl = create_mol_supplier(args.infile)
-      mols = []
-      for mol in suppl:
-          if mol:
-              mols.append(mol)
-      print(f'Read {len(mols)} molecules.')
-      mcss = findMCSs(mols, args.min_mcs_mols, args.min_num_atoms,
-                      args.min_num_bonds, args.complete_rings, args.max_time)
-      write_mcss(mcss, args.outfile)
-
-
-  if __name__ == '__main__':
-      main()
-
+  
+  
   def extract_input_values(request: DataFunctionRequest) -> tuple[dict[str, Union[str, int, bool, list[Chem.Mol]]], str]:
-      inputs = {}
-      column_id = string_input_field(request, 'structureColumn')
-      input_column = request.inputColumns[column_id]
-      input_column_name = input_column.name
-      mols = [m for m in column_to_molecules(input_column) if m is not None]
-      inputs['mols'] = mols
-      for id in [('minMCSMols', 'min_mol_num'), ('minMCSAtoms', 'min_atom_num'),
-                ('minMCSBonds', 'min_bond_num'), ('maxTime', 'max_time')]:
-          inputs[id[1]] = integer_input_field(request, id[0])
-      inputs['complete_rings'] = not boolean_input_field(request, 'notCompleteRings')
-      return inputs, input_column_name
+    inputs = {}
+    column_id = string_input_field(request, 'structureColumn')
+    input_column = request.inputColumns[column_id]
+    input_column_name = input_column.name
+    mols = [m for m in column_to_molecules(input_column) if m is not None]
+    inputs['mols'] = mols
+    for id in [('minMCSMols', 'min_mol_num'), ('minMCSAtoms', 'min_atom_num'),
+               ('minMCSBonds', 'min_bond_num'), ('maxTime', 'max_time'),
+               ('numProcs', 'num_procs')]:
+        inputs[id[1]] = integer_input_field(request, id[0])
+    inputs['complete_rings'] = not boolean_input_field(request, 'notCompleteRings')
+    return inputs, input_column_name
 
 
   def execute(request: DataFunctionRequest) -> DataFunctionResponse:
@@ -386,22 +321,17 @@ script: |
       for mcs in mcss:
           smarts.append(mcs['smartsString'])
           num_mols.append(mcs['numMols'])
-
+  
       smarts_column = ColumnData(name=f'{input_column_name} MCS SMARTS', dataType=DataType.STRING, values=smarts)
       num_mols_column = ColumnData(name=f'{input_column_name} MCS Mol. Count', dataType=DataType.INTEGER, values=num_mols)
       output_table = TableData(tableName=f'{input_column_name} MCSs', columns=[smarts_column, num_mols_column])
       response = DataFunctionResponse(outputTables=[output_table])
       return response
-
 outputFields:
-  - id: structureColumn
-    source: inputField
+  - id: table1
+    source: table
     type: default
-    name: Structure column
-  - id: column1
-    source: column
-    type: filter
-    name: Output exact mass column
+    name: Output MCS table
 allowedClients:
   - Analyst
   - WebPlayer
