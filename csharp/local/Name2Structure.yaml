@@ -1,0 +1,72 @@
+id: c165eb9c-d834-5394-8111-53833ba91a5e
+name: Name2Structure (ChemDraw)
+description: Transforms a column of IUPAC names into structures.
+category: Chemistry
+version: 1.0.0
+serviceName: PKIChemistry.Name2StructureDataFxn
+serviceUri: glysade.csharp
+executorId: Glysade.CSharpDataFxn
+inputFields:
+- control:
+    id: nameColumn
+    label: Select IUPAC name column
+    type: columnselect
+    filters: []
+    validationRules:
+    - type: required
+      message: Must select column of 2D structures
+  request:
+    id: nameColumn
+    dataType: string
+    selectorType: column
+- control:
+    id: outFormat
+    label: Output format
+    type: select
+    multi: !!bool false
+    options:
+    - text: MOL V2000
+      value: MOL V2000
+    - text: MOL V3000
+      value: MOL V3000
+    - text: SMILES
+      value: SMILES
+    - text: CDX
+      value: CDX
+    - text: CDXML
+      value: CDXML
+  request:
+    id: outFormat
+    dataType: string
+    data: MOL
+- control:
+    id: outColumnName
+    label: Result column name
+    type: text
+    validationRules:
+    - type: required
+      message: ''
+  request:
+    id: outColumnName
+    dataType: string
+    data: Structure
+assembly: PKIChemistry
+tags:
+- color: '#50AF28'
+  text: chemistry
+- color: '#e2f062'
+  text: tform
+updateBehavior: manual
+maximumOutputColumns: !!int 1
+maximumOutputTables: !!int 0
+chemistryFunction: !!bool false
+outputFields:
+- id: column1
+  name: Structure column
+  source: column
+  type: default
+allowedClients:
+- Analyst
+- WebPlayer
+demoUrl: 
+limitBy: none
