@@ -82,14 +82,10 @@ maximumOutputColumns: !!int 0
 maximumOutputTables: !!int 1
 chemistryFunction: !!bool false
 outputFields:
-- id: structureColumn
-  source: inputField
-  type: default
-  name: Structure column
-- id: column1
-  source: column
-  type: filter
-  name: Output exact mass column
+  - id: table1
+    source: table
+    type: default
+    name: Output R Group Replacements table
 allowedClients:
 - Analyst
 - WebPlayer
