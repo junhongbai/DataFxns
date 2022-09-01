@@ -3,7 +3,7 @@ name: R Group Replacement
 description: 'Uses the Top 500 R Group replacement data of Bajorath et al. to suggest produce analogues of the input molecules. '
 category: Chemistry
 version: 1.0.0
-serviceName: RGroupSubstitution
+serviceName: RGroupReplacement
 serviceUri: glysade.python
 executorId: Glysade.CPythonDataFxn
 inputFields:
@@ -31,7 +31,7 @@ inputFields:
     selectorType: column
 - control:
     id: useLayer1
-    label: Use Layer 1 substiutions
+    label: Use Layer 1 replacements
     type: checkbox
     tooltip: The direct replacements
   request:
@@ -39,9 +39,9 @@ inputFields:
     dataType: boolean
 - control:
     id: useLayer2
-    label: User Layer 2 substitutions
+    label: User Layer 2 replacements
     type: checkbox
-    tooltip: Layer 2 substitutions are nearest neighbours of their parent Layer 1 substitution.
+    tooltip: Layer 2 replacements are nearest neighbours of their parent Layer 1 replacement.
   request:
     id: useLayer2
     dataType: boolean
