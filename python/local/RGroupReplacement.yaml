@@ -37,6 +37,7 @@ inputFields:
   request:
     id: useLayer1
     dataType: boolean
+    data: !!bool true
 - control:
     id: useLayer2
     label: User Layer 2 replacements
@@ -45,6 +46,7 @@ inputFields:
   request:
     id: useLayer2
     dataType: boolean
+    data: !!bool false
 - control:
     id: coreSMARTS
     label: SMARTS defining core of molecules
