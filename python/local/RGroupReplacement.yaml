@@ -1,6 +1,6 @@
 id: 0227312a-b83e-9777-d285-196c05263676
 name: R Group Replacement
-description: 'Uses the Top 500 R Group replacement data of Bajorath et al. to suggest produce analogues of the input molecules. '
+description: 'Uses the Top 500 R Group replacement data of Bajorath et al. to produce analogues of the input molecules. '
 category: Chemistry
 version: 1.0.0
 serviceName: RGroupReplacement
