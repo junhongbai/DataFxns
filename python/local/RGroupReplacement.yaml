@@ -4,7 +4,7 @@ description: 'Uses the Top 500 R Group replacement data of Bajorath et al. to su
 category: Chemistry
 version: 1.0.0
 serviceName: RGroupReplacement
-serviceUri: glysade.python
+serviceUri: PYRO:glysade.pyserver@127.0.0.1:9101
 executorId: Glysade.CPythonDataFxn
 inputFields:
 - control:
