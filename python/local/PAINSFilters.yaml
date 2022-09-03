@@ -39,7 +39,6 @@ maximumOutputColumns: !!int 4
 maximumOutputTables: !!int 0
 chemistryFunction: !!bool false
 script: |
-
   import csv
   import itertools
   import os
