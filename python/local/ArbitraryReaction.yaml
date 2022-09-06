@@ -1,5 +1,5 @@
 id: 22204149-ba9f-551e-6527-170776417d1a
-name: Arbitrary Reaction
+name: Reaction Runner
 description: Performs an arbitrary reaction on a column of molecules
 category: Chemistry
 version: 1.0.0
@@ -7,53 +7,44 @@ serviceName: Script
 serviceUri: glysade.python
 executorId: Glysade.CPythonDataFxn
 inputFields:
-  - control:
-      id: structureColumn
-      label: Select structure column
-      type: columnselect
-      filters:
-        - dataType: string
-          contentType:
-            - chemical/x-mdl-molfile
-            - chemical/x-mdl-molfile-v3000
-            - chemical/x-smiles
-            - chemical/x-daylight-smiles
-        - dataType: binary
-          contentType:
-            - chemical/x-mdl-molfile
-            - chemical/x-mdl-molfile-v3000
-      validationRules:
-        - type: required
-          message: Must select column of 2D structures
-    request:
-      id: structureColumn
-      dataType: string
-      selectorType: column
-  - control:
-      id: reactionSmarts
-      label: Reaction SMARTS
-      type: text
-      tooltip: Supply an RDKit reaction SMARTS.  If you also sketch a reaction, this option has precedence.
-    request:
-      id: reactionSmarts
-      dataType: string
+- control:
+    id: structureColumn
+    label: Select structure column
+    type: columnselect
+    filters:
+      - dataType: string
+        contentType:
+          - chemical/x-mdl-molfile
+          - chemical/x-mdl-molfile-v3000
+          - chemical/x-smiles
+          - chemical/x-daylight-smiles
+      - dataType: binary
+        contentType:
+          - chemical/x-mdl-molfile
+          - chemical/x-mdl-molfile-v3000
+    validationRules:
+      - type: required
+        message: Must select column of 2D structures
+  request:
+    id: structureColumn
+    dataType: string
+    selectorType: column
+- control:
+    id: reactionQuery
+    label: Reaction query
+    type: molecule
+    sketcherContentType: chemical/x-mdl-rxnfile
+    molTypes:
+    - extension: .sma
       contentType: chemical/x-smarts
-  - control:
-      id: reactionQuery
-      label: Reaction query
-      type: molecule
-      sketcherContentType: chemical/x-mdl-rxnfile
-      molTypes:
-        - extension: .sma
-          contentType: chemical/x-smarts
-          name: SMARTS (*.sma)
-        - extension: .rxn
-          contentType: chemical/x-mdl-rxnfile
-          name: RXN file (*.rxn)
-    request:
-      id: reactionQuery
-      dataType: string
+      name: SMARTS (*.sma)
+    - extension: .rxn
       contentType: chemical/x-mdl-rxnfile
+      name: RXN file (*.rxn)
+  request:
+    id: reactionQuery
+    dataType: string
+    contentType: chemical/x-mdl-rxnfile
 tags:
   - color: '#50AF28'
     text: chemistry
