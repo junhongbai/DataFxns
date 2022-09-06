@@ -48,32 +48,21 @@ inputFields:
     dataType: boolean
     data: !!bool false
 - control:
-    id: coreSMARTS
-    label: SMARTS defining core of molecules
-    type: text
-    tooltip: A core is needed so the R Groups can be identified.
-  request:
-    id: coreSMARTS
-    dataType: string
-- control:
     id: coreSketcher
-    label: Sketch defining core
+    label: Reaction query
     type: molecule
+    sketcherContentType: chemical/x-mdl-rxnfile
     molTypes:
-    - extension: .smi
-      contentType: smiles
-      name: SMILES (*.smi)
-    - extension: .sdf
-      contentType: chemical/x-mdl-sdfile
-      name: SD file (*.sdf)
-    - extension: .mol
-      contentType: chemical/x-mdl-molfile
-      name: MOL file (*.mol)
-    tooltip: Note that this is a query molecule, so aromatic rings must be specified correctly.
+    - extension: .sma
+      contentType: chemical/x-smarts
+      name: SMARTS (*.sma)
+    - extension: .rxn
+      contentType: chemical/x-mdl-rxnfile
+      name: RXN file (*.rxn)
   request:
     id: coreSketcher
     dataType: string
-    contentType: chemical/x-mdl-molfile
+    contentType: chemical/x-mdl-rxnfile
 tags:
 - color: '#50AF28'
   text: chemistry
