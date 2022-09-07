@@ -49,20 +49,23 @@ inputFields:
     data: !!bool false
 - control:
     id: coreSketcher
-    label: Reaction query
+    label: Core query
     type: molecule
-    sketcherContentType: chemical/x-mdl-rxnfile
+    sketcherContentType: chemical/x-mdl-molfile
     molTypes:
     - extension: .sma
       contentType: chemical/x-smarts
       name: SMARTS (*.sma)
-    - extension: .rxn
-      contentType: chemical/x-mdl-rxnfile
-      name: RXN file (*.rxn)
+    - extension: .mol
+      contentType: chemical/x-mdl-molfile
+      name: MOL file (*.mol)
+    - extension: .sdf
+      contentType: chemical/x-mdl-molfile
+      name: SD file (*.sdf)
   request:
     id: coreSketcher
     dataType: string
-    contentType: chemical/x-mdl-rxnfile
+    contentType: chemical/x-mdl-molfile
 tags:
 - color: '#50AF28'
   text: chemistry
