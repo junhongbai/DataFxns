@@ -1,5 +1,5 @@
 id: c8cb100d-26b2-362a-f218-19a33091467a
-name: Maximum Common Substructre (MCS)
+name: Maximum Common Substructure (MCS)
 description: Finds one or more MCSs for the structures
 category: Chemistry
 version: 1.0.0
@@ -132,14 +132,11 @@ inputFields:
 tags:
   - color: '#50AF28'
     text: chemistry
-  - color: '#c6fc00'
-    text: calcprop
 updateBehavior: automatic
 maximumOutputColumns: !!int 2
 maximumOutputTables: !!int 1
 chemistryFunction: !!bool false
 script: |
-
   import concurrent.futures as cf
   import itertools
   import math
