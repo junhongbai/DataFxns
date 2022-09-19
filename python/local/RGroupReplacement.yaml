@@ -30,6 +30,19 @@ inputFields:
     dataType: string
     selectorType: column
 - control:
+    id: idColumn
+    label: Column of IDs
+    type: columnselect
+    multi: !!bool false
+    tooltip: Column to use for IDs of input structures for filtering analogues
+    validationRules:
+    - type: required
+      message: ''
+  request:
+    id: idColumn
+    dataType: string
+    selectorType: column
+- control:
     id: useLayer1
     label: Use Layer 1 replacements
     type: checkbox
@@ -72,7 +85,7 @@ tags:
 - color: '#c6fc00'
   text: calcprop
 updateBehavior: automatic
-maximumOutputColumns: !!int 0
+maximumOutputColumns: !!int 1
 maximumOutputTables: !!int 1
 chemistryFunction: !!bool false
 outputFields:
