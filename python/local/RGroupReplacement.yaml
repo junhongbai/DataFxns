@@ -38,6 +38,10 @@ inputFields:
     validationRules:
     - type: required
       message: ''
+  request:
+    id: idColumn
+    dataType: string
+    selectorType: column
 - control:
     id: useLayer1
     label: Use Layer 1 replacements
