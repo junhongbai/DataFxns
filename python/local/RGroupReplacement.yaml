@@ -30,6 +30,15 @@ inputFields:
     dataType: string
     selectorType: column
 - control:
+    id: idColumn
+    label: Column of IDs
+    type: columnselect
+    multi: !!bool false
+    tooltip: Column to use for IDs of input structures for filtering analogues
+    validationRules:
+    - type: required
+      message: ''
+- control:
     id: useLayer1
     label: Use Layer 1 replacements
     type: checkbox
