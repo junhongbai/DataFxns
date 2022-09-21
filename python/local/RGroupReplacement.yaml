@@ -61,6 +61,15 @@ inputFields:
     dataType: boolean
     data: !!bool false
 - control:
+    id: incOrigRGroups
+    label: Include original R Groups
+    type: checkbox
+    tooltip: When doing the replacements, include the original R Group in the substitution list, so that no change at that position is included in the products.
+  request:
+    id: incOrigRGroups
+    dataType: boolean
+    data: !!bool false
+- control:
     id: coreSketcher
     label: Core query
     type: molecule
