@@ -115,25 +115,6 @@ inputFields:
     id: incOrigRGroups
     dataType: boolean
     data: !!bool false
-- control:
-    id: coreSketcher
-    label: Core query
-    type: molecule
-    sketcherContentType: chemical/x-mdl-molfile
-    molTypes:
-    - extension: .sma
-      contentType: chemical/x-smarts
-      name: SMARTS (*.sma)
-    - extension: .mol
-      contentType: chemical/x-mdl-molfile
-      name: MOL file (*.mol)
-    - extension: .sdf
-      contentType: chemical/x-mdl-molfile
-      name: SD file (*.sdf)
-  request:
-    id: coreSketcher
-    dataType: string
-    contentType: chemical/x-mdl-molfile
 tags:
 - color: '#50AF28'
   text: chemistry
