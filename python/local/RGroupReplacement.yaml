@@ -43,6 +43,52 @@ inputFields:
     dataType: string
     selectorType: column
 - control:
+    id: coresColumn
+    label: Select Cores column
+    type: columnselect
+    filters:
+    - dataType: string
+      contentType:
+      - chemical/x-mdl-molfile
+      - chemical/x-mdl-molfile-v3000
+      - chemical/x-smiles
+      - chemical/x-daylight-smiles
+    - dataType: binary
+      contentType:
+      - chemical/x-mdl-molfile
+      - chemical/x-mdl-molfile-v3000
+    validationRules:
+    - type: required
+      message: Must select column of 2D structures
+  request:
+    id: coresColumn
+    dataType: string
+    selectorType: column
+- control:
+    id: rGroupColumns
+    label: R Group columns
+    type: columnselect
+    multi: !!bool true
+    filters:
+    - dataType: binary
+      contentType:
+      - chemical/x-mdl-molfile
+      - chemical/x-mdl-molfile-v3000
+    - dataType: string
+      contentType:
+      - chemical/x-mdl-molfile
+      - chemical/x-mdl-molfile-v3000
+    - dataType: string
+      contentType: chemical/x-smiles
+    - dataType: string
+      contentType: chemical/x-daylight-smiles
+    validationRules:
+    - type: required
+  request:
+    id: rGroupColumns
+    dataType: list(string)
+    selectorType: column
+- control:
     id: useLayer1
     label: Use Layer 1 replacements
     type: checkbox
@@ -69,25 +115,6 @@ inputFields:
     id: incOrigRGroups
     dataType: boolean
     data: !!bool false
-- control:
-    id: coreSketcher
-    label: Core query
-    type: molecule
-    sketcherContentType: chemical/x-mdl-molfile
-    molTypes:
-    - extension: .sma
-      contentType: chemical/x-smarts
-      name: SMARTS (*.sma)
-    - extension: .mol
-      contentType: chemical/x-mdl-molfile
-      name: MOL file (*.mol)
-    - extension: .sdf
-      contentType: chemical/x-mdl-molfile
-      name: SD file (*.sdf)
-  request:
-    id: coreSketcher
-    dataType: string
-    contentType: chemical/x-mdl-molfile
 tags:
 - color: '#50AF28'
   text: chemistry
