@@ -65,10 +65,11 @@ inputFields:
     dataType: string
     selectorType: column
 - control:
-    id: rGroupColumns
-    label: R Group columns
+    id: allRGroupColumns
+    label: All R Group columns
     type: columnselect
     multi: !!bool true
+    tooltip: Select all the R Group columns from the R Group Decomposition that are in the table
     filters:
     - dataType: binary
       contentType:
@@ -85,7 +86,32 @@ inputFields:
     validationRules:
     - type: required
   request:
-    id: rGroupColumns
+    id: allRGroupColumns
+    dataType: list(string)
+    selectorType: column
+- control:
+    id: rGroupColumnsToUse
+    label: R Group columns to replace from Top 500 substitutions table
+    type: columnselect
+    multi: !!bool true
+    tooltip: Select the R Group columns that you want to be varied in the output molecules.  The remainder will be kept as the original value from the parent molecule.  If left blank, all R Groups will be varied.
+    filters:
+    - dataType: binary
+      contentType:
+      - chemical/x-mdl-molfile
+      - chemical/x-mdl-molfile-v3000
+    - dataType: string
+      contentType:
+      - chemical/x-mdl-molfile
+      - chemical/x-mdl-molfile-v3000
+    - dataType: string
+      contentType: chemical/x-smiles
+    - dataType: string
+      contentType: chemical/x-daylight-smiles
+    validationRules:
+    - type: required
+  request:
+    id: rGroupColumnsToUse
     dataType: list(string)
     selectorType: column
 - control:
