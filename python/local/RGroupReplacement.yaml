@@ -92,6 +92,33 @@ inputFields:
     dataType: list(string)
     selectorType: column
 - control:
+    id: rGroupColumnsToUse
+    label: R Group columns to use
+    type: columnselect
+    multi: !!bool true
+    filters:
+    - dataType:
+      - binary
+      contentType:
+      - chemical/x-mdl-molfile
+      - chemical/x-mdl-molfile-v3000
+    - dataType: string
+      contentType:
+      - chemical/x-mdl-molfile
+      - chemical/x-mdl-molfile-v3000
+    - dataType: string
+      contentType:
+      - chemical/x-smiles
+    - dataType: string
+      contentType: chemical/x-daylight-smiles
+    validationRules:
+    - type: required
+    tooltip: Select the R Groups to use be replaced
+  request:
+    id: rGroupColumnsToUse
+    dataType: list(string)
+    selectorType: column
+- control:
     id: useLayer1
     label: Use Layer 1 replacements
     type: checkbox
