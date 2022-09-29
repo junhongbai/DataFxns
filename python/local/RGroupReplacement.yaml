@@ -92,7 +92,7 @@ inputFields:
     dataType: list(string)
     selectorType: column
 - control:
-    id: rGroupColumnsToUse
+    id: columnsToUse
     label: R Group columns to use
     type: columnselect
     multi: !!bool true
@@ -115,7 +115,7 @@ inputFields:
     - type: required
     tooltip: Select the R Groups to use be replaced
   request:
-    id: rGroupColumnsToUse
+    id: columnsToUse
     dataType: list(string)
     selectorType: column
 - control:
