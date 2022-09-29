@@ -1,4 +1,4 @@
-id: 0227312a-b83e-9777-d285-196c05263676
+id: 2abb2403-f1f4-4f52-4695-e5f5ce1bc9a8
 name: R Group Replacement
 description: 'Uses the Top 500 R Group replacement data of Bajorath et al. to produce analogues of the input molecules. '
 category: Chemistry
@@ -69,9 +69,9 @@ inputFields:
     label: All R Group columns
     type: columnselect
     multi: !!bool true
-    tooltip: Select all the R Group columns from the R Group Decomposition that are in the table
     filters:
-    - dataType: binary
+    - dataType:
+      - binary
       contentType:
       - chemical/x-mdl-molfile
       - chemical/x-mdl-molfile-v3000
@@ -80,11 +80,13 @@ inputFields:
       - chemical/x-mdl-molfile
       - chemical/x-mdl-molfile-v3000
     - dataType: string
-      contentType: chemical/x-smiles
+      contentType:
+      - chemical/x-smiles
     - dataType: string
       contentType: chemical/x-daylight-smiles
     validationRules:
     - type: required
+    tooltip: Select all the R Group columns from the R Group Decomposition that are in the table
   request:
     id: allRGroupColumns
     dataType: list(string)
@@ -95,8 +97,10 @@ inputFields:
     type: columnselect
     multi: !!bool true
     tooltip: Select the R Group columns that you want to be varied in the output molecules.  The remainder will be kept as the original value from the parent molecule.  If left blank, all R Groups will be varied.
+    validationRules: []
     filters:
-    - dataType: binary
+    - dataType:
+      - binary
       contentType:
       - chemical/x-mdl-molfile
       - chemical/x-mdl-molfile-v3000
@@ -105,11 +109,11 @@ inputFields:
       - chemical/x-mdl-molfile
       - chemical/x-mdl-molfile-v3000
     - dataType: string
-      contentType: chemical/x-smiles
+      contentType:
+      - chemical/x-smiles
     - dataType: string
-      contentType: chemical/x-daylight-smiles
-    validationRules:
-    - type: required
+      contentType:
+      - chemical/x-daylight-smiles
   request:
     id: rGroupColumnsToUse
     dataType: list(string)
@@ -151,10 +155,10 @@ maximumOutputColumns: !!int 1
 maximumOutputTables: !!int 1
 chemistryFunction: !!bool false
 outputFields:
-  - id: table1
-    source: table
-    type: default
-    name: Output R Group Replacements table
+- id: table1
+  source: table
+  type: default
+  name: Output R Group Replacements table
 allowedClients:
 - Analyst
 - WebPlayer
