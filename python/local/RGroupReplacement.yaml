@@ -1,6 +1,6 @@
 id: 2abb2403-f1f4-4f52-4695-e5f5ce1bc9a8
 name: R Group Replacement
-description: 'AUses the Top 500 R Group replacement data of Bajorath et al. to produce analogues of the input molecules. '
+description: 'Uses the Top 500 R Group replacement data of Bajorath et al. to produce analogues of the input molecules based on output from an R Group Decomposition. '
 category: Chemistry
 version: 1.0.0
 serviceName: RGroupReplacement
@@ -11,6 +11,7 @@ inputFields:
     id: structureColumn
     label: Select structure column
     type: columnselect
+    tooltip: Select column of strutures that the R Group Decomposition was performed on.
     filters:
     - dataType: string
       contentType:
@@ -59,14 +60,14 @@ inputFields:
       - chemical/x-mdl-molfile-v3000
     validationRules:
     - type: required
-      message: Must select column of 2D structures
+      message: Must select the column of cores produced by the R Group decomposition.
   request:
     id: coresColumn
     dataType: string
     selectorType: column
 - control:
     id: rGroupColumns
-    label: R Group columns to replace
+    label: R Group columns from R Group Decomposition
     type: columnselect
     multi: !!bool true
     filters:
@@ -86,6 +87,7 @@ inputFields:
       contentType: chemical/x-daylight-smiles
     validationRules:
     - type: required
+      message: Must select at least 1 column of R Groups
     tooltip: Select all the R Group columns from the R Group Decomposition.  These groups will be replaced by Top 500 replacements.
   request:
     id: rGroupColumns
