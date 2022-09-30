@@ -497,7 +497,6 @@ script: |
       if not qmol or qmol is None:
           return
   
-      high_ats = []
       high_bnds = []
       matches = mol.GetSubstructMatches(qmol)
       for match in matches:
@@ -505,13 +504,11 @@ script: |
               bond = mol.GetBondBetweenAtoms(pair[0], pair[1])
               if bond is not None:
                   high_bnds.append(bond.GetIdx())
-          high_ats.extend(match)
   
       # print(f'atoms : {high_ats}')
       # print(f'bonds : {high_bnds}')
-      high_ats_str = ' '.join([str(a + 1) for a in high_ats])
       high_bnds_str = ' '.join([str(b + 1) for b in high_bnds])
-      prop_text = f'COLOR #ff0000\nATOMS {high_ats_str}\nBONDS {high_bnds_str}'
+      prop_text = f'COLOR #ff0000\nATOMS\nBONDS {high_bnds_str}'
       mol.SetProp('Renderer_Highlight', prop_text)
   
   
