@@ -47,6 +47,7 @@ inputFields:
     id: coresColumn
     label: Select Cores column
     type: columnselect
+    tooltip: Select the column of cores produced by the R Group decomposition.
     filters:
     - dataType: string
       contentType:
@@ -87,6 +88,8 @@ inputFields:
       contentType: chemical/x-daylight-smiles
     validationRules:
     - type: required
+      message: Must select at least 1 column of R Groups
+    - type: oneOrMoreRequired
       message: Must select at least 1 column of R Groups
     tooltip: Select all the R Group columns from the R Group Decomposition.  These groups will be replaced by Top 500 replacements.
   request:
