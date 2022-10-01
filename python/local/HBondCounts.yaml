@@ -1,6 +1,6 @@
 id: b5b991f7-6bfc-d8dd-6281-b6f68917a033
-name: PAINS Filters
-description: Flags structures if they match a PAINS SMARTS
+name: HBond counts
+description: Adds columns counting number of HBond donors and acceptors
 category: Chemistry
 version: 1.0.0
 serviceName: Script
@@ -35,7 +35,7 @@ tags:
 - color: '#c6fc00'
   text: calcprop
 updateBehavior: automatic
-maximumOutputColumns: !!int 4
+maximumOutputColumns: !!int 3
 maximumOutputTables: !!int 0
 chemistryFunction: !!bool false
 script: |
@@ -284,9 +284,6 @@ outputFields:
 - id: column2
   source: column
   type: default
-- id: column3
-  source: column
-  type: molecule
 allowedClients:
 - Analyst
 - WebPlayer
