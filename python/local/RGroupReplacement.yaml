@@ -1,6 +1,6 @@
-id: 0227312a-b83e-9777-d285-196c05263676
+id: 2abb2403-f1f4-4f52-4695-e5f5ce1bc9a8
 name: R Group Replacement
-description: 'Uses the Top 500 R Group replacement data of Bajorath et al. to produce analogues of the input molecules. '
+description: 'Uses the Top 500 R Group replacement data of Bajorath et al. to produce analogues of the input molecules based on output from an R Group Decomposition. '
 category: Chemistry
 version: 1.0.0
 serviceName: RGroupReplacement
@@ -11,6 +11,7 @@ inputFields:
     id: structureColumn
     label: Select structure column
     type: columnselect
+    tooltip: Select column of strutures that the R Group Decomposition was performed on.
     filters:
     - dataType: string
       contentType:
@@ -46,6 +47,7 @@ inputFields:
     id: coresColumn
     label: Select Cores column
     type: columnselect
+    tooltip: Select the column of cores produced by the R Group decomposition.
     filters:
     - dataType: string
       contentType:
@@ -59,18 +61,19 @@ inputFields:
       - chemical/x-mdl-molfile-v3000
     validationRules:
     - type: required
-      message: Must select column of 2D structures
+      message: Must select the column of cores produced by the R Group decomposition.
   request:
     id: coresColumn
     dataType: string
     selectorType: column
 - control:
     id: rGroupColumns
-    label: R Group columns
+    label: R Group columns from R Group Decomposition
     type: columnselect
     multi: !!bool true
     filters:
-    - dataType: binary
+    - dataType:
+      - binary
       contentType:
       - chemical/x-mdl-molfile
       - chemical/x-mdl-molfile-v3000
@@ -79,11 +82,14 @@ inputFields:
       - chemical/x-mdl-molfile
       - chemical/x-mdl-molfile-v3000
     - dataType: string
-      contentType: chemical/x-smiles
+      contentType:
+      - chemical/x-smiles
     - dataType: string
       contentType: chemical/x-daylight-smiles
     validationRules:
-    - type: required
+    - type: oneOrMoreRequired
+      message: Must select at least 1 column of R Groups
+    tooltip: Select all the R Group columns from the R Group Decomposition.  These groups will be replaced by Top 500 replacements.
   request:
     id: rGroupColumns
     dataType: list(string)
@@ -104,15 +110,6 @@ inputFields:
     tooltip: Layer 2 replacements are nearest neighbours of their parent Layer 1 replacement.
   request:
     id: useLayer2
-    dataType: boolean
-    data: !!bool false
-- control:
-    id: incOrigRGroups
-    label: Include original R Groups
-    type: checkbox
-    tooltip: When doing the replacements, include the original R Group in the substitution list, so that no change at that position is included in the products.
-  request:
-    id: incOrigRGroups
     dataType: boolean
     data: !!bool false
 tags:
