@@ -1,5 +1,5 @@
 id: 2abb2403-f1f4-4f52-4695-e5f5ce1bc9a8
-name: RGroup Bioisostere Replacement
+name: R Group Bioisostere Replacement
 description: 'Uses the Top 500 R Group replacement data of Bajorath et al. to produce analogues of the input molecules based on output from an R Group Decomposition. '
 category: Chemistry
 version: 1.0.0
