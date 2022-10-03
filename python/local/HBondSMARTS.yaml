@@ -214,11 +214,11 @@ script: |
       #colors = #f0f060, #14aadb, #3beb24
       high_str = ''
       if don_list:
-          high_str += f'COLOR #e60000\nATOMS {don_list}\nBONDS\n'
+          high_str += f'COLOR #ff9494\nATOMS {don_list}\nBONDS\n'
       if acc_list:
-          high_str += f'COLOR #0f0fff\nATOMS {acc_list}\nBONDS\n'
+          high_str += f'COLOR #b3b3ff\nATOMS {acc_list}\nBONDS\n'
       if orange_list:
-          high_str += f'COLOR #9239d5\nATOMS {orange_list}\nBONDS\n'
+          high_str += f'COLOR #dabcf1\nATOMS {orange_list}\nBONDS\n'
       if high_str:
           mol.SetProp('Renderer_Highlight', high_str)
   
