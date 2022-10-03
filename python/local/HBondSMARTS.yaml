@@ -214,9 +214,9 @@ script: |
       #colors = #f0f060, #14aadb, #3beb24
       high_str = ''
       if don_list:
-          high_str += f'COLOR #ff9494\nATOMS {don_list}\nBONDS\n'
+          high_str += f'COLOR #b3b3ff\nATOMS {don_list}\nBONDS\n'
       if acc_list:
-          high_str += f'COLOR #b3b3ff\nATOMS {acc_list}\nBONDS\n'
+          high_str += f'COLOR #ff9494\nATOMS {acc_list}\nBONDS\n'
       if orange_list:
           high_str += f'COLOR #d5b3ef\nATOMS {orange_list}\nBONDS\n'
       if high_str:
