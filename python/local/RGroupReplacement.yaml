@@ -131,3 +131,49 @@ allowedClients:
 - WebPlayer
 demoUrl: 
 limitBy: none
+ironPython: |
+    ####################################################
+    #  Copyright 2022 Glysade LLC, All Rights Reserved #
+    ####################################################
+
+    import sys,clr
+    from Spotfire.Dxp.Data import DataTable, DataManager
+    from Spotfire.Dxp.Application import PanelTypeIdentifiers
+    from Spotfire.Dxp.Application import Panel
+    import Spotfire.Dxp.Application.PanelCollection
+    from Spotfire.Dxp.Application.Visuals import BarChart, TrellisMode, IndividualScalingMode
+
+    from System import AppDomain
+    for asm in AppDomain.CurrentDomain.GetAssemblies():
+        if asm.GetName().Name == 'Charts':
+            clr.AddReference(asm.FullName)
+
+    from Charts import ChartsModel
+    model_type = ChartsModel
+
+    #tableId pass in args
+    dataTable = ResultTables[0]
+
+    if not dataTable:
+      raise Exception('target table not found')
+
+    page = Document.Pages.AddNew(dataTable.Name)
+    filteringScheme = Document.FilteringSchemes[0]
+    filterPanel = page.FilterPanel
+    filterPanel.FilteringSchemeReference = filteringScheme
+    if not filterPanel.Visible:
+        filterPanel.Visible = True
+    page.DetailsOnDemandPanel.Visible = False
+
+    for tblGrp in filterPanel.TableGroups:
+        if tblGrp.Name != dataTable.Name:
+            tblGrp.Visible = False
+
+    tableVis = page.Visuals.AddNew[model_type]()
+    tableVis.SetKeyValue('visualization','table-visualization')
+    key = dataTable.Id.ToString()+".table-visualization.table.transposed"
+    tableVis.SetKeyValue(key, 'false')
+    tableVis.DataTable = dataTable
+    tableVis.ConfigureColumns()
+    tableVis.Marking = Document.Data.Markings.DefaultMarkingReference
+    tableVis.SetActiveVisual()
