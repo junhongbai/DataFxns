@@ -678,6 +678,6 @@ ironPython: |
         
     tableVis.SetColumnRenderer(dataTable.Columns['MCS Molecule'], 'RDKit')
     tableVis.SetColumnRenderer(dataTable.Columns['MCS SMARTS'], None)
-    tableVis.SetValueGroup1Column(dataTable.Columns['MCS Number'])
+    tableVis.ValueGroup1Column = dataTable.Columns['MCS Number']
     tableVis.LimitToUnique = True
     tableVis.SetActiveVisual()
