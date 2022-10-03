@@ -321,7 +321,7 @@ ironPython: |
                 ccvis.SetColumnRenderer(ResultColumns[0],'RDKit')
                 
     filterPanel = page.FilterPanel
-    foreach tblGrp in filterPanel.TableGroups:
-        foreach fh in tblGrp.FilterHandles:
+    for tblGrp in filterPanel.TableGroups:
+        for fh in tblGrp.FilterHandles:
             if fh.FilterReference.Name.StartsWith('HBA SMARTS Count') or fh.FilterReference.Name.StartsWith('HBD SMARTS Count'):
                 fh.FilterReference.TypeId = RangeFilter
