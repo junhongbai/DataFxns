@@ -179,7 +179,7 @@ ironPython: |
     
     for column in dataTable.Columns:
         if column.Name == 'Analog':
-            visual.SetColumnRenderer(column, 'RDKit')
+            tableVis.SetColumnRenderer(column, 'RDKit')
             break
     
     tableVis.SetActiveVisual()
