@@ -176,13 +176,7 @@ ironPython: |
     tableVis.DataTable = dataTable
     tableVis.ConfigureColumns()
     tableVis.Marking = Document.Data.Markings.DefaultMarkingReference
-    
-    print('printing result columns')
-    for column in ResultColumns:
-        print('result = ', column.Name)
         
-    tableVis.SetColumnRenderer(ResultColumns[2], 'RDKit')
-    for column in ResultColumns:
-        print(column.Name)
+    tableVis.SetColumnRenderer(dataTable.Columns['Analog'], 'RDKit')
     
     tableVis.SetActiveVisual()
