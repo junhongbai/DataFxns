@@ -1,5 +1,5 @@
-id: b5b991f7-6bfc-d8dd-6281-b6f68917a033
-name: HBond counts
+id: b3c33bec-12d1-4673-9abc-8e88d35428be
+name: HBond SMARTS
 description: Adds columns counting number of HBond donors and acceptors
 category: Chemistry
 version: 1.0.0
@@ -201,23 +201,23 @@ script: |
       """
       # The highlighting code counts from 1, whereas the atom lists
       # come in counting from 0.
-      red_atoms = set(atoms1)
-      blue_atoms = set(atoms2)
-      both_atoms = red_atoms.intersection(blue_atoms)
-      red_atoms = red_atoms.difference(both_atoms)
-      blue_atoms = blue_atoms.difference(both_atoms)
+      don_atoms = set(atoms1)
+      acc_atoms = set(atoms2)
+      both_atoms = don_atoms.intersection(acc_atoms)
+      don_atoms = don_atoms.difference(both_atoms)
+      acc_atoms = acc_atoms.difference(both_atoms)
   
-      red_list = ' '.join([str(a+1) for a in red_atoms])
-      blue_list = ' '.join([str(a + 1) for a in blue_atoms])
+      don_list = ' '.join([str(a+1) for a in don_atoms])
+      acc_list = ' '.join([str(a + 1) for a in acc_atoms])
       orange_list = ' '.join([str(a + 1) for a in both_atoms])
   
       high_str = ''
-      if red_list:
-          high_str += f'COLOR #dc143c\nATOMS {red_list}\nBONDS\n'
-      if blue_list:
-          high_str += f'COLOR #00bfff\nATOMS {blue_list}\nBONDS\n'
+      if don_list:
+          high_str += f'COLOR #f0f060\nATOMS {don_list}\nBONDS\n'
+      if acc_list:
+          high_str += f'COLOR #14aadb\nATOMS {acc_list}\nBONDS\n'
       if orange_list:
-          high_str += f'COLOR #ffbf00\nATOMS {orange_list}\nBONDS\n'
+          high_str += f'COLOR #3beb24\nATOMS {orange_list}\nBONDS\n'
       if high_str:
           mol.SetProp('Renderer_Highlight', high_str)
   
@@ -266,17 +266,15 @@ script: |
           don_counts.append(hbc[1])
           acc_counts.append(hbc[2])
       out_mols_col = molecules_to_column(out_mols,
-                                         f'Hbonds {input_column.name}',
+                                         f'HBond SMARTS Matches',
                                          DataType.BINARY)
-      don_counts_col = ColumnData(name=f'Donor counts {input_column.name}',
+      don_counts_col = ColumnData(name=f'HBD SMARTS Count',
                                   dataType=DataType.INTEGER,
                                   values=don_counts)
-      acc_counts_col = ColumnData(name=f'Acceptor counts {input_column.name}',
+      acc_counts_col = ColumnData(name=f'HBA SMARTS Count',
                                   dataType=DataType.INTEGER,
                                   values=acc_counts)
-      response = DataFunctionResponse(outputColumns=[out_mols_col,
-                                                     don_counts_col,
-                                                     acc_counts_col])
+      response = DataFunctionResponse(outputColumns=[out_mols_col,acc_counts_col,don_counts_col])
   
       return response
 outputFields:
@@ -286,12 +284,36 @@ outputFields:
   name: Structure column
 - id: column1
   source: column
-  type: filter
+  type: default
 - id: column2
   source: column
-  type: default
+  type: filter
+- id: column3
+  source: column
+  type: filter
 allowedClients:
 - Analyst
 - WebPlayer
 demoUrl:
 limitBy: none
+ironPython: |
+    ####################################################
+    #  Copyright 2022 Glysade LLC, All Rights Reserved #
+    ####################################################
+
+    import sys,clr
+
+    from System import AppDomain
+    for asm in AppDomain.CurrentDomain.GetAssemblies():
+        if asm.GetName().Name == 'Charts':
+            clr.AddReference(asm.FullName)
+
+    from Charts import ChartsModel
+    model_type = ChartsModel
+
+    page = Document.ActivePageReference
+    for visual in page.Visuals:
+        if visual.TypeId.Name == 'Lead Discovery ChemCharts':
+            ccvis = visual.As[ChartsModel]()
+            if ccvis.GetKeyValue('visualization') == 'table-visualization' and ccvis.DataTable.Columns.Contains(ResultColumns[0].Name):
+                ccvis.SetColumnRenderer(ResultColumns[0],'RDKit')

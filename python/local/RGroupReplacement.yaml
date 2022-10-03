@@ -177,8 +177,8 @@ ironPython: |
     tableVis.ConfigureColumns()
     tableVis.Marking = Document.Data.Markings.DefaultMarkingReference
     
-    for column in dataTable.Columns:
-        if column.Name == 'Analog':
+    for column in ResultColumns:
+        if 'Analog' in column.Name:
             tableVis.SetColumnRenderer(column, 'RDKit')
             break
     
