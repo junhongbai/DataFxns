@@ -538,7 +538,7 @@ script: |
       # print(f'atoms : {high_ats}')
       # print(f'bonds : {high_bnds}')
       high_bnds_str = ' '.join([str(b + 1) for b in high_bnds])
-      prop_text = f'COLOR #f0f060\nATOMS\nBONDS {high_bnds_str}'
+      prop_text = f'COLOR #14aadb\nATOMS\nBONDS {high_bnds_str}'
       mol.SetProp('Renderer_Highlight', prop_text)
   
   
@@ -606,7 +606,7 @@ script: |
       nbonds_column = ColumnData(name='MCS Num Bonds', dataType=DataType.INTEGER, values=mcs_nbonds)
       mol_column = molecules_to_column(mols, 'MCS Molecule', DataType.BINARY)
       id_column = ColumnData(name='ID MCS Molecule', dataType=ids_type, values=ids)
-      all_cols = [mcs_num_column, qmol_column, mol_column, natoms_column, num_mols_column, nbonds_column,
+      all_cols = [mcs_num_column, qmol_column, mol_column, num_mols_column, natoms_column, nbonds_column,
                    smarts_column, id_column]
       output_table = TableData(tableName=table_name, columns=all_cols)
       return output_table
@@ -677,6 +677,7 @@ ironPython: |
     tableVis.Marking = Document.Data.Markings.DefaultMarkingReference
         
     tableVis.SetColumnRenderer(dataTable.Columns['MCS Molecule'], 'RDKit')
-    tableVis.SetColumnRenderer(dataTable.Columns['MCS Smarts'], None)
-    
+    tableVis.SetColumnRenderer(dataTable.Columns['MCS SMARTS'], None)
+    tableVis.SetValueGroup1Column(dataTable.Columns['MCS Number'])
+    tableVis.LimitToUnique = True
     tableVis.SetActiveVisual()
