@@ -218,7 +218,7 @@ script: |
       if acc_list:
           high_str += f'COLOR #b3b3ff\nATOMS {acc_list}\nBONDS\n'
       if orange_list:
-          high_str += f'COLOR #dabcf1\nATOMS {orange_list}\nBONDS\n'
+          high_str += f'COLOR #d5b3ef\nATOMS {orange_list}\nBONDS\n'
       if high_str:
           mol.SetProp('Renderer_Highlight', high_str)
   
@@ -303,6 +303,7 @@ ironPython: |
     ####################################################
 
     import sys,clr
+    from Spotfire.Dxp.Application.Filters.FilterTypeIdentifiers import RangeFilter
 
     from System import AppDomain
     for asm in AppDomain.CurrentDomain.GetAssemblies():
@@ -318,3 +319,9 @@ ironPython: |
             ccvis = visual.As[ChartsModel]()
             if ccvis.GetKeyValue('visualization') == 'table-visualization' and ccvis.DataTable.Columns.Contains(ResultColumns[0].Name):
                 ccvis.SetColumnRenderer(ResultColumns[0],'RDKit')
+                
+    filterPanel = page.FilterPanel
+    foreach tblGrp in filterPanel.TableGroups:
+        foreach fh in tblGrp.FilterHandles:
+            if fh.FilterReference.Name.StartsWith('HBA SMARTS Count') or fh.FilterReference.Name.StartsWith('HBD SMARTS Count'):
+                fh.FilterReference.TypeId = RangeFilter
