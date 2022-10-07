@@ -601,7 +601,7 @@ script: |
       qmol_column = molecules_to_column(qmols, 'MCS', DataType.BINARY)
       smarts_column = ColumnData(name='MCS SMARTS', contentType='chemical/x-smarts',
                                  dataType=DataType.STRING, values=smarts)
-      num_mols_column = ColumnData(name='MCS Member Count', dataType=DataType.INTEGER, values=num_mols)
+      num_mols_column = ColumnData(name='MCS Molecule Count', dataType=DataType.INTEGER, values=num_mols)
       natoms_column = ColumnData(name='MCS Num Atoms', dataType=DataType.INTEGER, values=mcs_natoms)
       nbonds_column = ColumnData(name='MCS Num Bonds', dataType=DataType.INTEGER, values=mcs_nbonds)
       mol_column = molecules_to_column(mols, 'MCS Molecule', DataType.BINARY)
