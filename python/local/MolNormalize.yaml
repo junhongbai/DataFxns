@@ -175,7 +175,7 @@ outputFields:
   name: Structure column
 - id: column1
   source: column
-  type: filter
+  type: default
   name: Output exact mass column
 allowedClients:
 - Analyst
