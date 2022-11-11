@@ -43,17 +43,17 @@ maximumOutputColumns: !!int 1
 maximumOutputTables: !!int 0
 chemistryFunction: !!bool false
 script: |
-    from df.chem_helper import column_to_molecules, molecules_to_column
-    from df.data_transfer import DataFunctionRequest, DataFunctionResponse, DataType, string_input_field
+  from df.chem_helper import column_to_molecules, molecules_to_column
+  from df.data_transfer import DataFunctionRequest, DataFunctionResponse, DataType, string_input_field
 
 
-    def execute(request: DataFunctionRequest) -> DataFunctionResponse:
-        column_id = string_input_field(request, 'structureColumn')
-        input_column = request.inputColumns[column_id]
-        mols = column_to_molecules(input_column)
-        output_column = molecules_to_column(mols,'SMILES',DataType.STRING, content_type='chemical/x-smiles')
-        response = DataFunctionResponse(outputColumns=[output_column])
-        return response
+  def execute(request: DataFunctionRequest) -> DataFunctionResponse:
+      column_id = string_input_field(request, 'structureColumn')
+      input_column = request.inputColumns[column_id]
+      mols = column_to_molecules(input_column)
+      output_column = molecules_to_column(mols,'SMILES',DataType.STRING, content_type='chemical/x-smiles')
+      response = DataFunctionResponse(outputColumns=[output_column])
+      return response
 outputFields:
 - id: structureColumn
   source: inputField
@@ -61,8 +61,8 @@ outputFields:
   name: Structure column
 - id: column1
   source: column
-  type: filter
-  name: Output exact mass column
+  type: default
+  name: Output SMILES column
 allowedClients:
 - Analyst
 - WebPlayer
