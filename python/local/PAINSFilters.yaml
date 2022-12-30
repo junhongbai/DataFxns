@@ -62,7 +62,7 @@ script: |
       """
       query_dict = {}
       for name, smt in query_defs.items():
-          qmol = Chem.MolFromSmarts(smt)
+          qmol = Chem.MolFromSmarts(smt, mergeHs=True)
           if not qmol:
               print(f'ERROR : failed to process SMARTS string {smt} with name {name}.')
           else:
