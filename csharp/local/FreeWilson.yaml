@@ -33,7 +33,7 @@ inputFields:
     dataType: string
     selectorType: column
 - control:
-    id: rGroupColumns
+    id: rGroupColumnIds
     label: R Group columns
     type: columnselect
     multi: !!bool true
@@ -57,7 +57,7 @@ inputFields:
     - type: required
       message: ''
   request:
-    id: rGroupColumns
+    id: rGroupColumnIds
     dataType: list(string)
     selectorType: column
 - control:
@@ -80,12 +80,12 @@ inputFields:
     dataType: list(string)
     selectorType: column
 - control:
-    id: extraColumnsIds
+    id: extraColumnIds
     label: Extra columns
     type: columnselect
     multi: !!bool true
   request:
-    id: extraColumnsIds
+    id: extraColumnIds
     dataType: list(string)
     selectorType: column
 - control:
@@ -118,12 +118,13 @@ inputFields:
     id: numberFolds
     dataType: integer
 - control:
-    id: orderDescending
-    label: Order descending
+    id: enumerateAscending
+    label: Order ascending (lower property value is better)
     type: checkbox
   request:
-    id: orderDescending
+    id: enumerateAscending
     dataType: boolean
+    data: !!bool false
 - control:
     id: detectLogDistribution
     label: Detect log distribution
@@ -131,6 +132,15 @@ inputFields:
   request:
     id: detectLogDistribution
     dataType: boolean
+    data: !!bool false
+- control:
+    id: excludeUntrainedInCrossValidation
+    label: Exclude compounds with untrained RGroups from cross validation
+    type: checkbox
+  request:
+    id: excludeUntrainedInCrossValidation
+    dataType: boolean
+    data: !!bool false
 tags:
 - color: '#50AF28'
   text: chemistry
@@ -138,8 +148,8 @@ tags:
   text: analyze
 updateBehavior: manual
 maximumOutputColumns: !!int 0
-maximumOutputTables: !!int 1
-chemistryFunction: !!bool false
+maximumOutputTables: !!int 3
+chemistryFunction: true
 allowedClients:
 - Analyst
 - WebPlayer
