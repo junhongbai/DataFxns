@@ -1,0 +1,182 @@
+id: 2abb2403-f1f4-4f52-4695-e5f5ce1bc9a8
+name: R Group Bioisostere Replacement
+description: 'Uses the Top 500 R Group replacement data of Bajorath et al. to produce analogues of the input molecules based on output from an R Group Decomposition. '
+category: Chemistry
+version: 1.0.0
+serviceName: RGroupReplacement
+serviceUri: glysade.python
+executorId: Glysade.CPythonDataFxn
+inputFields:
+- control:
+    id: structureColumn
+    label: Select structure column
+    type: columnselect
+    tooltip: Select column of strutures that the R Group Decomposition was performed on.
+    filters:
+    - dataType: string
+      contentType:
+      - chemical/x-mdl-molfile
+      - chemical/x-mdl-molfile-v3000
+      - chemical/x-smiles
+      - chemical/x-daylight-smiles
+    - dataType: binary
+      contentType:
+      - chemical/x-mdl-molfile
+      - chemical/x-mdl-molfile-v3000
+    validationRules:
+    - type: required
+      message: Must select column of 2D structures
+  request:
+    id: structureColumn
+    dataType: string
+    selectorType: column
+- control:
+    id: idColumn
+    label: Column of IDs
+    type: columnselect
+    multi: !!bool false
+    tooltip: Column to use for IDs of input structures for filtering analogues
+    validationRules:
+    - type: required
+      message: ''
+  request:
+    id: idColumn
+    dataType: string
+    selectorType: column
+- control:
+    id: coresColumn
+    label: Select Cores column
+    type: columnselect
+    tooltip: Select the column of cores produced by the R Group decomposition.
+    filters:
+    - dataType: string
+      contentType:
+      - chemical/x-mdl-molfile
+      - chemical/x-mdl-molfile-v3000
+      - chemical/x-smiles
+      - chemical/x-daylight-smiles
+    - dataType: binary
+      contentType:
+      - chemical/x-mdl-molfile
+      - chemical/x-mdl-molfile-v3000
+    validationRules:
+    - type: required
+      message: Must select the column of cores produced by the R Group decomposition.
+  request:
+    id: coresColumn
+    dataType: string
+    selectorType: column
+- control:
+    id: rGroupColumns
+    label: R Group columns from R Group Decomposition
+    type: columnselect
+    multi: !!bool true
+    filters:
+    - dataType:
+      - binary
+      contentType:
+      - chemical/x-mdl-molfile
+      - chemical/x-mdl-molfile-v3000
+    - dataType: string
+      contentType:
+      - chemical/x-mdl-molfile
+      - chemical/x-mdl-molfile-v3000
+    - dataType: string
+      contentType:
+      - chemical/x-smiles
+    - dataType: string
+      contentType: chemical/x-daylight-smiles
+    validationRules:
+    - type: oneOrMoreRequired
+      message: Must select at least 1 column of R Groups
+    tooltip: Select all the R Group columns from the R Group Decomposition.  These groups will be replaced by Top 500 replacements.
+  request:
+    id: rGroupColumns
+    dataType: list(string)
+    selectorType: column
+- control:
+    id: useLayer1
+    label: Use Layer 1 replacements
+    type: checkbox
+    tooltip: The direct replacements
+  request:
+    id: useLayer1
+    dataType: boolean
+    data: !!bool true
+- control:
+    id: useLayer2
+    label: User Layer 2 replacements
+    type: checkbox
+    tooltip: Layer 2 replacements are nearest neighbours of their parent Layer 1 replacement.
+  request:
+    id: useLayer2
+    dataType: boolean
+    data: !!bool false
+tags:
+- color: '#50AF28'
+  text: chemistry
+- color: '#c6fc00'
+  text: calcprop
+updateBehavior: automatic
+maximumOutputColumns: !!int 1
+maximumOutputTables: !!int 1
+chemistryFunction: !!bool false
+outputFields:
+  - id: table1
+    source: table
+    type: default
+    name: Output R Group Replacements table
+allowedClients:
+- Analyst
+- WebPlayer
+demoUrl: 
+limitBy: none
+ironPython: |
+    ####################################################
+    #  Copyright 2022 Glysade LLC, All Rights Reserved #
+    ####################################################
+
+    import sys,clr
+    from Spotfire.Dxp.Data import DataTable, DataManager
+    from Spotfire.Dxp.Application import PanelTypeIdentifiers
+    from Spotfire.Dxp.Application import Panel
+    import Spotfire.Dxp.Application.PanelCollection
+    from Spotfire.Dxp.Application.Visuals import BarChart, TrellisMode, IndividualScalingMode
+
+    from System import AppDomain
+    for asm in AppDomain.CurrentDomain.GetAssemblies():
+        if asm.GetName().Name == 'Charts':
+            clr.AddReference(asm.FullName)
+
+    from Charts import ChartsModel
+    model_type = ChartsModel
+
+    #tableId pass in args
+    dataTable = ResultTables[0]
+
+    if not dataTable:
+      raise Exception('target table not found')
+
+    page = Document.Pages.AddNew(dataTable.Name)
+    filteringScheme = Document.FilteringSchemes[0]
+    filterPanel = page.FilterPanel
+    filterPanel.FilteringSchemeReference = filteringScheme
+    if not filterPanel.Visible:
+        filterPanel.Visible = True
+    page.DetailsOnDemandPanel.Visible = False
+
+    for tblGrp in filterPanel.TableGroups:
+        if tblGrp.Name != dataTable.Name:
+            tblGrp.Visible = False
+
+    tableVis = page.Visuals.AddNew[model_type]()
+    tableVis.SetKeyValue('visualization','table-visualization')
+    key = dataTable.Id.ToString()+".table-visualization.table.transposed"
+    tableVis.SetKeyValue(key, 'false')
+    tableVis.DataTable = dataTable
+    tableVis.ConfigureColumns()
+    tableVis.Marking = Document.Data.Markings.DefaultMarkingReference
+        
+    tableVis.SetColumnRenderer(dataTable.Columns['Analog'], 'RDKit')
+    
+    tableVis.SetActiveVisual()
