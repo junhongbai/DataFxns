@@ -139,8 +139,13 @@ ironPython: |
   page.ApplyLayout(layout)
 updateBehavior: automatic
 maximumOutputColumns: !!int 1
-maximumOutputTables: !!int 1
+maximumOutputTables: !!int 0
 chemistryFunction: !!bool false
+outputFields:
+- id: column1
+  name: Cluster Number
+  source: column
+  type: filter
 allowedClients:
 - Analyst
 - WebPlayer
