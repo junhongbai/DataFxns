@@ -247,7 +247,7 @@ script: |
           response = DataFunctionResponse(outputTables=[output_table])
       else:
           prods = [p[1] for p in products]
-          products_column = molecules_to_column(prods, f'{input_column.name} Products',
+          products_column = molecules_to_column(prods, f'Reaction Product',
                                                 DataType.BINARY)
           response = DataFunctionResponse(outputColumns=[products_column])
       return response
@@ -258,8 +258,8 @@ outputFields:
     name: Structure column
   - id: column1
     source: column
-    type: filter
-    name: Output exact mass column
+    type: default
+    name: Reaction product column
 allowedClients:
   - Analyst
   - WebPlayer
