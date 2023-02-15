@@ -57,14 +57,14 @@ inputFields:
     radios:
     - text: Morgan
       value: morgan
-    - text: Pattern
-      value: pattern
+    - text: Topological
+      value: topological
     - text: MACCS
       value: maccs
     - text: Atom Pair
       value: atompair
-    - text: Topological Torsion
-      value: topological
+    - text: Pattern
+      value: pattern
   request:
     id: fpType
     dataType: string
