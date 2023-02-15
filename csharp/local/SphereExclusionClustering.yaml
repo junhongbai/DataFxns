@@ -53,6 +53,7 @@ inputFields:
     id: fpType
     label: Fingerprint Type
     type: radiogroup
+    tooltip: Type of fingerprint to use for clustering
     radios:
     - text: Morgan
       value: morgan
@@ -61,9 +62,9 @@ inputFields:
     - text: MACCS
       value: maccs
     - text: Atom Pair
-      value: atomPair
+      value: atompair
     - text: Topological Torsion
-      value: topolTors
+      value: topological
   request:
     id: fpType
     dataType: string
