@@ -32,6 +32,41 @@ inputFields:
     id: structureColumn
     dataType: string
     selectorType: column
+- control:
+    id: numClusters
+    label: Number of clusters
+    type: text
+    tooltip: Number of clusters to be created
+    validationRules:
+    - type: required
+      message: ''
+    - type: numeric
+      message: ''
+    - type: range
+      message: ''
+      min: !!int 2
+  request:
+    id: numClusters
+    dataType: integer
+    data: !!int 100
+- control:
+    id: fpType
+    label: Fingerprint Type
+    type: radiogroup
+    radios:
+    - text: Morgan
+      value: morgan
+    - text: Pattern
+      value: pattern
+    - text: MACCS
+      value: maccs
+    - text: Atom Pair
+      value: atomPair
+    - text: Topological Torsion
+      value: topolTors
+  request:
+    id: fpType
+    dataType: string
 tags:
 - color: '#50AF28'
   text: chemistry
