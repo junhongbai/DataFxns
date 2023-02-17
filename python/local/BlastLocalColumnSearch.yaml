@@ -1,6 +1,6 @@
 id: b486f3d0-e778-ace1-51a2-63934f1910a5
 name: Blast Local Column Search
-description: Performs a BLAST search of user selected databases using queries from a sequence column
+description: Performs a BLAST search of user selected databases using queries from a sequence column.  Please contact business@glysade.com for the latest database download link.
 category: Biopolymer
 version: 1.0.0
 serviceName: BlastLocalColumnSearch
