@@ -62,7 +62,7 @@ inputFields:
   request:
     id: targetTable
     dataType: string
-    selectorType: column
+    selectorType: table
 - control:
     id: targetStructureColumn
     label: Target structure column
@@ -154,6 +154,10 @@ inputFields:
     id: prefix
     label: Column or table prefix
     type: text
+    group:
+      name: Advanced
+      collapasible: !!bool true
+      callapsed: !!bool true
   request:
     id: prefix
     dataType: string
@@ -162,6 +166,8 @@ inputFields:
     id: suffix
     label: Column or table suffix
     type: text
+    group:
+      name: Advanced
   request:
     id: suffix
     dataType: string
