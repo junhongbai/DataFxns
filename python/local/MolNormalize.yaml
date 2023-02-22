@@ -176,7 +176,7 @@ outputFields:
 - id: column1
   source: column
   type: default
-  name: Output exact mass column
+  name: Normalized structures
 allowedClients:
 - Analyst
 - WebPlayer
