@@ -186,4 +186,4 @@ allowedClients:
 - WebPlayer
 demoUrl: 
 limitBy: none
-mimimumChartsVersion: 4.2.0.0
+minimumChartsVersion: 4.2.0.0
