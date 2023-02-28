@@ -139,6 +139,7 @@ inputFields:
     id: numberNeighbors
     label: Number neighbors
     type: text
+    tooltip: Number of neighbors is not used when calculating exact matches
     validationRules:
     - type: required
       message: ''
@@ -156,8 +157,8 @@ inputFields:
     type: text
     group:
       name: Advanced
-      collapasible: !!bool true
-      callapsed: !!bool true
+      collapsible: !!bool true
+      collapsed: !!bool true
   request:
     id: prefix
     dataType: string
