@@ -86,7 +86,7 @@ inputFields:
     multi: !!bool true
     tooltip: Select additional columns to appear in the output table
   request:
-    id: propertyColumns
+    id: additionalColumns
     dataType: list(string)
     selectorType: column
 tags:
