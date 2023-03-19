@@ -1,0 +1,91 @@
+id: 7a7d3f05-5429-df6f-8013-3bc7dd491ad0
+name: Linker Replacements
+description: Replaces linkers in molecules with bioisosteric linkers
+category: Chemistry
+version: 1.0.0
+serviceName: LinkerReplacements
+serviceUri: glysade.python
+executorId: Glysade.CPythonDataFxn
+inputFields:
+- control:
+    id: structureColumn
+    label: Select structure column
+    type: columnselect
+    filters:
+    - dataType: string
+      contentType:
+      - chemical/x-mdl-molfile
+      - chemical/x-mdl-molfile-v3000
+      - chemical/x-smiles
+      - chemical/x-daylight-smiles
+    - dataType: binary
+      contentType:
+      - chemical/x-mdl-molfile
+      - chemical/x-mdl-molfile-v3000
+    validationRules:
+    - type: required
+      message: Must select column of 2D structures
+  request:
+    id: structureColumn
+    dataType: string
+    selectorType: column
+- control:
+    id: plusDeltaBonds
+    label: Maximum decrease in number of bonds
+    type: text
+    tooltip: Constrains the decrease in the number of bonds in the linker. Default -1 means no limit.
+    validationRules:
+    - type: numeric
+      message: ''
+    - type: range
+      message: ''
+      min: !!int -1
+      max: !!int 5
+  request:
+    id: plusDeltaBonds
+    dataType: integer
+    data: !!int -1
+- control:
+    id: minusDeltaBonds
+    label: Enter label for inputField2
+    type: text
+  request:
+    id: minusDeltaBonds
+    dataType: integer
+    data: !!int -1
+- control:
+    id: matchHbonds
+    label: Match Linker HBonds
+    type: checkbox
+    tooltip: 'If the linker has an HBonding group, the replacement must too, if not, not. '
+  request:
+    id: matchHbonds
+    dataType: boolean
+    data: !!bool false
+tags:
+- color: '#50AF28'
+  text: chemistry
+updateBehavior: automatic
+maximumOutputColumns: !!int 1
+maximumOutputTables: !!int 1
+chemistryFunction: !!bool false
+outputFields:
+- id: structureColumn
+  source: inputField
+  type: default
+  name: Structure column
+- id: column1
+  source: column
+  type: filter
+- id: column2
+  source: column
+  type: default
+- id: column3
+  source: column
+  type: molecule
+allowedClients:
+- Analyst
+- WebPlayer
+demoUrl: 
+limitBy: none
+minimumChartsVersion: 
