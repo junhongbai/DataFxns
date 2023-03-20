@@ -31,9 +31,9 @@ inputFields:
     selectorType: column
 - control:
     id: plusDeltaBonds
-    label: Maximum decrease in number of bonds
+    label: Maximum increase in number of bonds
     type: text
-    tooltip: Constrains the decrease in the number of bonds in the linker. Default -1 means no limit.
+    tooltip: Constrains the increase in the number of bonds in the linker. Default -1 means no limit.
     validationRules:
     - type: numeric
       message: ''
@@ -47,8 +47,16 @@ inputFields:
     data: !!int -1
 - control:
     id: minusDeltaBonds
-    label: Enter label for inputField2
+    label: Maximum decrease in number of bonds
     type: text
+    tooltip: Constrains the decrease in the number of bonds in the linker. Default -1 means no limit.
+    validationRules:
+    - type: numeric
+      message: ''
+    - type: range
+      message: ''
+      min: !!int -1
+      max: !!int 5
   request:
     id: minusDeltaBonds
     dataType: integer
