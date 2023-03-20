@@ -70,19 +70,10 @@ maximumOutputColumns: !!int 1
 maximumOutputTables: !!int 1
 chemistryFunction: !!bool false
 outputFields:
-- id: structureColumn
-  source: inputField
-  type: default
-  name: Structure column
-- id: column1
-  source: column
-  type: filter
-- id: column2
-  source: column
-  type: default
-- id: column3
-  source: column
-  type: molecule
+  - id: table1
+    source: table
+    type: default
+    name: Output Linker Replacements table
 allowedClients:
 - Analyst
 - WebPlayer
