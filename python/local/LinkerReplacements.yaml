@@ -70,6 +70,22 @@ inputFields:
     id: matchHbonds
     dataType: boolean
     data: !!bool false
+- control:
+    id: maxMolsPerInput
+    label: Maximum number of molecules per input molecule
+    type: text
+    tooltip: Constrains the total number of molecules that each input molecule can produce.  In case there's a combinatorial explosion in a larger molecule.
+    validationRules:
+    - type: numeric
+      message: ''
+    - type: range
+      message: ''
+      min: !!int 1
+      max: !!int 500000
+  request:
+    id: maxMolsPerInput
+    dataType: integer
+    data: !!int 1000
 tags:
 - color: '#50AF28'
   text: chemistry
