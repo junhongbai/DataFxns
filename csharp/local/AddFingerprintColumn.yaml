@@ -1,6 +1,6 @@
 id: 3effe3f6-1518-d4c5-c4f8-7744072aaabd
-name: Create Fingerprints
-description: Creates fingerprints for structures in a data table column
+name: Add Fingerprint Column
+description: Creates fingerprints for accelerating substructure and similarity searches
 category: Chemistry
 version: 1.0.0
 serviceName: Fingerprint
