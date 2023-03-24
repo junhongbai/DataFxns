@@ -79,16 +79,6 @@ inputFields:
     id: propertyColumns
     dataType: list(string)
     selectorType: column
-- control:
-    id: additionalColumns
-    label: Additional columns
-    type: columnselect
-    multi: !!bool true
-    tooltip: Select additional columns to appear in the output table
-  request:
-    id: additionalColumns
-    dataType: list(string)
-    selectorType: column
 tags:
 - text: chemistry
   color: '#50AF28'
