@@ -1,4 +1,4 @@
-id: 7a7d3f05-5429-df6f-8013-3bc7dd491ad0
+id: cf61bc05-8e4c-bf30-8107-2b9a4769f73c
 name: Linker Replacements
 description: Replaces linkers in molecules with bioisosteric linkers
 category: Chemistry
@@ -27,6 +27,19 @@ inputFields:
       message: Must select column of 2D structures
   request:
     id: structureColumn
+    dataType: string
+    selectorType: column
+- control:
+    id: idColumn
+    label: Parent ID column
+    type: columnselect
+    multi: !!bool false
+    tooltip: Select column of IDs that will be used in output table.
+    validationRules:
+    - type: required
+      message: ''
+  request:
+    id: idColumn
     dataType: string
     selectorType: column
 - control:
@@ -94,10 +107,10 @@ maximumOutputColumns: !!int 1
 maximumOutputTables: !!int 1
 chemistryFunction: !!bool false
 outputFields:
-  - id: table1
-    source: table
-    type: default
-    name: Output Linker Replacements table
+- id: table1
+  source: table
+  type: default
+  name: Output Linker Replacements table
 allowedClients:
 - Analyst
 - WebPlayer
