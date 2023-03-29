@@ -1,4 +1,4 @@
-id: b383c57c-2564-d71c-8f59-7dc1f6abcaff
+id: 87934fb7-d141-994b-4596-1c9a4edf7f23
 name: Linker Replacements
 description: Replaces linkers in molecules with bioisosteric linkers
 category: Chemistry
@@ -81,6 +81,15 @@ inputFields:
     tooltip: 'If the linker has an HBonding group, the replacement must too, if not, not. '
   request:
     id: matchHbonds
+    dataType: boolean
+    data: !!bool false
+- control:
+    id: noRingLinkers
+    label: Exclude small rings as linkers
+    type: checkbox
+    tooltip: By default, small rings may be included as linkers.  This excludes them.
+  request:
+    id: noRingLinkers
     dataType: boolean
     data: !!bool false
 - control:
