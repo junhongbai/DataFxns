@@ -154,6 +154,10 @@ script: |
           next_mol_smi = prod_smi
   
       if made_new:
+          # This was in the original code, but it's not clear where
+          # old_mapno comes from for the highlights.  It seems to do
+          # nothing at present.
+          highlight_product(prod)
           return [prod]
       else:
           return [None]
