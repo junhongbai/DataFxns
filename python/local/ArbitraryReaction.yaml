@@ -126,27 +126,35 @@ script: |
       """
       Do singleReaction or exhaustiveReaction mode
       """
-      final_mols = deque([mol])
-      final_mols_smiles = deque([Chem.MolToSmiles(mol)])
+      next_mol = mol
+      next_mol_smi = Chem.MolToSmiles(next_mol)
+      made_new = False
       while True:
-          next_mol = final_mols.popleft()
-          these_prods = rxn.RunReactants((next_mol,))
-          # these_prods is a tuple of tuples of Chem.Mol
-          for prods in these_prods:
-              new_prod = combine_prods_to_one_mol(prods)
-              if new_prod is None:
-                  continue
-              prod_smi = Chem.MolToSmiles(new_prod)
-              if prod_smi not in final_mols_smiles:
-                  highlight_product(new_prod)
-                  final_mols.append(new_prod)
-                  final_mols_smiles.append(prod_smi)
-                  if reaction_mode == 'singleReaction':
-                      break
-          if len(final_mols) < 2:
+          prods = rxn.RunReactants((next_mol,))
+          prod = None
+          prod_smi = None
+          for p in prods:
+              next_prod = combine_prods_to_one_mol(p)
+              if next_prod is not None:
+                  prod = next_prod
+                  break
+          if prod is None:
+              prod = next_mol
+              # if nothing good came of it, there's no more to do.
               break
-      if final_mols:
-          return [final_mols[0]]
+          # take the first product only
+          prod_smi = Chem.MolToSmiles(prod)
+  
+          # If doing a single reaction or the product was the same as
+          # what went in, it's all done.
+          made_new = next_mol_smi != prod_smi
+          if reaction_mode == 'singleReaction' or not made_new:
+              break
+          next_mol = prod
+          next_mol_smi = prod_smi
+  
+      if made_new:
+          return [prod]
       else:
           return [None]
   
