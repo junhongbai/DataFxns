@@ -74,6 +74,7 @@ script: |
   from typing import Optional
   
   from rdkit import Chem
+  from rdkit.Chem import AllChem
   from rdkit.Chem.rdChemReactions import ChemicalReaction
   from rdkit.Chem.rdchem import MolSanitizeException
   
@@ -125,6 +126,9 @@ script: |
       if check_mol is None:
           return None
       else:
+          # Any new bits have zero coords which makes for a substandard
+          # depiction.
+          AllChem.Compute2DCoords(new_prod)
           return new_prod
   
   
