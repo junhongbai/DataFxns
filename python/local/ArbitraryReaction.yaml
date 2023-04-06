@@ -116,9 +116,16 @@ script: |
       except MolSanitizeException:
           return None
       # sometimes we'll get a molecule that sanitizes but
-      # generates a bad SMILES.  Skip those.
+      # generates a bad SMILES.  Skip those.  But return the
+      # original product if it's kosher, because it will retain the
+      # props from the original, crucially old_mapno which is used for
+      # highlighting the bits that didn't change.
       smi = Chem.MolToSmiles(new_prod)
-      return Chem.MolFromSmiles(smi)
+      check_mol = Chem.MolFromSmiles(smi)
+      if check_mol is None:
+          return None
+      else:
+          return new_prod
   
   
   def run_reaction_single_product(mol: Chem.Mol, rxn: ChemicalReaction,
@@ -132,7 +139,6 @@ script: |
       while True:
           prods = rxn.RunReactants((next_mol,))
           prod = None
-          prod_smi = None
           for p in prods:
               next_prod = combine_prods_to_one_mol(p)
               if next_prod is not None:
