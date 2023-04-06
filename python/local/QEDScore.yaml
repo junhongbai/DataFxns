@@ -55,14 +55,10 @@ script: |
       response = DataFunctionResponse(outputColumns=[output_column])
       return response
 outputFields:
-- id: structureColumn
-  source: inputField
-  type: default
-  name: Structure column
 - id: column1
   source: column
   type: filter
-  name: Output exact mass column
+  name: Output QED score column
 allowedClients:
 - Analyst
 - WebPlayer
