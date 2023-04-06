@@ -49,8 +49,8 @@ script: |
       column_id = string_input_field(request, 'structureColumn')
       input_column = request.inputColumns[column_id]
       mols = column_to_molecules(input_column)
-      scores = [None if m is None else float(f'{QED.qed(m):6.4f}') for m in mols]
-      output_column = ColumnData(name=f'{input_column.name} QED Score',
+      scores = [None if m is None else QED.qed(m) for m in mols]
+      output_column = ColumnData(name=f'QED Score {input_column.name}',
                                  dataType=DataType.DOUBLE, values=scores)
       response = DataFunctionResponse(outputColumns=[output_column])
       return response
