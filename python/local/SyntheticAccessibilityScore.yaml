@@ -52,7 +52,7 @@ script: |
       input_column = request.inputColumns[column_id]
       mols = column_to_molecules(input_column)
       scores = [None if m is None else calculateScore(m) for m in mols]
-      output_column = ColumnData(name=f'{input_column.name} SA Score',
+      output_column = ColumnData(name=f'SA Score {input_column.name}',
                                  dataType=DataType.DOUBLE, values=scores)
       response = DataFunctionResponse(outputColumns=[output_column])
       return response
