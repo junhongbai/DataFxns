@@ -60,7 +60,7 @@ outputFields:
 - id: column1
   source: column
   type: filter
-  name: Output QED score column
+  name: Output SA Score column
 allowedClients:
 - Analyst
 - WebPlayer
