@@ -1,0 +1,128 @@
+id: 87934fb7-d141-994b-4596-1c9a4edf7f23
+name: Linker Replacements
+description: Replaces linkers in molecules with bioisosteric linkers
+category: Chemistry
+version: 1.0.0
+serviceName: LinkerReplacements
+serviceUri: glysade.python
+executorId: Glysade.CPythonDataFxn
+inputFields:
+- control:
+    id: structureColumn
+    label: Select structure column
+    type: columnselect
+    filters:
+    - dataType: string
+      contentType:
+      - chemical/x-mdl-molfile
+      - chemical/x-mdl-molfile-v3000
+      - chemical/x-smiles
+      - chemical/x-daylight-smiles
+    - dataType: binary
+      contentType:
+      - chemical/x-mdl-molfile
+      - chemical/x-mdl-molfile-v3000
+    validationRules:
+    - type: required
+      message: Must select column of 2D structures
+  request:
+    id: structureColumn
+    dataType: string
+    selectorType: column
+- control:
+    id: idColumn
+    label: Parent ID column
+    type: columnselect
+    multi: !!bool false
+    tooltip: Select column of IDs that will be used in output table.
+    validationRules:
+    - type: required
+      message: ''
+  request:
+    id: idColumn
+    dataType: string
+    selectorType: column
+- control:
+    id: plusDeltaBonds
+    label: Maximum increase in number of bonds
+    type: text
+    tooltip: Constrains the increase in the number of bonds in the linker. Default -1 means no limit.
+    validationRules:
+    - type: numeric
+      message: ''
+    - type: range
+      message: ''
+      min: !!int -1
+      max: !!int 5
+  request:
+    id: plusDeltaBonds
+    dataType: integer
+    data: !!int -1
+- control:
+    id: minusDeltaBonds
+    label: Maximum decrease in number of bonds
+    type: text
+    tooltip: Constrains the decrease in the number of bonds in the linker. Default -1 means no limit.
+    validationRules:
+    - type: numeric
+      message: ''
+    - type: range
+      message: ''
+      min: !!int -1
+      max: !!int 5
+  request:
+    id: minusDeltaBonds
+    dataType: integer
+    data: !!int -1
+- control:
+    id: matchHbonds
+    label: Match Linker HBonds
+    type: checkbox
+    tooltip: 'If the linker has an HBonding group, the replacement must too, if not, not. '
+  request:
+    id: matchHbonds
+    dataType: boolean
+    data: !!bool false
+- control:
+    id: noRingLinkers
+    label: Exclude small rings as linkers
+    type: checkbox
+    tooltip: By default, small rings may be included as linkers.  This excludes them.
+  request:
+    id: noRingLinkers
+    dataType: boolean
+    data: !!bool false
+- control:
+    id: maxMolsPerInput
+    label: Maximum number of molecules per input molecule
+    type: text
+    tooltip: Constrains the total number of molecules that each input molecule can produce.  In case there's a combinatorial explosion in a larger molecule.
+    validationRules:
+    - type: numeric
+      message: ''
+    - type: range
+      message: ''
+      min: !!int 1
+      max: !!int 500000
+  request:
+    id: maxMolsPerInput
+    dataType: integer
+    data: !!int 1000
+tags:
+- color: '#50AF28'
+  text: chemistry
+updateBehavior: automatic
+maximumOutputColumns: !!int 1
+maximumOutputTables: !!int 1
+chemistryFunction: !!bool false
+outputFields:
+- id: table1
+  source: table
+  type: default
+  name: Output Linker Replacements table
+allowedClients:
+- Analyst
+- WebPlayer
+demoUrl: 
+limitBy: none
+minimumChartsVersion: 
