@@ -1,0 +1,67 @@
+id: f8551013-a20e-76b7-539f-b2b40630160c
+name: QED Score
+description: Calculates the QED  drug-likeness Score using the RDKit implementation.
+category: Chemistry
+version: 1.0.0
+serviceName: Script
+serviceUri: glysade.python
+executorId: Glysade.CPythonDataFxn
+inputFields:
+- control:
+    id: structureColumn
+    label: Select structure column
+    type: columnselect
+    filters:
+    - dataType: string
+      contentType:
+      - chemical/x-mdl-molfile
+      - chemical/x-mdl-molfile-v3000
+      - chemical/x-smiles
+      - chemical/x-daylight-smiles
+    - dataType: binary
+      contentType:
+      - chemical/x-mdl-molfile
+      - chemical/x-mdl-molfile-v3000
+    validationRules:
+    - type: required
+      message: Must select column of 2D structures
+  request:
+    id: structureColumn
+    dataType: string
+    selectorType: column
+tags:
+- color: '#50AF28'
+  text: chemistry
+- color: '#c6fc00'
+  text: calcprop
+updateBehavior: automatic
+maximumOutputColumns: !!int 1
+maximumOutputTables: !!int 0
+chemistryFunction: !!bool false
+script: |
+  from rdkit.Chem import QED
+  from df.chem_helper import column_to_molecules
+  from df.data_transfer import (DataFunctionRequest, DataFunctionResponse,
+                                DataType, ColumnData, string_input_field)
+  
+  
+  def execute(request: DataFunctionRequest) -> DataFunctionResponse:
+      column_id = string_input_field(request, 'structureColumn')
+      input_column = request.inputColumns[column_id]
+      mols = column_to_molecules(input_column)
+      scores = [None if m is None else QED.qed(m) for m in mols]
+      output_column = ColumnData(name=f'QED Score {input_column.name}',
+                                 dataType=DataType.DOUBLE, values=scores)
+      response = DataFunctionResponse(outputColumns=[output_column])
+      return response
+outputFields:
+- id: column1
+  source: column
+  type: filter
+  name: Output QED score column
+allowedClients:
+- Analyst
+- WebPlayer
+demoUrl: 
+limitBy: none
+minimumChartsVersion: 
