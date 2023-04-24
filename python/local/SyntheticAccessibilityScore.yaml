@@ -39,20 +39,38 @@ maximumOutputColumns: !!int 1
 maximumOutputTables: !!int 0
 chemistryFunction: !!bool false
 script: |
-  # sascorer has been copied here from the RDKit Contrib area.  The
-  # license is in the file.
   from df.sascorer import calculateScore
   from df.chem_helper import column_to_molecules
   from df.data_transfer import (DataFunctionRequest, DataFunctionResponse,
                                 DataType, ColumnData, string_input_field)
+  from rdkit.Chem import AllChem
+  from rdkit.Chem.MolStandardize import rdMolStandardize
+  
+  from ruse.rdkit.rdkit_utils import standardize_mol
   
   
   def execute(request: DataFunctionRequest) -> DataFunctionResponse:
       column_id = string_input_field(request, 'structureColumn')
       input_column = request.inputColumns[column_id]
       mols = column_to_molecules(input_column)
-      scores = [None if m is None else calculateScore(m) for m in mols]
-      output_column = ColumnData(name=f'SA Score {input_column.name}',
+  
+      # The objects used for standardizing the molecules when creating
+      # the scores database.
+      # SureChEMBL has some odd azides that the normalizer doesn't touch.
+      fix_azide = AllChem.ReactionFromSmarts('[N-:1]=[N:2]#[N+:3]>>[N+0:1]#[N+:2][N-:3]')
+      normer = rdMolStandardize.Normalizer()
+      uncharger = rdMolStandardize.Uncharger()
+      metal_disconnector = rdMolStandardize.MetalDisconnector()
+  
+      scores = []
+      for m in mols:
+          if m is None:
+              scores.append(None)
+          else:
+              sm = standardize_mol(m, normer, uncharger, metal_disconnector,
+                                   fix_azide)
+              scores.append(calculateScore(sm))
+      output_column = ColumnData(name=f'{input_column.name} SA Score',
                                  dataType=DataType.DOUBLE, values=scores)
       response = DataFunctionResponse(outputColumns=[output_column])
       return response
