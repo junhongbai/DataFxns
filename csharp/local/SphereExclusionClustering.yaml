@@ -174,7 +174,7 @@ ironPython: |
   layout.EndSection()
   page.ApplyLayout(layout)
 updateBehavior: automatic
-maximumOutputColumns: !!int 3
+maximumOutputColumns: !!int 5
 maximumOutputTables: !!int 0
 chemistryFunction: !!bool false
 allowedClients:
