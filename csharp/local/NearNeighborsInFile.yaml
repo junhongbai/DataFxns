@@ -41,6 +41,9 @@ inputFields:
       contentType: chemical/x-mdl-sdfile
       name: SD file (*.sdf)
     tooltip: File containing potential neighbors.
+    validationRules:
+    - type: required
+      message: ''
   request:
     id: inputFile
     dataType: string
