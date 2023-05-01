@@ -115,6 +115,6 @@ outputFields:
 allowedClients:
 - Analyst
 - WebPlayer
-demoUrl: 
+demoUrl: https://www.youtube.com/watch?v=wYFAi9ouO84
 limitBy: none
 minimumChartsVersion: 
