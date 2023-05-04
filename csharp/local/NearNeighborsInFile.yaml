@@ -33,7 +33,7 @@ inputFields:
     id: inputFile
     label: Target File holding potential neighbors
     type: file
-    mode: contents
+    mode: path
     pathType: file
     fileTypes:
     - extension: .smi
