@@ -33,6 +33,8 @@ inputFields:
     id: inputFile
     label: Target File holding potential neighbors
     type: file
+    mode: path
+    pathType: file
     fileTypes:
     - extension: .smi
       contentType: chemical/x-smiles
@@ -98,7 +100,6 @@ maximumOutputTables: !!int 0
 chemistryFunction: !!bool false
 allowedClients:
 - Analyst
-- WebPlayer
-demoUrl: 
+demoUrl:
 limitBy: none
 minimumChartsVersion: 
