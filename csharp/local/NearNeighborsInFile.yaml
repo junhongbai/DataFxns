@@ -94,7 +94,7 @@ tags:
   text: chemistry
 - color: '#c6fc00'
   text: calcprop
-updateBehavior: automatic
+updateBehavior: manual
 maximumOutputColumns: !!int 18
 maximumOutputTables: !!int 0
 chemistryFunction: !!bool false
