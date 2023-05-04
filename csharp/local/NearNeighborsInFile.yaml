@@ -34,7 +34,7 @@ inputFields:
     label: Target File holding potential neighbors
     type: file
     mode: path
-    pathType: file
+    pathType: contents
     fileTypes:
     - extension: .smi
       contentType: chemical/x-smiles
