@@ -269,7 +269,7 @@ script: |
           response = DataFunctionResponse(outputTables=[output_table])
       else:
           prods = [p[1] for p in products]
-          products_column = molecules_to_column(prods, f'Reaction Product',
+          products_column = molecules_to_column(prods, 'Reaction Product',
                                                 DataType.BINARY)
           response = DataFunctionResponse(outputColumns=[products_column])
       return response

@@ -1,0 +1,184 @@
+id: 68350fa4-e948-9823-af6c-2864fd625aca
+name: Sphere Exclusion Clustering
+description: Sphere Exclusion Clustering Service
+category: Chemistry
+version: 1.0.0
+serviceName: SphereExclusionClustering
+serviceUri: glysade.csharp
+executorId: Glysade.CSharpDataFxn
+inputFields:
+- control:
+    id: structureColumn
+    label: Structure column
+    type: columnselect
+    multi: !!bool false
+    filters:
+    - dataType: binary
+      contentType:
+      - chemical/x-mdl-molfile
+      - chemical/x-mdl-molfile-v3000
+    - dataType: string
+      contentType:
+      - chemical/x-mdl-molfile
+      - chemical/x-mdl-molfile-v3000
+    - dataType: string
+      contentType: chemical/x-smiles
+    - dataType: string
+      contentType: chemical/x-daylight-smiles
+    validationRules:
+    - type: required
+      message: ''
+  request:
+    id: structureColumn
+    dataType: string
+    selectorType: column
+- control:
+    id: numClusters
+    label: Number of clusters
+    type: text
+    tooltip: Number of clusters to be created
+    validationRules:
+    - type: required
+      message: ''
+    - type: numeric
+      message: ''
+    - type: range
+      message: ''
+      min: !!int 2
+  request:
+    id: numClusters
+    dataType: integer
+    data: !!int 100
+- control:
+    id: fpType
+    label: Fingerprint Type
+    type: radiogroup
+    tooltip: Type of fingerprint to use for clustering
+    radios:
+    - text: Morgan
+      value: morgan
+    - text: Topological
+      value: topological
+    - text: MACCS
+      value: maccs
+    - text: Atom Pair
+      value: atompair
+    - text: Pattern
+      value: pattern
+  request:
+    id: fpType
+    dataType: string
+tags:
+- color: '#50AF28'
+  text: chemistry
+- color: '#ba660b'
+  text: analyze
+ironPython: |
+  #####################################################
+  #  Copyright 2022 Glysade LLC, All Rights Reserved  #
+  #####################################################
+  import sys,clr
+  from Spotfire.Dxp.Data import DataTable, DataManager, DataType
+  from Spotfire.Dxp.Application import PanelTypeIdentifiers
+  from Spotfire.Dxp.Application import Panel
+  from Spotfire.Dxp.Application.Layout import LayoutDefinition
+  from Spotfire.Dxp.Application.Visuals import BarChart, TrellisMode, IndividualScalingMode
+  import Spotfire.Dxp.Application.PanelCollection
+
+  from System import AppDomain
+  for asm in AppDomain.CurrentDomain.GetAssemblies():
+    if asm.GetName().Name == "Charts":
+        clr.AddReference(asm.FullName)
+        break
+
+  from Charts import ChartsModel
+
+  #tableId passed in args
+  resultTable = ResultTables[0]
+
+  if not resultTable:
+      raise Exception('target table not found')
+
+  #add a new page
+  page = Document.Pages.AddNew('R Group Analysis')
+
+  #hide extraneous panels
+  panelsToHide = [PanelTypeIdentifiers.DataPanel, PanelTypeIdentifiers.DetailsOnDemandPanel]
+  for panel in page.Panels:
+      if panel.TypeId in panelsToHide:
+          if panel.Visible:
+              panel.Visible = False
+
+  filteringScheme = Document.FilteringSchemes[0]
+  page.FilterPanel.FilteringSchemeReference = filteringScheme
+
+  filterPanel = page.FilterPanel
+  for tableGroup in filterPanel.TableGroups:
+       if tableGroup.Expanded:
+           tableGroup.Expanded = (tableGroup.Name == resultTable.Name)
+
+  #add main results table
+  tableVis = page.Visuals.AddNew[ChartsModel]()
+  tableVis.SetKeyValue('visualization','table-visualization')
+  tableVis.SetKeyValue(resultTable.Id.ToString() + ".table-visualization.table.rowHeight",'150')
+  tableVis.DataTable = resultTable
+  tableVis.ConfigureColumns()
+  tableVis.SetLimitByMarkingMode(True)
+  tableVis.Title = "Replacement Table"
+  # tableVis.Marking = Document.Data.Markings.DefaultMarkingReference
+
+  #add SarMap Visual
+  sarMapVis = page.Visuals.AddNew[ChartsModel]()
+  sarMapVis.SetKeyValue('visualization','sar-map-visualization')
+  sarMapVis.DataTable = resultTable
+  sarMapVis.ConfigureColumns()
+  if resultTable.Columns.Contains('RHS'):
+      sarMapVis.ValueGroup1Column = resultTable.Columns['RHS']
+  if resultTable.Columns.Contains('LHS'):
+      sarMapVis.ValueGroup2Column = resultTable.Columns['LHS']
+  sarMapVis.Marking = Document.Data.Markings.DefaultMarkingReference
+  sarMapVis.Title = "R group replacements"
+
+  #add and configure BarChart
+  barChart = page.Visuals.AddNew[BarChart]()
+  barChart.Title = "Properties"
+  barChart.Data.DataTableReference = resultTable
+  barChart.XAxis.Expression = '<' + 'baserowid()' +'>'
+  #build YAxis expression
+  yAxisExpr = ""
+  for column in resultTable.Columns:
+      if column.Properties.DataType.IsNumeric and column.Name.StartsWith('Delta '):
+          if len(yAxisExpr) != 0:
+              yAxisExpr += ", "
+          yAxisExpr += "Sum(" + column.NameEscapedForExpression + ")"
+  barChart.YAxis.Expression = yAxisExpr
+  barChart.ColorAxis.Expression = '<[Axis.Default.Names]>'
+  barChart.Trellis.TrellisMode = TrellisMode.Panels
+  barChart.Trellis.PanelAxis.Expression = '<[Axis.Default.Names]>'
+  barChart.Trellis.ManualLayout = True
+  barChart.Trellis.ManualColumnCount = 3
+  barChart.Trellis.ManualRowCount = 2
+  #barChart.SortedBars = 1
+  barChart.YAxis.IndividualScaling = True
+  barChart.YAxis.IndividualScalingMode = IndividualScalingMode.Trellis
+  barChart.Data.Filterings.Add(Document.Data.Markings.DefaultMarkingReference)
+
+
+  layout = LayoutDefinition()
+  layout.BeginSideBySideSection()
+  layout.BeginStackedSection()
+  layout.Add(barChart.Visual)
+  layout.Add(sarMapVis.Visual)
+  layout.EndSection()
+  layout.Add(tableVis.Visual)
+  layout.EndSection()
+  page.ApplyLayout(layout)
+updateBehavior: automatic
+maximumOutputColumns: !!int 5
+maximumOutputTables: !!int 0
+chemistryFunction: !!bool false
+allowedClients:
+- Analyst
+- WebPlayer
+demoUrl: 
+limitBy: none

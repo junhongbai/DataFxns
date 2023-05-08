@@ -1,6 +1,6 @@
 id: f8551013-a20e-76b7-539f-b2b40630160c
-name: QED Score
-description: Calculates the QED  drug-likeness Score using the RDKit implementation.
+name: Drug-Likeness Score
+description: Calculates the QED drug-likeness Score using the RDKit implementation.
 category: Chemistry
 version: 1.0.0
 serviceName: Script
@@ -50,7 +50,7 @@ script: |
       input_column = request.inputColumns[column_id]
       mols = column_to_molecules(input_column)
       scores = [None if m is None else QED.qed(m) for m in mols]
-      output_column = ColumnData(name=f'QED Score {input_column.name}',
+      output_column = ColumnData(name=f'Drug-likeness Score {input_column.name}',
                                  dataType=DataType.DOUBLE, values=scores)
       response = DataFunctionResponse(outputColumns=[output_column])
       return response
