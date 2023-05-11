@@ -108,6 +108,7 @@
             "select",
             "sequencetextarea",
             "sketcher",
+            "tableselect",
             "text",
             "textarea"
           ]
@@ -223,6 +224,30 @@
             "multi": {
               "type": "boolean",
               "description": "Optional boolean when true allows users to select multiple columns"
+            },
+            "tableSelectId": {
+              "type": "string",
+              "description": "Optional control ID of the table select that will determine which data table the columns are taken from. If not defined, the active data table is used."
+            }
+          }
+        }
+      ]
+    },
+    "tableSelectControl": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/labelControl"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [ "tableselect" ]
+            },
+            "multi": {
+              "type": "boolean",
+              "description": "Optional boolean when true allows users to select multiple data tables"
             }
           }
         }
@@ -476,6 +501,7 @@
             { "$ref": "#/definitions/selectControl" },
             { "$ref": "#/definitions/sequenceTextAreaControl" },
             { "$ref": "#/definitions/sketcherControl" },
+            { "$ref": "#/definitions/tableSelectControl" },
             { "$ref": "#/definitions/textControl" },
             { "$ref": "#/definitions/textAreaControl" }
           ]
