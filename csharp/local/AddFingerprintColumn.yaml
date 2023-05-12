@@ -1,0 +1,71 @@
+id: 3effe3f6-1518-d4c5-c4f8-7744072aaabd
+name: Add Fingerprint Column
+description: Creates fingerprints for accelerating substructure and similarity searches
+category: Chemistry
+version: 1.0.0
+serviceName: Fingerprint
+serviceUri: glysade.csharp
+executorId: Glysade.CSharpDataFxn
+inputFields:
+- control:
+    id: structureColumn
+    label: Select structure column
+    type: columnselect
+    filters:
+    - dataType: string
+      contentType:
+      - chemical/x-mdl-molfile
+      - chemical/x-mdl-molfile-v3000
+      - chemical/x-smiles
+      - chemical/x-daylight-smiles
+    - dataType: binary
+      contentType:
+      - chemical/x-mdl-molfile
+      - chemical/x-mdl-molfile-v3000
+    validationRules:
+    - type: required
+      message: Must select column of 2D structures
+  request:
+    id: structureColumn
+    dataType: string
+    selectorType: column
+- control:
+    id: fpTypes
+    label: Fingerprint Type
+    type: select
+    multi: !!bool true
+    options:
+    - value: pattern
+      text: Pattern
+    - value: morgan
+      text: Morgan
+    - value: maccs
+      text: MACCS
+    - value: atompair
+      text: AtomPair
+    - value: topological
+      text: Topological
+    validationRules:
+    - type: oneOrMoreRequired
+      message: ''
+  request:
+    id: fpTypes
+    dataType: list(string)
+tags:
+- color: '#50AF28'
+  text: chemistry
+updateBehavior: manual
+maximumOutputColumns: !!int 5
+maximumOutputTables: !!int 0
+chemistryFunction: !!bool true
+outputFields:
+- id: structureColumn
+  name: Structure column
+  source: inputField
+  type: default
+allowedClients:
+- Analyst
+- WebPlayer
+demoUrl: 
+limitBy: none
+minimumChartsVersion: 4.2.0.0
