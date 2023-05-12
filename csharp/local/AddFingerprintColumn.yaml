@@ -68,3 +68,4 @@ allowedClients:
 - WebPlayer
 demoUrl: 
 limitBy: none
+minimumChartsVersion: 4.2.0.0

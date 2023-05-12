@@ -102,4 +102,4 @@ allowedClients:
 - Analyst
 demoUrl:
 limitBy: none
-minimumChartsVersion: 
+minimumChartsVersion: 4.3.0.0
