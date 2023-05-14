@@ -53,18 +53,27 @@ inputFields:
     id: fpType
     label: Fingerprint Type
     type: radiogroup
-    tooltip: Type of fingerprint to use for clustering
+    group:
+      name: Advanced
+      collapsible: !!bool true
+      collapsed: !!bool true
     radios:
-    - text: Morgan
-      value: morgan
-    - text: Topological
-      value: topological
+    - value: morgan
+      text: Morgan
+    - value: rdkit
+      text: RDKit
+    - value: topological
+      text: Topological
     - text: MACCS
       value: maccs
     - text: Atom Pair
       value: atompair
     - text: Pattern
       value: pattern
+    tooltip: Type of fingerprint to be used to determine neighbors.
+    validationRules:
+    - type: required
+      message: ''
   request:
     id: fpType
     dataType: string
