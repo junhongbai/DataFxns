@@ -62,15 +62,15 @@ inputFields:
       text: Morgan
     - value: rdkit
       text: RDKit
-    - value: topological
-      text: Topological
+    - text: Pattern
+      value: pattern
     - text: MACCS
       value: maccs
     - text: Atom Pair
       value: atompair
-    - text: Pattern
-      value: pattern
-    tooltip: Type of fingerprint to be used to determine neighbors.
+    - value: topological
+      text: Topological Torsion
+    tooltip: Type of fingerprint to be used for the clustering similarity calculation.
     validationRules:
     - type: required
       message: ''
