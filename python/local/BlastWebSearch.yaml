@@ -49,8 +49,6 @@ inputFields:
           value: refseq_select
         - text: Reference RNA Sequences
           value: refseq_rna
-        - text: RefSeq Representative Genomes
-          value: refseq_representative_genomes
         - text: Expressed Sequence Tags (nucleotide)
           value: est
         - text: Patented Sequences (nucleotide)
