@@ -50,6 +50,15 @@ inputFields:
     dataType: integer
     data: !!int 100
 - control:
+    label: Align cluster molecules
+    id: alignClusterMolecules
+    type: checkbox
+    tooltip: Aligns the molecules in each cluster.  Can be slow for large datasets.  Small datasets will always be aligned.
+  request:
+    id: alignClusterMolecules
+    dataType: boolean
+    data: !!bool false
+- control:
     id: fpType
     label: Fingerprint Type
     type: radiogroup
