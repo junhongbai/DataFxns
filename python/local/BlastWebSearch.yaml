@@ -27,24 +27,40 @@ inputFields:
       label: Select database to search
       type: select
       options:
-        - text: envnr
-          value: envnr
-        - text: nr
+        - text: Non-redundant Protein Sequences 
           value: nr
-        - text: pataa
+        - text: RefSeq Select Proteins
+          value: refseq_select
+        - text: RefSeq Reference Proteins
+          value: refseq_protein
+        - text: Non-redundant UniProtKB/SwissProt Proteins
+          value: swissprot
+        - text: Patented Protein Sequences
           value: pataa
-        - text: pdb
+        - text: Protein Data Bank
           value: pdb
-        - text: env_nt
-          value: env_nt
-        - text: nt
+        - text: Metagenomic Proteins
+          value: env_nr
+        - text: Transcriptome Shotgun Assembly Proteins
+          value: tsa_nr
+        - text: Non-redundant Nucleotide Sequences
           value: nt
-        - text: est
+        - text: RefSeq Select RNA Sequences
+          value: refseq_select
+        - text: Reference RNA Sequences
+          value: refseq_rna
+        - text: RefSeq Representative Genomes
+          value: refseq_representative_genomes
+        - text: Expressed Sequence Tags (nucleotide)
           value: est
-        - text: other_genomic
-          value: other_genomic
-        - text: refseq_genomic
-          value: refseq_genomic
+        - text: Patented Sequences (nucleotide)
+          value: pat
+        - text: Genomic Survey Sequences
+          value: gss
+        - text: Sequence Tagged Sites (nucleotide)
+          value: dbsts
+        - text: Metagenomic Nucleotides 
+          value: env_nt 
       validationRules:
         - type: required
     request:
