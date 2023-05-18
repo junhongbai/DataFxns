@@ -30,7 +30,7 @@ inputFields:
         - text: Non-redundant Protein Sequences 
           value: nr
         - text: RefSeq Select Proteins
-          value: refseq_select
+          value: refseq_select_prot
         - text: RefSeq Reference Proteins
           value: refseq_protein
         - text: Non-redundant UniProtKB/SwissProt Proteins
@@ -46,7 +46,7 @@ inputFields:
         - text: Non-redundant Nucleotide Sequences
           value: nt
         - text: RefSeq Select RNA Sequences
-          value: refseq_select
+          value: refseq_select_nucl
         - text: Reference RNA Sequences
           value: refseq_rna
         - text: Expressed Sequence Tags (nucleotide)
