@@ -36,7 +36,7 @@ inputFields:
       selectorType: column
   - control:
       id: mimimumProteinLength
-      label: Mimimum protein length
+      label: Minimum protein length
       type: text
       validationRules:
         - type: required
