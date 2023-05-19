@@ -101,5 +101,5 @@ chemistryFunction: !!bool false
 allowedClients:
 - Analyst
 demoUrl:
-limitBy: none
+limitBy: runtime
 minimumChartsVersion: 4.3.0.0
