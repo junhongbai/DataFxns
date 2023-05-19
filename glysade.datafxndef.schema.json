@@ -36,7 +36,7 @@
         },
         "field": {
           "type": "string",
-          "enum": [ "structure", "atomSelection", "bondSelection" ]
+          "enum": [ "structure", "atomSelection", "bondSelection", "limitBy", "marking" ]
         }
       },
       "required": [
@@ -102,7 +102,9 @@
             "checkbox",
             "columnselect",
             "file",
+            "header",
             "hidden",
+            "limitby",
             "molecule",
             "radiogroup",
             "select",
@@ -227,7 +229,47 @@
             },
             "tableSelectId": {
               "type": "string",
-              "description": "Optional control ID of the table select that will determine which data table the columns are taken from. If not defined, the active data table is used."
+              "description": "Optional control ID of the table select that will determine which data table the columns are taken from."
+            },
+            "limitByControlId": {
+              "type": "string",
+              "description": "Optional control ID of the limit by control that will determine how data is selected for the chosen column."
+            }
+          }
+        }
+      ]
+    },
+    "headerControl": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/labelControl"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [ "header" ]
+            },
+            "subHeading": {
+              "type": "string",
+              "description": "Optional sub-heading printed in smaller font size"
+            }
+          }
+        }
+      ]
+    },
+    "limitByControl": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/labelControl"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [ "limitby" ]
             }
           }
         }
@@ -248,6 +290,10 @@
             "multi": {
               "type": "boolean",
               "description": "Optional boolean when true allows users to select multiple data tables"
+            },
+            "base": {
+              "type": "boolean",
+              "description": "Optional boolean when true makes the table selected in this table control the table that is used to group the data fxn output"
             }
           }
         }
@@ -495,7 +541,9 @@
             { "$ref": "#/definitions/checkBoxControl" },
             { "$ref": "#/definitions/columnSelectControl" },
             { "$ref": "#/definitions/fileControl" },
+            { "$ref": "#/definitions/headerControl" },
             { "$ref": "#/definitions/hiddenControl" },
+            { "$ref": "#/definitions/limitByControl" },
             { "$ref": "#/definitions/moleculeControl" },
             { "$ref": "#/definitions/radioGroupControl" },
             { "$ref": "#/definitions/selectControl" },
