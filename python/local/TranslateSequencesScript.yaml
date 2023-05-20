@@ -1,146 +1,147 @@
-id: a94e9f2a-fbef-400a-80fa-dad7f5335322
+id: e9ecaf4e-334b-b0d1-462d-6a38d1e62a3f
 name: Translate DNA to Protein Script
-serviceName: Script
-executorId: Glysade.CPythonDataFxn
-serviceUri: glysade.python
-version: 1.0.0
-script: |
-    from df.bio_helper import column_to_sequences, sequences_to_column
-    from df.data_transfer import DataFunctionRequest, DataFunctionResponse, string_input_field
-
-
-    def execute(request: DataFunctionRequest) -> DataFunctionResponse:
-        column_id = string_input_field(request, 'sequenceColumn')
-        input_column = request.inputColumns[column_id]
-        input_sequences = column_to_sequences(input_column)
-        codon_table_name = string_input_field(request, 'codonTableName', 'Standard')
-        output_sequences = [None if s is None else s.translate(codon_table_name) for s in input_sequences]
-        output_column = sequences_to_column(output_sequences, f'Translated {input_column.name}', genbank_output=False)
-        response = DataFunctionResponse(
-            outputColumns=[output_column])
-        return response
-
-inputFields:
-  - control:
-      id: sequenceColumn
-      label: Select sequence column
-      type: columnselect
-      filters:
-        - dataType: string
-          contentType: chemical/x-sequence
-        - dataType: binary
-          contentType: chemical/x-genbank
-      validationRules:
-        - type: required
-    request:
-      id: sequenceColumn
-      dataType: string
-      selectorType: column
-  - control:
-      id: codonTableName
-      label: Codon table name
-      type: select
-      options:
-        - text: Standard
-          value: Standard
-        - text: SGC0
-          value: SGC0
-        - text: Vertebrate Mitochondrial
-          value: Vertebrate Mitochondrial
-        - text: SGC1
-          value: SGC1
-        - text: Yeast Mitochondrial
-          value: Yeast Mitochondrial
-        - text: SGC2
-          value: SGC2
-        - text: Mold Mitochondrial
-          value: Mold Mitochondrial
-        - text: Protozoan Mitochondrial
-          value: Protozoan Mitochondrial
-        - text: Coelenterate Mitochondrial
-          value: Coelenterate Mitochondrial
-        - text: Mycoplasma
-          value: Mycoplasma
-        - text: Spiroplasma
-          value: Spiroplasma
-        - text: SGC3
-          value: SGC3
-        - text: Invertebrate Mitochondrial
-          value: Invertebrate Mitochondrial
-        - text: SGC4
-          value: SGC4
-        - text: Ciliate Nuclear
-          value: Ciliate Nuclear
-        - text: Dasycladacean Nuclear
-          value: Dasycladacean Nuclear
-        - text: Hexamita Nuclear
-          value: Hexamita Nuclear
-        - text: SGC5
-          value: SGC5
-        - text: Echinoderm Mitochondrial
-          value: Echinoderm Mitochondrial
-        - text: Flatworm Mitochondrial
-          value: Flatworm Mitochondrial
-        - text: SGC8
-          value: SGC8
-        - text: Euplotid Nuclear
-          value: Euplotid Nuclear
-        - text: SGC9
-          value: SGC9
-        - text: Bacterial
-          value: Bacterial
-        - text: Archaeal
-          value: Archaeal
-        - text: Plant Plastid
-          value: Plant Plastid
-        - text: Alternative Yeast Nuclear
-          value: Alternative Yeast Nuclear
-        - text: Ascidian Mitochondrial
-          value: Ascidian Mitochondrial
-        - text: Alternative Flatworm Mitochondrial
-          value: Alternative Flatworm Mitochondrial
-        - text: Blepharisma Macronuclear
-          value: Blepharisma Macronuclear
-        - text: Chlorophycean Mitochondrial
-          value: Chlorophycean Mitochondrial
-        - text: Trematode Mitochondrial
-          value: Trematode Mitochondrial
-        - text: Scenedesmus obliquus Mitochondrial
-          value: Scenedesmus obliquus Mitochondrial
-        - text: Thraustochytrium Mitochondrial
-          value: Thraustochytrium Mitochondrial
-        - text: Pterobranchia Mitochondrial
-          value: Pterobranchia Mitochondrial
-        - text: Candidate Division SR1
-          value: Candidate Division SR1
-        - text: Gracilibacteria
-          value: Gracilibacteria
-        - text: Pachysolen tannophilus Nuclear
-          value: Pachysolen tannophilus Nuclear
-        - text: Karyorelict Nuclear
-          value: Karyorelict Nuclear
-        - text: Condylostoma Nuclear
-          value: Condylostoma Nuclear
-        - text: Mesodinium Nuclear
-          value: Mesodinium Nuclear
-        - text: Peritrich Nuclear
-          value: Peritrich Nuclear
-        - text: Blastocrithidia Nuclear
-          value: Blastocrithidia Nuclear
-        - text: Balanophoraceae Plastid
-          value: Balanophoraceae Plastid
-        - text: Cephalodiscidae Mitochondrial
-          value: Cephalodiscidae Mitochondrial
-      validationRules:
-        - type: required
-    request:
-      id: codonTableName
-      dataType: string
-      data: Standard
 description: Translates DNA To Protein
 category: Biopolymer
-maximumOutputColumns: !!int 1
-maximumOutputTables: !!int 0
+version: 1.1.0
+serviceName: Script
+serviceUri: glysade.python
+executorId: Glysade.CPythonDataFxn
+inputFields:
+- control:
+    id: sequenceColumn
+    label: Select sequence column
+    type: columnselect
+    filters:
+    - dataType: string
+      contentType: chemical/x-sequence
+    - dataType: binary
+      contentType: chemical/x-genbank
+    validationRules:
+    - type: required
+  request:
+    id: sequenceColumn
+    dataType: string
+    selectorType: column
+- control:
+    id: codonTableName
+    label: Codon table name
+    type: select
+    options:
+    - text: Standard
+      value: Standard
+    - text: SGC0
+      value: SGC0
+    - text: Vertebrate Mitochondrial
+      value: Vertebrate Mitochondrial
+    - text: SGC1
+      value: SGC1
+    - text: Yeast Mitochondrial
+      value: Yeast Mitochondrial
+    - text: SGC2
+      value: SGC2
+    - text: Mold Mitochondrial
+      value: Mold Mitochondrial
+    - text: Protozoan Mitochondrial
+      value: Protozoan Mitochondrial
+    - text: Coelenterate Mitochondrial
+      value: Coelenterate Mitochondrial
+    - text: Mycoplasma
+      value: Mycoplasma
+    - text: Spiroplasma
+      value: Spiroplasma
+    - text: SGC3
+      value: SGC3
+    - text: Invertebrate Mitochondrial
+      value: Invertebrate Mitochondrial
+    - text: SGC4
+      value: SGC4
+    - text: Ciliate Nuclear
+      value: Ciliate Nuclear
+    - text: Dasycladacean Nuclear
+      value: Dasycladacean Nuclear
+    - text: Hexamita Nuclear
+      value: Hexamita Nuclear
+    - text: SGC5
+      value: SGC5
+    - text: Echinoderm Mitochondrial
+      value: Echinoderm Mitochondrial
+    - text: Flatworm Mitochondrial
+      value: Flatworm Mitochondrial
+    - text: SGC8
+      value: SGC8
+    - text: Euplotid Nuclear
+      value: Euplotid Nuclear
+    - text: SGC9
+      value: SGC9
+    - text: Bacterial
+      value: Bacterial
+    - text: Archaeal
+      value: Archaeal
+    - text: Plant Plastid
+      value: Plant Plastid
+    - text: Alternative Yeast Nuclear
+      value: Alternative Yeast Nuclear
+    - text: Ascidian Mitochondrial
+      value: Ascidian Mitochondrial
+    - text: Alternative Flatworm Mitochondrial
+      value: Alternative Flatworm Mitochondrial
+    - text: Blepharisma Macronuclear
+      value: Blepharisma Macronuclear
+    - text: Chlorophycean Mitochondrial
+      value: Chlorophycean Mitochondrial
+    - text: Trematode Mitochondrial
+      value: Trematode Mitochondrial
+    - text: Scenedesmus obliquus Mitochondrial
+      value: Scenedesmus obliquus Mitochondrial
+    - text: Thraustochytrium Mitochondrial
+      value: Thraustochytrium Mitochondrial
+    - text: Pterobranchia Mitochondrial
+      value: Pterobranchia Mitochondrial
+    - text: Candidate Division SR1
+      value: Candidate Division SR1
+    - text: Gracilibacteria
+      value: Gracilibacteria
+    - text: Pachysolen tannophilus Nuclear
+      value: Pachysolen tannophilus Nuclear
+    - text: Karyorelict Nuclear
+      value: Karyorelict Nuclear
+    - text: Condylostoma Nuclear
+      value: Condylostoma Nuclear
+    - text: Mesodinium Nuclear
+      value: Mesodinium Nuclear
+    - text: Peritrich Nuclear
+      value: Peritrich Nuclear
+    - text: Blastocrithidia Nuclear
+      value: Blastocrithidia Nuclear
+    - text: Balanophoraceae Plastid
+      value: Balanophoraceae Plastid
+    - text: Cephalodiscidae Mitochondrial
+      value: Cephalodiscidae Mitochondrial
+    validationRules:
+    - type: required
+  request:
+    id: codonTableName
+    dataType: string
+    data: Standard
+- control:
+    id: initMethod
+    label: Initiation site detection method
+    type: select
+    multi: !!bool false
+    options:
+    - text: Use start of sequence
+      value: asis
+    - text: Find first ATG
+      value: ATG
+    - text: Find first initiation site from codon table
+      value: table
+    validationRules:
+    - type: required
+      message: ''
+  request:
+    id: initMethod
+    dataType: string
+    data: asis
 tags:
 - color: '#337abc'
   text: sequence
@@ -148,8 +149,50 @@ tags:
   text: nucleotide
 - color: '#e2f062'
   text: tform
-ironPython: ''
-# to generate all codon table names
-# from Bio.Data import CodonTable
-# for k in CodonTable.ambiguous_generic_by_name:
-#        print('   {"text": "',k,'", "value":"',k,'"},', sep='')
+updateBehavior: automatic
+maximumOutputColumns: !!int 1
+maximumOutputTables: !!int 0
+chemistryFunction: !!bool false
+script: |
+  from df.bio_helper import column_to_sequences, sequences_to_column
+  from df.data_transfer import DataFunctionRequest, DataFunctionResponse, string_input_field
+
+  from Bio.Data import CodonTable
+
+  def execute(request: DataFunctionRequest) -> DataFunctionResponse:
+      column_id = string_input_field(request, 'sequenceColumn')
+      input_column = request.inputColumns[column_id]
+      input_sequences = column_to_sequences(input_column)
+      codon_table_name = string_input_field(request, 'codonTableName', 'Standard')
+      init_site_method = string_input_field(request, 'initMethod')
+  
+      #reduce sequences based on initiation site
+      init_sequences = input_sequences.copy()
+      if init_site_method == 'ATG':
+          for n, s in enumerate(input_sequences):
+              idx = s.seq.upper().find('ATG')
+              if idx < 0:
+                  init_sequences[n] = None
+              else:
+                  init_sequences[n] = s[idx:]
+      elif init_site_method == 'table':
+          codon_table = CodonTable.unambiguous_dna_by_name[codon_table_name]
+          init_codons = codon_table.start_codons
+          for n, s in enumerate(input_sequences):
+              idx = [v for v in [s.seq.upper().find(codon) for codon in init_codons] if v != -1]
+              if len(idx) == 0:
+                  init_sequences[n] = None
+              else:
+                  init_sequences[n] = s[min(idx):]
+  
+      output_sequences = [None if s is None else s.translate(codon_table_name) for s in init_sequences]
+      output_column = sequences_to_column(output_sequences, f'Translated {input_column.name}', genbank_output=False)
+      response = DataFunctionResponse(
+          outputColumns=[output_column])
+      return response
+allowedClients:
+- Analyst
+- WebPlayer
+demoUrl: 
+limitBy: none
+minimumChartsVersion: 
