@@ -330,6 +330,8 @@ script: |
       """
       mcss = []
       nmols = len(mols)
+      if min_mol_num > nmols:
+          min_mol_num = nmols
   
       def stirling_fac(n):
           twopi = Decimal(2 * math.pi)
@@ -338,7 +340,10 @@ script: |
   
       nmol_fac = stirling_fac(Decimal(nmols))
       min_mol_num_fac = stirling_fac(Decimal(min_mol_num))
-      diff_fac = stirling_fac(Decimal(nmols - min_mol_num))
+      if min_mol_num == nmols:
+          diff_fac = 1
+      else:
+          diff_fac = stirling_fac(Decimal(nmols - min_mol_num))
       approx_ncomb = int(nmol_fac / (min_mol_num_fac * diff_fac))
       print(f'Approximate number of MCS determinations : {approx_ncomb}')
   

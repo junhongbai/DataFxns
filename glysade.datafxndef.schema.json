@@ -28,7 +28,7 @@
           "type": "string"
         },
         "data": {
-          "type": [ "boolean", "integer", "double", "string", "array" ]
+          "type": [ "boolean", "integer", "number", "string", "array" ]
         },
         "selectorType": {
           "type": "string",
@@ -36,7 +36,7 @@
         },
         "field": {
           "type": "string",
-          "enum": [ "structure", "atomSelection", "bondSelection" ]
+          "enum": [ "structure", "atomSelection", "bondSelection", "limitBy", "marking" ]
         }
       },
       "required": [
@@ -102,12 +102,15 @@
             "checkbox",
             "columnselect",
             "file",
+            "header",
             "hidden",
+            "limitby",
             "molecule",
             "radiogroup",
             "select",
             "sequencetextarea",
             "sketcher",
+            "tableselect",
             "text",
             "textarea"
           ]
@@ -118,6 +121,24 @@
         "validationRules": {
           "type": "array",
           "items": { "$ref": "#/definitions/validationRule" }
+        },
+        "group": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "Human readable name for the group of controls"
+            },
+            "collapsible": {
+              "type": "boolean",
+              "description": "Whether the group is collapsible or not, if omitted the group will not be collapsible"
+            },
+            "collapsed": {
+              "type": "boolean",
+              "description": "Initial state of the collapsible group, if omitted the group will initiallyu be expanded"
+            }
+          },
+          "required": ["name"]
         }
       },
       "required": [
@@ -178,7 +199,7 @@
         },
         "contentType": {
           "oneOf": [
-            { "type": "array", "items": "string" },
+            { "type": "array" },
             { "type": "string" }
           ]
         }
@@ -205,6 +226,74 @@
             "multi": {
               "type": "boolean",
               "description": "Optional boolean when true allows users to select multiple columns"
+            },
+            "tableSelectId": {
+              "type": "string",
+              "description": "Optional control ID of the table select that will determine which data table the columns are taken from."
+            },
+            "limitByControlId": {
+              "type": "string",
+              "description": "Optional control ID of the limit by control that will determine how data is selected for the chosen column."
+            }
+          }
+        }
+      ]
+    },
+    "headerControl": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/labelControl"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [ "header" ]
+            },
+            "subHeading": {
+              "type": "string",
+              "description": "Optional sub-heading printed in smaller font size"
+            }
+          }
+        }
+      ]
+    },
+    "limitByControl": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/labelControl"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [ "limitby" ]
+            }
+          }
+        }
+      ]
+    },
+    "tableSelectControl": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/labelControl"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [ "tableselect" ]
+            },
+            "multi": {
+              "type": "boolean",
+              "description": "Optional boolean when true allows users to select multiple data tables"
+            },
+            "base": {
+              "type": "boolean",
+              "description": "Optional boolean when true makes the table selected in this table control the table that is used to group the data fxn output"
             }
           }
         }
@@ -316,7 +405,7 @@
           "description": "Text displayed to the user in the select/radio UI control"
         },
         "value": {
-          "type": ["string", "integer", "double" ],
+          "type": ["string", "integer", "number" ],
           "description": "Value for the selected item in the select/radio UI control"
         }
       },
@@ -452,12 +541,15 @@
             { "$ref": "#/definitions/checkBoxControl" },
             { "$ref": "#/definitions/columnSelectControl" },
             { "$ref": "#/definitions/fileControl" },
+            { "$ref": "#/definitions/headerControl" },
             { "$ref": "#/definitions/hiddenControl" },
+            { "$ref": "#/definitions/limitByControl" },
             { "$ref": "#/definitions/moleculeControl" },
             { "$ref": "#/definitions/radioGroupControl" },
             { "$ref": "#/definitions/selectControl" },
             { "$ref": "#/definitions/sequenceTextAreaControl" },
             { "$ref": "#/definitions/sketcherControl" },
+            { "$ref": "#/definitions/tableSelectControl" },
             { "$ref": "#/definitions/textControl" },
             { "$ref": "#/definitions/textAreaControl" }
           ]

@@ -1,0 +1,105 @@
+id: e9203494-8c18-b070-ec23-9901db2ce954
+name: Near Neighbors in File
+description: Finds the near neighbors of table members in a file, using fingerprints.
+category: Chemistry
+version: 1.0.0
+serviceName: NearNeighborsInFile
+serviceUri: glysade.python
+executorId: Glysade.CSharpDataFxn
+inputFields:
+- control:
+    id: structureColumn
+    label: Select structure column
+    type: columnselect
+    filters:
+    - dataType: string
+      contentType:
+      - chemical/x-mdl-molfile
+      - chemical/x-mdl-molfile-v3000
+      - chemical/x-smiles
+      - chemical/x-daylight-smiles
+    - dataType: binary
+      contentType:
+      - chemical/x-mdl-molfile
+      - chemical/x-mdl-molfile-v3000
+    validationRules:
+    - type: required
+      message: Must select column of 2D structures
+  request:
+    id: structureColumn
+    dataType: string
+    selectorType: column
+- control:
+    id: inputFile
+    label: Target File holding potential neighbors
+    type: file
+    mode: path
+    pathType: file
+    fileTypes:
+    - extension: .smi
+      contentType: chemical/x-smiles
+      name: SMILES (*.smi)
+    - extension: .sdf
+      contentType: chemical/x-mdl-sdfile
+      name: SD file (*.sdf)
+    tooltip: File containing potential neighbors.
+    validationRules:
+    - type: required
+      message: ''
+  request:
+    id: inputFile
+    dataType: string
+- control:
+    id: numNeighbors
+    label: Number of neighbors to be returned
+    type: text
+    validationRules:
+    - type: required
+      message: ''
+    - type: numeric
+      message: ''
+    - type: range
+      message: ''
+      min: !!int 1
+      max: !!int 6
+    tooltip: Number of neighbors to be extracted for each table molecule.
+  request:
+    id: numNeighbors
+    dataType: integer
+    data: !!int 3
+- control:
+    id: fpType
+    label: Fingerprint Type
+    type: radiogroup
+    radios:
+    - value: morgan
+      text: Morgan
+    - value: topological
+      text: Topological
+    - text: MACCS
+      value: maccs
+    - text: Atom Pair
+      value: atompair
+    - text: Pattern
+      value: pattern
+    tooltip: Type of fingerprint to be used to determine neighbors.
+    validationRules:
+    - type: required
+      message: ''
+  request:
+    id: fpType
+    dataType: string
+tags:
+- color: '#50AF28'
+  text: chemistry
+- color: '#c6fc00'
+  text: calcprop
+updateBehavior: manual
+maximumOutputColumns: !!int 18
+maximumOutputTables: !!int 0
+chemistryFunction: !!bool false
+allowedClients:
+- Analyst
+demoUrl:
+limitBy: runtime
+minimumChartsVersion: 4.3.0.0

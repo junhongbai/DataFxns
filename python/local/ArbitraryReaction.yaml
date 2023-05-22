@@ -74,6 +74,7 @@ script: |
   from typing import Optional
   
   from rdkit import Chem
+  from rdkit.Chem import AllChem
   from rdkit.Chem.rdChemReactions import ChemicalReaction
   from rdkit.Chem.rdchem import MolSanitizeException
   
@@ -116,9 +117,19 @@ script: |
       except MolSanitizeException:
           return None
       # sometimes we'll get a molecule that sanitizes but
-      # generates a bad SMILES.  Skip those.
+      # generates a bad SMILES.  Skip those.  But return the
+      # original product if it's kosher, because it will retain the
+      # props from the original, crucially old_mapno which is used for
+      # highlighting the bits that didn't change.
       smi = Chem.MolToSmiles(new_prod)
-      return Chem.MolFromSmiles(smi)
+      check_mol = Chem.MolFromSmiles(smi)
+      if check_mol is None:
+          return None
+      else:
+          # Any new bits have zero coords which makes for a substandard
+          # depiction.
+          AllChem.Compute2DCoords(new_prod)
+          return new_prod
   
   
   def run_reaction_single_product(mol: Chem.Mol, rxn: ChemicalReaction,
@@ -126,27 +137,38 @@ script: |
       """
       Do singleReaction or exhaustiveReaction mode
       """
-      final_mols = deque([mol])
-      final_mols_smiles = deque([Chem.MolToSmiles(mol)])
+      next_mol = mol
+      next_mol_smi = Chem.MolToSmiles(next_mol)
+      made_new = False
       while True:
-          next_mol = final_mols.popleft()
-          these_prods = rxn.RunReactants((next_mol,))
-          # these_prods is a tuple of tuples of Chem.Mol
-          for prods in these_prods:
-              new_prod = combine_prods_to_one_mol(prods)
-              if new_prod is None:
-                  continue
-              prod_smi = Chem.MolToSmiles(new_prod)
-              if prod_smi not in final_mols_smiles:
-                  highlight_product(new_prod)
-                  final_mols.append(new_prod)
-                  final_mols_smiles.append(prod_smi)
-                  if reaction_mode == 'singleReaction':
-                      break
-          if len(final_mols) < 2:
+          prods = rxn.RunReactants((next_mol,))
+          prod = None
+          for p in prods:
+              next_prod = combine_prods_to_one_mol(p)
+              if next_prod is not None:
+                  prod = next_prod
+                  break
+          if prod is None:
+              prod = next_mol
+              # if nothing good came of it, there's no more to do.
               break
-      if final_mols:
-          return [final_mols[0]]
+          # take the first product only
+          prod_smi = Chem.MolToSmiles(prod)
+  
+          # If doing a single reaction or the product was the same as
+          # what went in, it's all done.
+          made_new = next_mol_smi != prod_smi
+          if reaction_mode == 'singleReaction' or not made_new:
+              break
+          next_mol = prod
+          next_mol_smi = prod_smi
+  
+      if made_new:
+          # This was in the original code, but it's not clear where
+          # old_mapno comes from for the highlights.  It seems to do
+          # nothing at present.
+          highlight_product(prod)
+          return [prod]
       else:
           return [None]
   

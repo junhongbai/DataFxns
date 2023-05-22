@@ -96,7 +96,7 @@ script: |2+
       idMap = {k.strip(): v for v, k in enumerate(uniqueIds)}
       column_id = string_input_field(request, 'idColumn')
       input_column = request.inputColumns[column_id]
-      values = [None if id is None else idMap[id] if id in idMap else None for id in input_column.values]
+      values = [None if id is None else idMap[id.strip()] if id.strip() in idMap else None for id in input_column.values]
       output_column = ColumnData(name=f'{input_column.name} Order', dataType=DataType.INTEGER, values=values)
       response = DataFunctionResponse(outputColumns=[output_column])
       return response

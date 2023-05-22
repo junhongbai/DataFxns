@@ -1,0 +1,157 @@
+id: 66765612-331e-b585-9b0d-806187e78106
+name: Free-Wilson Analysis
+description: Free Wilson analysis on R Group decomposition
+category: Chemistry
+version: 1.0.0
+serviceName: FreeWilsonAnalysis
+serviceUri: glysade.csharp
+executorId: Glysade.CSharpDataFxn
+inputFields:
+- control:
+    id: coreColumnId
+    label: Core column
+    type: columnselect
+    multi: !!bool false
+    validationRules:
+    - type: required
+      message: ''
+    filters:
+    - dataType:
+      - string
+      - binary
+      contentType:
+      - chemical/x-daylight-smiles
+      - chemical/daylight-smiles
+      - chemical/x-smiles
+      - chemical/smiles
+      - chemical/x-mdl-molfile
+      - chemical/mdl-molfile
+      - chemical/x-mdl-molfile-v3000
+      - chemical/mdl-molfile-v3000
+  request:
+    id: coreColumnId
+    dataType: string
+    selectorType: column
+- control:
+    id: rGroupColumnIds
+    label: R Group columns
+    type: columnselect
+    multi: !!bool true
+    filters:
+    - dataType: binary
+      contentType:
+      - chemical/x-mdl-molfile
+      - chemical/x-mdl-molfile-v3000
+    - dataType: string
+      contentType:
+      - chemical/x-mdl-molfile
+      - chemical/x-mdl-molfile-v3000
+    - dataType: string
+      contentType:
+      - chemical/x-smiles
+    - dataType: string
+      contentType: chemical/x-daylight-smiles
+    validationRules:
+    - type: oneOrMoreRequired
+      message: ''
+    - type: required
+      message: ''
+  request:
+    id: rGroupColumnIds
+    dataType: list(string)
+    selectorType: column
+- control:
+    id: propertyColumnIds
+    label: Property columns
+    type: columnselect
+    multi: !!bool true
+    filters:
+    - dataType: int
+      contentType: []
+    - dataType: float
+    - dataType: double
+      contentType: []
+    validationRules:
+    - type: required
+    - type: oneOrMoreRequired
+      message: ''
+  request:
+    id: propertyColumnIds
+    dataType: list(string)
+    selectorType: column
+- control:
+    id: extraColumnIds
+    label: Extra columns
+    type: columnselect
+    multi: !!bool true
+  request:
+    id: extraColumnIds
+    dataType: list(string)
+    selectorType: column
+- control:
+    id: maxCompounds
+    label: Maximum number of compounds
+    type: text
+  request:
+    id: maxCompounds
+    dataType: integer
+    data: !!int 10000
+- control:
+    id: regularizationAlpha
+    label: Regularization magnitude
+    type: text
+  request:
+    id: regularizationAlpha
+    dataType: float
+- control:
+    id: elasticNetL1Ratio
+    label: Elastic net L1 ratio
+    type: text
+  request:
+    id: elasticNetL1Ratio
+    dataType: float
+- control:
+    id: numberFolds
+    label: Number Folds
+    type: text
+  request:
+    id: numberFolds
+    dataType: integer
+- control:
+    id: enumerateAscending
+    label: Order ascending (lower property value is better)
+    type: checkbox
+  request:
+    id: enumerateAscending
+    dataType: boolean
+    data: !!bool false
+- control:
+    id: detectLogDistribution
+    label: Detect log distribution
+    type: checkbox
+  request:
+    id: detectLogDistribution
+    dataType: boolean
+    data: !!bool false
+- control:
+    id: excludeUntrainedInCrossValidation
+    label: Exclude compounds with untrained RGroups from cross validation
+    type: checkbox
+  request:
+    id: excludeUntrainedInCrossValidation
+    dataType: boolean
+    data: !!bool false
+tags:
+- color: '#50AF28'
+  text: chemistry
+- color: '#ba660b'
+  text: analyze
+updateBehavior: manual
+maximumOutputColumns: !!int 0
+maximumOutputTables: !!int 3
+chemistryFunction: true
+allowedClients:
+- Analyst
+- WebPlayer
+demoUrl: 
+limitBy: none
