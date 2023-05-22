@@ -196,3 +196,8 @@ allowedClients:
 demoUrl: 
 limitBy: none
 minimumChartsVersion: 
+ironPython: ''
+# to generate all codon table names
+# from Bio.Data import CodonTable
+# for k in CodonTable.ambiguous_generic_by_name:
+#        print('   {"text": "',k,'", "value":"',k,'"},', sep='')
