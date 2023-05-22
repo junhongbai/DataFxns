@@ -1,4 +1,4 @@
-id: e9ecaf4e-334b-b0d1-462d-6a38d1e62a3f
+id: 19eed166-5783-aa21-6c50-af1a955e33ea
 name: Translate DNA to Protein Script
 description: Translates DNA To Protein
 category: Biopolymer
@@ -165,7 +165,7 @@ script: |
       input_sequences = column_to_sequences(input_column)
       codon_table_name = string_input_field(request, 'codonTableName', 'Standard')
       init_site_method = string_input_field(request, 'initMethod')
-  
+
       #reduce sequences based on initiation site
       init_sequences = input_sequences.copy()
       if init_site_method == 'ATG':
@@ -184,7 +184,7 @@ script: |
                   init_sequences[n] = None
               else:
                   init_sequences[n] = s[min(idx):]
-  
+
       output_sequences = [None if s is None else s.translate(codon_table_name) for s in init_sequences]
       output_column = sequences_to_column(output_sequences, f'Translated {input_column.name}', genbank_output=False)
       response = DataFunctionResponse(
@@ -196,8 +196,3 @@ allowedClients:
 demoUrl: 
 limitBy: none
 minimumChartsVersion: 
-ironPython: ''
-# to generate all codon table names
-# from Bio.Data import CodonTable
-# for k in CodonTable.ambiguous_generic_by_name:
-#        print('   {"text": "',k,'", "value":"',k,'"},', sep='')
