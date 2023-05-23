@@ -1,0 +1,142 @@
+id: 2ae35da5-dcb6-4661-8749-d0781b4d278e
+name: Blast Web Search
+serviceName: BlastWebSearch
+executorId: Glysade.CPythonDataFxn
+serviceUri: glysade.python
+version: 1.0.0
+inputFields:
+  - control:
+      id: query
+      label: Query sequence
+      type: sequencetextarea
+      validationRules:
+        - type: required
+      fileTypes:
+        - name: Genbank
+          contentType: chemical/x-genbank
+        - name: FASTA
+          contentType: chemical/x-fasta
+        - name: Sequence string
+          contentType: chemical/x-sequence
+    request:
+      id: query
+      dataType: string
+      contentType: chemical/x-sequence
+  - control:
+      id: databaseName
+      label: Select database to search
+      type: select
+      options:
+        - text: envnr
+          value: envnr
+        - text: nr
+          value: nr
+        - text: pataa
+          value: pataa
+        - text: pdb
+          value: pdb
+        - text: env_nt
+          value: env_nt
+        - text: nt
+          value: nt
+        - text: est
+          value: est
+        - text: other_genomic
+          value: other_genomic
+        - text: refseq_genomic
+          value: refseq_genomic
+      validationRules:
+        - type: required
+    request:
+      id: databaseName
+      dataType: string
+  - control:
+      id: maxHits
+      label: Max hits
+      type: text
+      validationRules:
+        - type: required
+          message: Must enter a value between 1 and 5000
+        - type: range
+          min: !!int 1
+          max: !!int 5000
+          message: Max hits must be a value between 1 and 5000
+    request:
+      id: maxHits
+      dataType: integer
+      data: !!int 100
+  - control:
+      label: Build multiple alignment column
+      id: showMultipleAlignments
+      type: checkbox
+    request:
+      id: showMultipleAlignments
+      dataType: boolean
+      data: !!bool false
+description: Perform a remote Blast sequence search against an Entrez database
+category: Biopolymer
+maximumOutputColumns: !!int 0
+maximumOutputTables: !!int 1
+updateBehavior: manual
+confirmSubmit:
+  title: Confirm Blast Web Search
+  message: This data function will transmit data to external Blast search services provided by NCBI.
+tags:
+  - color : '#337abc'
+    text  : sequence
+  - color : '#f7cb2d'
+    text  : search    
+ironPython: |
+    #####################################################
+    #  Copyright 2022 Glysade LLC, All Rights Reserved  #
+    #####################################################
+
+    import sys,clr
+    from Spotfire.Dxp.Data.DataFunctions import DataFunctionDefinition
+    from Spotfire.Dxp.Data import DataTable, DataManager, DataPropertyClass
+    from Spotfire.Dxp.Application import PanelTypeIdentifiers
+    from Spotfire.Dxp.Application import Panel
+    import Spotfire.Dxp.Application.PanelCollection
+    from System import AppDomain
+
+    loadAssemblies = ['Charts', 'ChemistryService']
+    for asm in AppDomain.CurrentDomain.GetAssemblies():
+        if asm.GetName().Name in loadAssemblies:
+            clr.AddReference(asm.FullName)
+
+    from ChemistryService import DataFxnInput, DataFxnRequest, DataFxnInputField
+    from Charts import ChartsModel
+    model_type = ChartsModel
+
+    dataTable = ResultTables[0]
+
+    if not dataTable:
+        raise Exception('target table not found')
+
+    dataFxnInput = DataFxnInput.Create(Document.Data.Properties.GetProperty(DataPropertyClass.Document, DataFxn.DataFunctionDefinition.Settings['PropertyName']).Value)
+    databaseName = dataFxnInput.Request.InputFields['databaseName'].Data
+    page = Document.Pages.AddNew('Blast Results')
+    panelsToHide = [PanelTypeIdentifiers.DataPanel, PanelTypeIdentifiers.DetailsOnDemandPanel, PanelTypeIdentifiers.FilterPanel]
+
+    for panel in page.Panels:
+        if panel.TypeId in panelsToHide:
+            if panel.Visible:
+                panel.Visible = False
+
+    filteringScheme = Document.FilteringSchemes[0]
+    page.FilterPanel.FilteringSchemeReference = filteringScheme
+
+    tableVis = page.Visuals.AddNew[model_type]()
+    tableVis.SetKeyValue('visualization','table-visualization')
+    tableVis.DataTable = dataTable
+    tableVis.ConfigureColumns()
+    tableVis.Marking = Document.Data.Markings.DefaultMarkingReference
+
+    if databaseName == 'pdb':
+      threeDVis = page.Visuals.AddNew[model_type]()
+      threeDVis.SetKeyValue('visualization','molviewer-visualization')
+      threeDVis.DataTable = dataTable
+      threeDVis.ConfigureColumns()
+      threeDVis.Marking = Document.Data.Markings.DefaultMarkingReference
+
+    tableVis.SetActiveVisual()
