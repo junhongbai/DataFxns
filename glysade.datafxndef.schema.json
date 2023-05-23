@@ -719,6 +719,21 @@
     "demoUrl": {
       "description": "Optional URL for a demo video for the data function",
       "type": "string"
+    },
+    "confirmSubmit": {
+      "description": "Optional object, when defined, will force the user to confirm that they wish to submit the data fxn for execution",
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "description": "Title for the confirm dialog"
+        },
+        "message": {
+          "type": "string",
+          "description": "Message for the confirm dialog"
+        }
+      },
+      "required": ["title", "message"]
     }
   },
   "required": [
