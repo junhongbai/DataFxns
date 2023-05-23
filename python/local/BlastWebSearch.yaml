@@ -78,6 +78,9 @@ category: Biopolymer
 maximumOutputColumns: !!int 0
 maximumOutputTables: !!int 1
 updateBehavior: manual
+confirmSubmit:
+  title: Confirm Blast Web Search
+  message: This data function will transmit data to external Blast search services provided by NCBI.
 tags:
   - color : '#337abc'
     text  : sequence
