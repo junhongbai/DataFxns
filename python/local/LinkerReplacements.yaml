@@ -1,4 +1,4 @@
-id: 87934fb7-d141-994b-4596-1c9a4edf7f23
+id: 665161a8-c8ce-ac5c-143c-6cabb989e34f
 name: Linker Replacements
 description: Replaces linkers in molecules with bioisosteric linkers
 category: Chemistry
@@ -25,6 +25,7 @@ inputFields:
     validationRules:
     - type: required
       message: Must select column of 2D structures
+    limitByControlId: limitBy
   request:
     id: structureColumn
     dataType: string
@@ -38,10 +39,23 @@ inputFields:
     validationRules:
     - type: required
       message: ''
+    limitByControlId: limitBy
   request:
     id: idColumn
     dataType: string
     selectorType: column
+- control:
+    id: limitBy
+    label: Limit by
+    type: limitby
+  request:
+  - id: limitBy
+    dataType: string
+    field: limitBy
+    data: none
+  - id: limitByMarking
+    dataType: string
+    field: marking
 - control:
     id: plusDeltaBonds
     label: Maximum increase in number of bonds
@@ -111,7 +125,7 @@ inputFields:
 tags:
 - color: '#50AF28'
   text: chemistry
-updateBehavior: automatic
+updateBehavior: manual
 maximumOutputColumns: !!int 1
 maximumOutputTables: !!int 1
 chemistryFunction: !!bool false
@@ -126,3 +140,4 @@ allowedClients:
 demoUrl: 
 limitBy: none
 minimumChartsVersion: 
+confirmSubmit: 
