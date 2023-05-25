@@ -224,7 +224,7 @@ tags:
   text: chemistry
 - color: '#e2f062'
   text: tform
-updateBehavior: automatic
+updateBehavior: manual
 maximumOutputColumns: !!int 50
 maximumOutputTables: !!int 1
 chemistryFunction: !!bool true
