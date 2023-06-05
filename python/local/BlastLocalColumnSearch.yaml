@@ -73,14 +73,14 @@ inputFields:
         value: human_pdbaa
       - text: Human Patented Proteins
         value: human_pataa
+      - text: Human IG Germline (Proteins)
+        value: human_IG_germline
       - text: Human NCBI NT
         value: human_nt
       - text: Human EBI ENA
         value: ena_cd_human
       - text: Human Patented Nucleotides
         value: human_patnt 
-      - text: Human IG Germline (Proteins)
-        value: human_IG_germline
       - text: Mouse NCBI NR
         value: mouse_nr
       - text: Mouse PDB
