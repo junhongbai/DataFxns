@@ -166,7 +166,7 @@ script: |
       codon_table_name = string_input_field(request, 'codonTableName', 'Standard')
       init_site_method = string_input_field(request, 'initMethod')
 
-      #reduce sequences based on initiation site
+      # reduce sequences based on initiation site
       init_sequences = input_sequences.copy()
       if init_site_method == 'ATG':
           for n, s in enumerate(input_sequences):
