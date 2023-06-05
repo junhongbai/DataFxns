@@ -54,20 +54,38 @@ inputFields:
           value: up_sp_human
         - text: Human Uniprot Trembl
           value: up_tbl_human
+        - text: Human PDB
+          value: human_pdbaa
+        - text: Human Patented Proteins
+          value: human_pataa
         - text: Human NCBI NT
           value: human_nt
         - text: Human EBI ENA
           value: ena_cd_human
-        - text: Mouse NCBI NR
-          value: mouse_nr
-        - text: Mouse NCBI NT
-          value: mouse_nt
-        - text: Rat NCBI NR
-          value: rat_nr
-        - text: Rat NCBI NT
-          value: rat_nt
+        - text: Human Patented Nucleotides
+          value: human_patnt 
         - text: Human IG Germline (Proteins)
           value: human_IG_germline
+        - text: Mouse NCBI NR
+          value: mouse_nr
+        - text: Mouse PDB
+          value: mouse_pdbaa
+        - text: Mouse Patented Proteins
+          value: mouse_pataa
+        - text: Mouse NCBI NT
+          value: mouse_nt
+        - text: Mouse Patented Nucleotides
+          value: mouse_patnt 
+        - text: Rat NCBI NR
+          value: rat_nr
+        - text: Rat PDB
+          value: rat_pdbaa
+        - text: Rat Patented Proteins
+          value: rat_pataa
+        - text: Rat NCBI NT
+          value: rat_nt
+        - text: Rat Patented Nucleotides
+          value: rat_patnt 
       validationRules:
         - type: required
     request:
