@@ -1,9 +1,10 @@
 id: 099f6c94-7e66-4150-b751-88fbe2b9053a
 name: Blast Local Text Search
+description: Performs a BLAST search of user selected databases using an input sequence. Pre-configured BLAST databases can be downloaded from https://tinyurl.com/3d38p35
 serviceName: BlastLocalTextSearch
 executorId: Glysade.CPythonDataFxn
 serviceUri: glysade.python
-version: 1.0.0
+version: 1.1.0
 inputFields:
   - control:
       id: query
