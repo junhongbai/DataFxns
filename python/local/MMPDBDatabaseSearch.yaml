@@ -131,7 +131,7 @@ ironPython: |
     layout.Add(tableVis.Visual)
     layout.EndSection()
     page.ApplyLayout(layout)
-updateBehavior: automatic
+updateBehavior: manual
 maximumOutputColumns: !!int 0
 maximumOutputTables: !!int 1
 chemistryFunction: !!bool false
