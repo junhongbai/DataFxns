@@ -114,6 +114,6 @@ chemistryFunction: !!bool false
 allowedClients:
 - Analyst
 demoUrl: 
-limitBy: runtime
+limitBy: none 
 minimumChartsVersion: 
 confirmSubmit: 
