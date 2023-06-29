@@ -31,7 +31,7 @@ inputFields:
     - text: Asparagine Deamidation
       value: Asparagine Deamidation,(?=(N[GSTN]))
     - text: Aspartic Acid Fragmentation
-      value: Asparagine Deamidation,DP
+      value: Aspartic Acid Fragmentation,DP
     - text: Aspartic Acid Isomerization
       value: Aspartic Acid Isomerization,(?=(D[GSTDH]))
     - text: Cysteine
