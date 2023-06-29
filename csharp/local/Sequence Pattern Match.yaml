@@ -37,7 +37,7 @@ inputFields:
     - text: Cysteine
       value: Cysteine,C
     - text: Lysine N-glycation
-      value: Lysine N-glycation,(<=(K[DE]|[DE]K))
+      value: Lysine N-glycation,(?<=(K[DE]|[DE]K))
     - text: N-glycosylation
       value: N-glycosylation,N[^P][TS]
     - text: N-terminal Glutamic Acid
