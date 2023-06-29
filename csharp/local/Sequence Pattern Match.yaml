@@ -28,19 +28,19 @@ inputFields:
     type: select
     multi: !!bool true
     options:
-    -text: Asparagine Deamidation
+    - text: Asparagine Deamidation
       value: Asparagine Deamidation,(?=(N[GSTN]))
-    -test: Aspartic Acid Fragmentation
+    - text: Aspartic Acid Fragmentation
       value: Asparagine Deamidation,DP
-    -text: Aspartic Acid Isomerization
+    - text: Aspartic Acid Isomerization
       value: Aspartic Acid Isomerization,(?=(D[GSTDH]))
     - text: Cysteine
       value: Cysteine,C
-    -text: Lysine N-glycation
-      value: (<=(K[DE]|[DE]K))
-    -test: N-glycosylation,(<=(K[DE]|[DE]K))
-      value: Asparagine Deamidation,N[^P][TS]
-    -test: N-terminal Glutamic Acid
+    - text: Lysine N-glycation
+      value: Lysine N-glycation,(<=(K[DE]|[DE]K))
+    - text: N-glycosylation
+      value: N-glycosylation,N[^P][TS]
+    - text: N-terminal Glutamic Acid
       value: N-terminal Glutamic Acid,^E
     - text: Oxidation
       value: Oxidation,[MW]
@@ -51,7 +51,7 @@ inputFields:
     dataType: list(string)
     data:
     - Cysteine,C
-    - Oxidation,M
+    - Oxidation,[MW]
 description: Create a set of boolean columns indicating the presence or absence of
   predefined regular expression patterns.
 category: Biopolymer
