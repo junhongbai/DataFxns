@@ -28,10 +28,22 @@ inputFields:
     type: select
     multi: !!bool true
     options:
+    -text: Asparagine Deamidation
+      value: Asparagine Deamidation,(?=(N[GSTN]))
+    -test: Aspartic Acid Fragmentation
+      value: Asparagine Deamidation,DP
+    -text: Aspartic Acid Isomerization
+      value: Aspartic Acid Isomerization,(?=(D[GSTDH]))
     - text: Cysteine
       value: Cysteine,C
+    -text: Lysine N-glycation
+      value: (<=(K[DE]|[DE]K))
+    -test: N-glycosylation,(<=(K[DE]|[DE]K))
+      value: Asparagine Deamidation,N[^P][TS]
+    -test: N-terminal Glutamic Acid
+      value: N-terminal Glutamic Acid,^E
     - text: Oxidation
-      value: Oxidation,M
+      value: Oxidation,[MW]
     validationRules:
     - type: required
   request:
