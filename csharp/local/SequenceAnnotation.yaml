@@ -1,4 +1,4 @@
-id: 45222c81-f454-de7d-fbd5-aaa69fe067e4
+id: a9ff4fa7-ce7b-8efc-b125-de80fab3e8df
 name: Sequence Annotation
 description: Create GenBank annotations for a sequence or GenBank column
 category: Biopolymer
@@ -29,12 +29,25 @@ inputFields:
     selectorType: column
     adapterColumn: !!bool true
 - control:
+    id: outputColumn
+    label: Enter a name for the output column
+    type: text
+    validationRules:
+    - type: required
+      message: ''
+  request:
+    id: outputColumn
+    dataType: string
+    data: Annotated Sequence
+- control:
     id: start
     label: Region start location
     type: text
     validationRules:
     - type: required
       message: Enter a starting location
+    - type: numeric
+      message: Value must be an integer
   request:
     id: start
     dataType: integer
@@ -45,11 +58,17 @@ inputFields:
     validationRules:
     - type: required
       message: Enter an ending location
+    - type: numeric
+      message: Value must be an integer
   request:
     id: end
     dataType: integer
 assembly: PublisherCore
-tags: []
+tags:
+- color: '#337abc'
+  text: sequence
+- color: '#AFC9E1'
+  text: annotation
 updateBehavior: automatic
 maximumOutputColumns: !!int 1
 maximumOutputTables: !!int 0
@@ -59,6 +78,10 @@ outputFields:
   name: Sequence column
   source: inputField
   type: sequence
+- id: outputColumn
+  name: Output Column
+  source: inputField
+  type: default
 - id: start
   name: Region start location
   source: inputField
