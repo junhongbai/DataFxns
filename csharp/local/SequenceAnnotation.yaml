@@ -1,0 +1,67 @@
+id: 8e37bc66-804b-f9ef-6513-c8887626dffb
+name: Sequence Annotation
+description: Create GenBank annotations for a sequence or GenBank column
+category: Biopolymer
+version: 1.0.0
+serviceName: SequenceAnnotation
+serviceUri: glysade.python
+executorId: Glysade.CSharpDataFxn
+inputFields:
+- control:
+    id: sequenceColumn
+    label: Select sequence column
+    type: columnselect
+    multi: !!bool false
+    validationRules:
+    - type: required
+      message: Select a column containing valid sequences
+    filters:
+    - dataType: string
+      contentType:
+      - chemical/x-sequence
+    - dataType:
+      - binary
+      contentType:
+      - chemical/x-genbank
+  request:
+    id: sequenceColumn
+    dataType: string
+    selectorType: column
+    adapterColumn: !!bool true
+- control:
+    id: columnName
+    label: Output column name
+    type: text
+    validationRules:
+    - type: required
+      message: Specify the output column name
+  request:
+    id: columnName
+    dataType: string
+    data: Annotated Sequence
+assembly: PublisherCore
+tags: []
+updateBehavior: automatic
+maximumOutputColumns: !!int 1
+maximumOutputTables: !!int 0
+chemistryFunction: !!bool false
+outputFields:
+- id: sequenceColumn
+  name: Enter label
+  source: inputField
+  type: sequence
+- id: columnName
+  name: 'Output column '
+  source: inputField
+  type: default
+- id: column1
+  name: Output column name
+  source: column
+  type: default
+allowedClients:
+- Analyst
+- WebPlayer
+demoUrl: 
+limitBy: none
+minimumChartsVersion: 
+confirmSubmit: 
