@@ -1,4 +1,4 @@
-id: 8e37bc66-804b-f9ef-6513-c8887626dffb
+id: ca2205ae-158a-3116-2643-029493ce79b4
 name: Sequence Annotation
 description: Create GenBank annotations for a sequence or GenBank column
 category: Biopolymer
@@ -47,11 +47,11 @@ maximumOutputTables: !!int 0
 chemistryFunction: !!bool false
 outputFields:
 - id: sequenceColumn
-  name: Enter label
+  name: Sequence column
   source: inputField
   type: sequence
 - id: columnName
-  name: 'Output column '
+  name: Output column
   source: inputField
   type: default
 - id: column1
