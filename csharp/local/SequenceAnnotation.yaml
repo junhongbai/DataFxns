@@ -3,7 +3,7 @@ name: Sequence Annotation
 description: Create GenBank annotations for a sequence or GenBank column
 category: Biopolymer
 version: 1.0.0
-serviceName: SequenceAnnotation
+serviceName: PublisherCore.SequenceAnnotation
 serviceUri: glysade.python
 executorId: Glysade.CSharpDataFxn
 inputFields:
