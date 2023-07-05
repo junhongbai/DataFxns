@@ -3,7 +3,8 @@ name: Sequence Annotation
 description: Create GenBank annotations for a sequence or GenBank column
 category: Biopolymer
 version: 1.0.0
-serviceName: PublisherCore.SequenceAnnotation
+assembly: PublisherCore
+serviceName: SequenceAnnotationDataFunction
 serviceUri: glysade.csharp
 executorId: Glysade.CSharpDataFxn
 inputFields:
@@ -39,7 +40,6 @@ inputFields:
     id: columnName
     dataType: string
     data: Annotated Sequence
-assembly: PublisherCore
 tags: []
 updateBehavior: automatic
 maximumOutputColumns: !!int 1
