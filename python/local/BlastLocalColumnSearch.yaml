@@ -1,121 +1,139 @@
 id: b486f3d0-e778-ace1-51a2-63934f1910a5
 name: Blast Local Column Search
-description: Performs a BLAST search of user selected databases using queries from a sequence column.  Please contact business@glysade.com for the latest database download link.
+description: Performs a BLAST search of user selected databases using queries from a sequence column. Pre-configured BLAST databases can be downloaded from https://tinyurl.com/3d38p356
 category: Biopolymer
-version: 1.0.0
+version: 1.1.0
 serviceName: BlastLocalColumnSearch
 serviceUri: glysade.python
 executorId: Glysade.CPythonDataFxn
 inputFields:
-- control:
-    id: sequenceColumn
-    label: Select sequence column
-    type: columnselect
-    filters:
-    - dataType: string
-      contentType: chemical/x-sequence
-    - dataType: binary
-      contentType: chemical/x-genbank
-    validationRules:
-    - type: required
-      message: Must select column of sequences
-  request:
-    id: sequenceColumn
-    dataType: string
-    selectorType: column
-- control:
-    id: idColumn
-    label: ID Column (optional)
-    type: columnselect
-    multi: !!bool false
-    filters:
-    - dataType:
-      - string
-      - int
-    tooltip: ID column is not required for Genbank encoded sequences
-  request:
-    id: idColumn
-    dataType: string
-    selectorType: column
-- control:
-    id: method
-    label: Select method
-    type: select
-    options:
-    - text: 'BLASTP: protein(q)-protein(d)'
-      value: BLASTP
-    - text: 'BLASTN: nucleotide(q)-nucleotide(d)'
-      value: BLASTN
-    - text: 'BLASTX: nucleotide(q)+translation-protein(d)'
-      value: BLASTX
-    - text: 'TBLASTN: protein(q)-nucleotide(d)+translation'
-      value: TBLASTN
-    - text: 'TBLASTX: nucleotide(q)+translation-nucleotide(d)+translation'
-      value: TBLASTX
-    validationRules:
-    - type: required
-  request:
-    id: method
-    dataType: string
-    data: BLASTP
-- control:
-    id: databaseName
-    label: Select database
-    type: select
-    options:
-    - text: Human NCBI NR
-      value: human_nr
-    - text: Human Uniprot SwissProt
-      value: up_sp_human
-    - text: Human Uniprot Trembl
-      value: up_tbl_human
-    - text: Human NCBI NT
-      value: human_nt
-    - text: Human EBI ENA
-      value: ena_cd_human
-    - text: Mouse NCBI NR
-      value: mouse_nr
-    - text: Mouse NCBI NT
-      value: mouse_nt
-    - text: Rat NCBI NR
-      value: rat_nr
-    - text: Rat NCBI NT
-      value: rat_nt
-    - text: Human IG Germline (Proteins)
-      value: human_IG_germline
-    validationRules:
-    - type: required
-  request:
-    id: databaseName
-    dataType: string
-- control:
-    id: maxHits
-    label: Max hits
-    type: text
-    validationRules:
-    - type: required
-      message: Must enter a value between 1 and 5000
-    - type: range
-      min: !!int 1
-      max: !!int 5000
-      message: Max hits must be a value between 1 and 5000
-  request:
-    id: maxHits
-    dataType: integer
-    data: !!int 100
-- control:
-    id: blastDbPath
-    label: Directory containing BLAST databases
-    type: file
-    mode: path
-    pathType: folder
-    validationRules:
-    - type: required
-      message: ''
-  request:
-    id: blastDbPath
-    dataType: string
-    data: C:\db\ncbi
+  - control:
+      id: sequenceColumn
+      label: Select sequence column
+      type: columnselect
+      filters:
+      - dataType: string
+        contentType: chemical/x-sequence
+      - dataType: binary
+        contentType: chemical/x-genbank
+      validationRules:
+      - type: required
+        message: Must select column of sequences
+    request:
+      id: sequenceColumn
+      dataType: string
+      selectorType: column
+  - control:
+      id: idColumn
+      label: ID Column (optional)
+      type: columnselect
+      multi: !!bool false
+      filters:
+      - dataType:
+        - string
+        - int
+      tooltip: ID column is not required for Genbank encoded sequences
+    request:
+      id: idColumn
+      dataType: string
+      selectorType: column
+  - control:
+      id: method
+      label: Select method
+      type: select
+      options:
+      - text: 'BLASTP: protein(q)-protein(d)'
+        value: BLASTP
+      - text: 'BLASTN: nucleotide(q)-nucleotide(d)'
+        value: BLASTN
+      - text: 'BLASTX: nucleotide(q)+translation-protein(d)'
+        value: BLASTX
+      - text: 'TBLASTN: protein(q)-nucleotide(d)+translation'
+        value: TBLASTN
+      - text: 'TBLASTX: nucleotide(q)+translation-nucleotide(d)+translation'
+        value: TBLASTX
+      validationRules:
+      - type: required
+    request:
+      id: method
+      dataType: string
+      data: BLASTP
+  - control:
+      id: databaseName
+      label: Select database
+      type: select
+      options:
+      - text: Human NCBI NR
+        value: human_nr
+      - text: Human Uniprot SwissProt
+        value: up_sp_human
+      - text: Human Uniprot Trembl
+        value: up_tbl_human
+      - text: Human PDB
+        value: human_pdbaa
+      - text: Human Patented Proteins
+        value: human_pataa
+      - text: Human IG Germline (Proteins)
+        value: human_IG_germline
+      - text: Human NCBI NT
+        value: human_nt
+      - text: Human EBI ENA
+        value: ena_cd_human
+      - text: Human Patented Nucleotides
+        value: human_patnt 
+      - text: Mouse NCBI NR
+        value: mouse_nr
+      - text: Mouse PDB
+        value: mouse_pdbaa
+      - text: Mouse Patented Proteins
+        value: mouse_pataa
+      - text: Mouse NCBI NT
+        value: mouse_nt
+      - text: Mouse Patented Nucleotides
+        value: mouse_patnt 
+      - text: Rat NCBI NR
+        value: rat_nr
+      - text: Rat PDB
+        value: rat_pdbaa
+      - text: Rat Patented Proteins
+        value: rat_pataa
+      - text: Rat NCBI NT
+        value: rat_nt
+      - text: Rat Patented Nucleotides
+        value: rat_patnt 
+      validationRules:
+      - type: required
+    request:
+      id: databaseName
+      dataType: string
+  - control:
+      id: maxHits
+      label: Max hits
+      type: text
+      validationRules:
+      - type: required
+        message: Must enter a value between 1 and 5000
+      - type: range
+        min: !!int 1
+        max: !!int 5000
+        message: Max hits must be a value between 1 and 5000
+    request:
+      id: maxHits
+      dataType: integer
+      data: !!int 100
+  - control:
+      id: blastDbPath
+      label: Directory containing BLAST databases
+      type: file
+      mode: path
+      pathType: folder
+      validationRules:
+      - type: required
+        message: ''
+    request:
+      id: blastDbPath
+      dataType: string
+      data: C:\db\ncbi
 tags:
   - color : '#337abc'
     text  : sequence
