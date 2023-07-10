@@ -1,6 +1,6 @@
-id: a9ff4fa7-ce7b-8efc-b125-de80fab3e8df
-name: Sequence Annotation
-description: Create GenBank annotations for a sequence or GenBank column
+id: f9271d8e-6cb2-c80c-6841-9baa146377f5
+name: Sequence Region Annotation
+description: Create GenBank region annotations for a sequence or GenBank column.
 category: Biopolymer
 version: 1.0.0
 serviceName: SequenceAnnotationDataFunction
@@ -39,6 +39,16 @@ inputFields:
     id: outputColumn
     dataType: string
     data: Annotated Sequence
+- control:
+    id: annotation
+    label: Annotated region name
+    type: text
+    validationRules:
+    - type: required
+      message: Enter the name of the region to be annotated.
+  request:
+    id: annotation
+    dataType: string
 - control:
     id: start
     label: Region start location
@@ -80,6 +90,10 @@ outputFields:
   type: sequence
 - id: outputColumn
   name: Output Column
+  source: inputField
+  type: default
+- id: annotation
+  name: Annotated region name
   source: inputField
   type: default
 - id: start
