@@ -1,4 +1,4 @@
-id: f9271d8e-6cb2-c80c-6841-9baa146377f5
+id: 1d863338-11e3-f287-a9c8-6d72792c320f
 name: Sequence Region Annotation
 description: Create GenBank region annotations for a sequence or GenBank column.
 category: Biopolymer
@@ -34,7 +34,7 @@ inputFields:
     type: text
     validationRules:
     - type: required
-      message: ''
+      message: Enter a name for the output column.
   request:
     id: outputColumn
     dataType: string
@@ -55,9 +55,12 @@ inputFields:
     type: text
     validationRules:
     - type: required
-      message: Enter a starting location
+      message: Enter a starting location.
     - type: numeric
       message: Value must be an integer
+    - type: range
+      message: Value must be >= 1.
+      min: !!int 1
   request:
     id: start
     dataType: integer
@@ -70,6 +73,9 @@ inputFields:
       message: Enter an ending location
     - type: numeric
       message: Value must be an integer
+    - type: range
+      message: Value must be >= 1.
+      min: !!int 1
   request:
     id: end
     dataType: integer
