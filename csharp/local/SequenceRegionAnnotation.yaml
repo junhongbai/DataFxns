@@ -3,7 +3,8 @@ name: Sequence Region Annotation
 description: Create GenBank region annotations for a sequence or GenBank column.
 category: Biopolymer
 version: 1.0.0
-serviceName: SequenceRegionAnnotationDataFunction
+assembly: PublisherCore
+serviceName: PublisherCore.SequenceRegionAnnotationDataFunction
 serviceUri: glysade.csharp
 executorId: Glysade.CSharpDataFxn
 inputFields:
@@ -79,7 +80,6 @@ inputFields:
   request:
     id: end
     dataType: integer
-assembly: PublisherCore
 tags:
 - color: '#337abc'
   text: sequence
