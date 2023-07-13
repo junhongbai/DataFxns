@@ -115,5 +115,5 @@ allowedClients:
 - WebPlayer
 demoUrl: 
 limitBy: none
-minimumChartsVersion: 
+minimumChartsVersion: 4.3.0.6
 confirmSubmit: 
