@@ -9,7 +9,7 @@ executorId: Glysade.CSharpDataFxn
 inputFields:
 - control:
     id: sequenceColumn
-    label: Select sequence column
+    label: Select sequence column (must be protein sequences)
     type: columnselect
     filters:
     - dataType: string
