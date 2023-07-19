@@ -33,6 +33,7 @@ inputFields:
   request:
     id: outputColumn
     dataType: string
+    data: Annotated Sequence Liabilities
 - control:
     id: patterns
     label: Match patterns
@@ -61,7 +62,13 @@ inputFields:
     id: patterns
     dataType: list(string)
     data:
+    - Asparagine Deamidation,(?=(N[GSTN]))
+    - Aspartic Acid Fragmentation,DP
+    - Aspartic Acid Isomerization,(?=(D[GSTDH]))
     - Cysteine,C
+    - Lysine N-glycation,(?<=(K[DE]|[DE]K))
+    - N-glycosylation,N[^P][TS]
+    - N-terminal Glutamic Acid,^E
     - Oxidation,[MW]
 assembly: PublisherCore
 tags:
