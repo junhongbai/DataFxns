@@ -1,10 +1,11 @@
-id: 0473c160-a492-488b-960f-eba70557785c
+id: 4d926330-38e8-c483-68cb-1bb5ea0e56bf
 name: Sequence Pattern Match
+description: Create a set of boolean columns indicating the presence or absence of predefined regular expression patterns.
+category: Biopolymer
+version: 1.0.1
 serviceName: PublisherCore.SequencePatternMatchDataFunction
-assembly: PublisherCore
-executorId: Glysade.CSharpDataFxn
 serviceUri: glysade.csharp
-version: 1.0.0
+executorId: Glysade.CSharpDataFxn
 inputFields:
 - control:
     id: sequenceColumn
@@ -22,6 +23,13 @@ inputFields:
     id: sequenceColumn
     dataType: string
     selectorType: column
+- control:
+    id: outputColumn
+    label: Enter label for outputColumn
+    type: text
+  request:
+    id: outputColumn
+    dataType: string
 - control:
     id: patterns
     label: Match patterns
@@ -52,14 +60,20 @@ inputFields:
     data:
     - Cysteine,C
     - Oxidation,[MW]
-description: Create a set of boolean columns indicating the presence or absence of
-  predefined regular expression patterns.
-category: Biopolymer
-maximumOutputColumns: !!int 10
-maximumOutputTables: !!int 0
-ironPython: ''
+assembly: PublisherCore
 tags:
 - color: '#337abc'
   text: sequence
 - color: '#f1f72d'
-  text: filter  
+  text: filter
+updateBehavior: automatic
+maximumOutputColumns: !!int 10
+maximumOutputTables: !!int 0
+chemistryFunction: !!bool false
+allowedClients:
+- Analyst
+- WebPlayer
+demoUrl: 
+limitBy: none
+minimumChartsVersion: 
+confirmSubmit: 
