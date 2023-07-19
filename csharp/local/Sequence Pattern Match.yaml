@@ -1,9 +1,9 @@
 id: 01010160-093b-55c7-746b-8a3c148111b7
-name: Sequence Pattern Match
-description: Create a set of boolean columns indicating the presence or absence of predefined regular expression patterns.
+name: Sequence Liability Search 
+description: Create a set of boolean columns indicating the presence or absence of predefined antibody sequence liabilities.  A column illustrating the sequence and the identified liability locations is also created.
 category: Biopolymer
 version: 1.0.1
-serviceName: PublisherCore.SequencePatternMatchDataFunction
+serviceName: PublisherCore.SequenceLiabilitySearchDataFunction
 serviceUri: glysade.csharp
 executorId: Glysade.CSharpDataFxn
 inputFields:
