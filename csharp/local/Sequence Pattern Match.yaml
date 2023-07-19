@@ -1,4 +1,4 @@
-id: 4d926330-38e8-c483-68cb-1bb5ea0e56bf
+id: 01010160-093b-55c7-746b-8a3c148111b7
 name: Sequence Pattern Match
 description: Create a set of boolean columns indicating the presence or absence of predefined regular expression patterns.
 category: Biopolymer
@@ -27,6 +27,9 @@ inputFields:
     id: outputColumn
     label: Annotated output column name
     type: text
+    validationRules:
+    - type: required
+      message: Enter a name for the annotated output column.
   request:
     id: outputColumn
     dataType: string
