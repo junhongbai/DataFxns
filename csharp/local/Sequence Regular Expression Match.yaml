@@ -1,9 +1,11 @@
 id: 70470634-68a8-4950-9d88-348bc19e3a1d
-name: Sequence Regular Expression Match
+name: Sequence Motif or Regular Expression Search
+description: Creates boolean columns indicating the presence or absence of input sequence motif or regular expression in a sequence column.  A column illustrating the sequence and the identified motif locations is also created.
+category: Biopolymer
+version: 1.0.1
 serviceName: SequenceRegularExpressionMatch
-executorId: Glysade.CSharpDataFxn
 serviceUri: glysade.csharp
-version: 1.0.0
+executorId: Glysade.CSharpDataFxn
 inputFields:
 - control:
     id: sequenceColumn
@@ -23,30 +25,48 @@ inputFields:
     selectorType: column
 - control:
     id: columnName
-    label: Column Name
+    label: Output column name
     type: text
     validationRules:
     - type: required
+      message: 'Enter a name for the output boolean column.'
   request:
     id: columnName
     dataType: string
 - control:
+    id: featureName
+    label: Motif/feature name
+    type: text
+    validationRules:
+    - type: required
+      message: 'Enter a name to be used in annotating the motif or regular expression.'
+  request:
+    id: featureName
+    dataType: string
+- control:
     id: expression
-    label: Regular Expression
+    label: Sequence motif or regular expression
     type: text
     rows: !!int 1
     validationRules:
     - type: required
+      message: 'A query sequence or regular expression must be entered.'
   request:
     id: expression
     dataType: string
-description: Creates boolean columns indicating the presence or absence of input regular expressions in a sequence column.
-category: Biopolymer
-maximumOutputColumns: !!int 10
-maximumOutputTables: !!int 0
-ironPython: ''
 tags:
 - color: '#337abc'
   text: sequence
 - color: '#f1f72d'
   text: filter
+updateBehavior: automatic
+maximumOutputColumns: !!int 2
+maximumOutputTables: !!int 0
+chemistryFunction: !!bool false
+allowedClients:
+- Analyst
+- WebPlayer
+demoUrl: 
+limitBy: none
+minimumChartsVersion: 
+confirmSubmit: 
