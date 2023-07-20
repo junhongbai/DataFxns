@@ -72,6 +72,8 @@ inputFields:
     - Oxidation,[MW]
 assembly: PublisherCore
 tags:
+- color: '#dddddd'
+  text: MAB
 - color: '#337abc'
   text: sequence
 - color: '#f1f72d'
