@@ -1,0 +1,55 @@
+id: e9bbabb2-4fef-6da1-b423-1a141d77b022
+name: Remove Alignment or Gaps
+description: Removes any gaps in sequences associated with a sequence alignment, creating a new column with unaligned sequences free of gaps.
+category: Biopolymer
+version: 1.0.0
+serviceName: SequenceRemoveGapsDataFunction
+serviceUri: glysade.csharp
+executorId: Glysade.CSharpDataFxn
+inputFields:
+- control:
+    id: sequenceColumn
+    label: Select sequence column
+    type: columnselect
+    multi: !!bool false
+    validationRules:
+    - type: required
+      message: Select a sequence column to operate on.
+    filters:
+    - dataType:
+      - string
+      - binary
+      contentType:
+      - chemical/x-sequence
+      - chemical/x-genbank
+  request:
+    id: sequenceColumn
+    dataType: string
+    selectorType: column
+- control:
+    id: outputColumn
+    label: Output column name
+    type: text
+    validationRules:
+    - type: required
+      message: Specify a name for the output column.
+  request:
+    id: outputColumn
+    dataType: string
+assembly: PublisherCore
+tags:
+- color: '#337abc'
+  text: sequence
+- color: '#e2f062'
+  text: tform
+updateBehavior: automatic
+maximumOutputColumns: !!int 1
+maximumOutputTables: !!int 0
+chemistryFunction: !!bool false
+allowedClients:
+- Analyst
+- WebPlayer
+demoUrl: 
+limitBy: none
+minimumChartsVersion: 
+confirmSubmit: 
