@@ -1,6 +1,6 @@
 id: 70470634-68a8-4950-9d88-348bc19e3a1d
-name: Sequence Motif or Regular Expression Search
-description: Creates boolean columns indicating the presence or absence of input sequence motif or regular expression in a sequence column.  A column illustrating the sequence and the identified motif locations is also created.
+name: Sequence Motif Search
+description: Creates boolean columns indicating the presence or absence of an input sequence motif in a sequence column - regular expressions are also supported.  A column illustrating the sequence and the identified motif locations is also created.
 category: Biopolymer
 version: 1.0.1
 serviceName: SequenceMotifRegexSearch
@@ -35,17 +35,17 @@ inputFields:
     dataType: string
 - control:
     id: featureName
-    label: Motif/feature name
+    label: Motif name
     type: text
     validationRules:
     - type: required
-      message: 'Enter a name to be used in annotating the motif or regular expression.'
+      message: 'Enter a name to be used in annotating the motif.'
   request:
     id: featureName
     dataType: string
 - control:
     id: expression
-    label: Sequence motif or regular expression
+    label: Sequence motif (or regular expression)
     type: text
     rows: !!int 1
     validationRules:
