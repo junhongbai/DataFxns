@@ -57,6 +57,15 @@ inputFields:
       dataType: boolean
       data: !!bool false
   - control:
+      label: Match core to tautomers
+      tooltip: Available for Charts versions 4.3.0.6 or later
+      id: tautomerCore
+      type: checkbox
+    request:
+      id: tautomerCore
+      dataType: boolean
+      data: !!bool false
+  - control:
       label: Output format
       id: outputFormat
       type: radiogroup
