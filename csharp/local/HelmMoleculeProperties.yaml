@@ -1,0 +1,39 @@
+id: c736e3e6-2923-3cd8-4152-78b1d63619aa
+name: Helm Molecule Properties
+description: Calculates HELM molecule properties
+category: Biopolymer
+version: 1.0.0
+serviceName: HelmMoleculeProperties
+serviceUri: glysade.csharp
+executorId: Glysade.CSharpDataFxn
+inputFields:
+- control:
+    id: columnId
+    label: Helm Column
+    type: columnselect
+    multi: !!bool false
+    validationRules:
+    - type: required
+      message: ''
+    filters:
+    - dataType: string
+      contentType:
+      - chemical/x-helm
+  request:
+    id: columnId
+    dataType: string
+    selectorType: column
+tags:
+- color: '#92315A'
+  text: HELM
+updateBehavior: automatic
+maximumOutputColumns: !!int 10
+maximumOutputTables: !!int -1
+chemistryFunction: !!bool false
+allowedClients:
+- Analyst
+- WebPlayer
+demoUrl: 
+limitBy: none
+minimumChartsVersion: 
+confirmSubmit: 

@@ -1,0 +1,54 @@
+id: a625c49a-c255-9692-0bfa-8a800c19d374
+name: Helm Structure
+description: Creates a molecule column for a helm column
+category: Biopolymer
+version: 1.0.0
+serviceName: HelmMoleculeStructure
+serviceUri: glysade.csharp
+executorId: Glysade.CSharpDataFxn
+inputFields:
+- control:
+    id: columnId
+    label: Helm Column
+    type: columnselect
+    multi: !!bool false
+    validationRules:
+    - type: required
+      message: ''
+    filters:
+    - dataType: string
+      contentType:
+      - chemical/x-helm
+  request:
+    id: columnId
+    dataType: string
+    selectorType: column
+- control:
+    id: outputFormat
+    label: Output format
+    type: radiogroup
+    radios:
+    - text: chemical/x-mdl-molfile
+      value: chemical/x-mdl-molfile
+    - text: chemical/x-smiles
+      value: chemical/x-smiles
+    validationRules:
+    - type: required
+      message: ''
+  request:
+    id: outputFormat
+    dataType: string
+tags:
+- color: '#92315A'
+  text: HELM
+updateBehavior: automatic
+maximumOutputColumns: !!int 10
+maximumOutputTables: !!int 0
+chemistryFunction: !!bool false
+allowedClients:
+- Analyst
+- WebPlayer
+demoUrl: 
+limitBy: none
+minimumChartsVersion: 
+confirmSubmit: 
