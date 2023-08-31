@@ -1,0 +1,39 @@
+id: c4087e22-a1e5-0cc1-31dc-e322e8db945f
+name: Helm To Sequence
+description: Converts helm to sequence
+category: Biopolymer
+version: 1.0.0
+serviceName: HelmToSequence
+serviceUri: glysade.csharp
+executorId: Glysade.CSharpDataFxn
+inputFields:
+- control:
+    id: columnId
+    label: Helm Column
+    type: columnselect
+    multi: !!bool false
+    validationRules:
+    - type: required
+      message: ''
+    filters:
+    - dataType: string
+      contentType:
+      - chemical/x-helm
+  request:
+    id: columnId
+    dataType: string
+    selectorType: column
+tags:
+- color: '#92315A'
+  text: HELM
+updateBehavior: automatic
+maximumOutputColumns: !!int 1
+maximumOutputTables: !!int -1
+chemistryFunction: !!bool false
+allowedClients:
+- Analyst
+- WebPlayer
+demoUrl: 
+limitBy: none
+minimumChartsVersion: 
+confirmSubmit: 
