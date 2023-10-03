@@ -1,126 +1,110 @@
 id: b9657ce6-3399-47a2-a60d-4d4b30f5620c
 name: Multiple Sequence Alignment
+serviceName: MultipleSequenceAlignment
+executorId: Glysade.CPythonDataFxn
+serviceUri: glysade.python
+version: 1.0.0
+inputFields:
+  - control:
+      id: sequenceColumn
+      label: Select sequence column
+      type: columnselect
+      filters:
+        - dataType: string
+          contentType: chemical/x-sequence
+        - dataType: binary
+          contentType: chemical/x-genbank
+      validationRules:
+        - type: required
+    request:
+      id: sequenceColumn
+      dataType: string
+      selectorType: column
+  - control:
+      id: alignmentMethod
+      label: Alignment method
+      type: radiogroup
+      radios:
+        - text: Clustal Omega
+          value: CLUSTALO
+        - text: MUSCLE
+          value: MUSCLE
+      validationRules:
+        - type: required
+          message: Must select something from 'Alignment method'
+    request:
+      id: alignmentMethod
+      dataType: string
+      data: CLUSTALO
 description: Performs multiple sequence alignment using a variety of algorithms
 category: Biopolymer
-version: 2.0.0
-serviceName: MultipleSequenceAlignment
-serviceUri: glysade.python
-executorId: Glysade.CPythonDataFxn
-inputFields:
-- control:
-    id: sequenceColumn
-    label: Select sequence column
-    type: columnselect
-    filters:
-    - dataType: string
-      contentType: chemical/x-sequence
-    - dataType: binary
-      contentType: chemical/x-genbank
-    validationRules:
-    - type: required
-  request:
-    id: sequenceColumn
-    dataType: string
-    selectorType: column
-- control:
-    id: inputField2
-    label: Limit by
-    type: limitby
-  request:
-  - id: inputField2
-    dataType: string
-    field: limitBy
-    data: none
-  - id: inputField2Marking
-    dataType: string
-    field: marking
-- control:
-    id: alignmentMethod
-    label: Alignment method
-    type: radiogroup
-    radios:
-    - text: Clustal Omega
-      value: CLUSTALO
-    - text: MUSCLE
-      value: MUSCLE
-    validationRules:
-    - type: required
-      message: Must select something from 'Alignment method'
-  request:
-    id: alignmentMethod
-    dataType: string
-    data: CLUSTALO
-tags:
-- color: '#337abc'
-  text: sequence
-- color: '#e2f062'
-  text: tform
-ironPython: |
-  #####################################################
-  #  Copyright 2022 Glysade LLC, All Rights Reserved  #
-  #####################################################
-
-  import sys,clr
-  import json
-  from Spotfire.Dxp.Data import DataTable, DataManager, DataType, DataPropertyClass,DataProperty
-  from Spotfire.Dxp.Application import PanelTypeIdentifiers
-  from Spotfire.Dxp.Application import Panel
-  import Spotfire.Dxp.Application.PanelCollection
-
-  from System import AppDomain
-  for asm in AppDomain.CurrentDomain.GetAssemblies():
-      if asm.FullName.StartsWith('Charts,'):
-          clr.AddReference(asm.FullName)
-
-  from Charts import ChartsModel
-  model_type = ChartsModel
-
-  #dataFxnId passed as arg
-  dataTable = InputTables[0]
-
-  if not dataTable:
-      raise Exception('target table not found')
-
-  tableId = dataTable.Id.ToString()
-  dataFxnId = DataFxn.DataFunctionDefinition.Settings['Id']
-
-  page = Document.Pages.AddNew('MSA Results')
-  panelsToHide = [PanelTypeIdentifiers.DataPanel, PanelTypeIdentifiers.DetailsOnDemandPanel]
-
-  for panel in page.Panels:
-      if panel.TypeId in panelsToHide:
-          if panel.Visible:
-              panel.Visible = False
-
-  tableVis = page.Visuals.AddNew[model_type]()
-  tableVis.SetKeyValue('visualization','table-visualization')
-  tableVis.DataTable = dataTable
-  tableVis.ConfigureColumns()
-  tableVis.Marking = Document.Data.Markings.DefaultMarkingReference
-
-  dendroVis = page.Visuals.AddNew[model_type]()
-  dendroVis.SetKeyValue('visualization','dendrogram-visualization')
-  dendroVis.SetKeyValue(tableId+'.dendrogram-visualization.dendrogram.style','0')
-  dendroVis.DataTable = dataTable
-  dendroVis.ConfigureColumns()
-  dendroVis.Marking = Document.Data.Markings.DefaultMarkingReference
-  for columnRef in dendroVis.DataColumnCollection.ColumnReferences:
-      column = columnRef.DataColumn
-      if column.Properties.DataType == DataType.String and column.Properties.HasPropertyValue('tree') and column.Properties.HasPropertyValue('ChemCharts.DFResult'):
-          dfJson = json.loads(str(column.Properties.GetProperty('ChemCharts.DFResult')))
-          if dfJson['dataFxnId'] == dataFxnId:
-              dendroVis.SetKeyValue(tableId+'.dendrogram-visualization.dendrogram.dendrogramColumnId',str(columnRef.Id))
-              break
-
-  tableVis.SetActiveVisual()
-  page.AutoConfigure()
-updateBehavior: manual
 maximumOutputColumns: !!int 3
 maximumOutputTables: !!int 0
-chemistryFunction: !!bool false
-allowedClients:
-- Analyst
-- WebPlayer
 demoUrl: https://youtu.be/rKS5HO36bvc
-minimumChartsVersion: 4.3.0.6
-confirmSubmit: 
+tags:
+  - color : '#337abc'
+    text  : sequence
+  - color : '#e2f062'
+    text  : tform
+ironPython: |
+    #####################################################
+    #  Copyright 2022 Glysade LLC, All Rights Reserved  #
+    #####################################################
+
+    import sys,clr
+    import json
+    from Spotfire.Dxp.Data import DataTable, DataManager, DataType, DataPropertyClass,DataProperty
+    from Spotfire.Dxp.Application import PanelTypeIdentifiers
+    from Spotfire.Dxp.Application import Panel
+    import Spotfire.Dxp.Application.PanelCollection
+
+    from System import AppDomain
+    for asm in AppDomain.CurrentDomain.GetAssemblies():
+        if asm.FullName.StartsWith('Charts,'):
+            clr.AddReference(asm.FullName)
+
+    from Charts import ChartsModel
+    model_type = ChartsModel
+
+    #dataFxnId passed as arg
+    dataTable = InputTables[0]
+
+    if not dataTable:
+        raise Exception('target table not found')
+
+    tableId = dataTable.Id.ToString()
+    dataFxnId = DataFxn.DataFunctionDefinition.Settings['Id']
+
+    page = Document.Pages.AddNew('MSA Results')
+    panelsToHide = [PanelTypeIdentifiers.DataPanel, PanelTypeIdentifiers.DetailsOnDemandPanel]
+
+    for panel in page.Panels:
+        if panel.TypeId in panelsToHide:
+            if panel.Visible:
+                panel.Visible = False
+
+    tableVis = page.Visuals.AddNew[model_type]()
+    tableVis.SetKeyValue('visualization','table-visualization')
+    tableVis.DataTable = dataTable
+    tableVis.ConfigureColumns()
+    tableVis.Marking = Document.Data.Markings.DefaultMarkingReference
+
+    dendroVis = page.Visuals.AddNew[model_type]()
+    dendroVis.SetKeyValue('visualization','dendrogram-visualization')
+    dendroVis.SetKeyValue(tableId+'.dendrogram-visualization.dendrogram.style','0')
+    dendroVis.DataTable = dataTable
+    dendroVis.ConfigureColumns()
+    dendroVis.Marking = Document.Data.Markings.DefaultMarkingReference
+    for columnRef in dendroVis.DataColumnCollection.ColumnReferences:
+        column = columnRef.DataColumn
+        if column.Properties.DataType == DataType.String and column.Properties.HasPropertyValue('tree') and column.Properties.HasPropertyValue('ChemCharts.DFResult'):
+            dfJson = json.loads(str(column.Properties.GetProperty('ChemCharts.DFResult')))
+            if dfJson['dataFxnId'] == dataFxnId:
+                dendroVis.SetKeyValue(tableId+'.dendrogram-visualization.dendrogram.dendrogramColumnId',str(columnRef.Id))
+                break
+
+    tableVis.SetActiveVisual()
+    page.AutoConfigure()
+
+
+
