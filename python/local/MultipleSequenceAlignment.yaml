@@ -23,6 +23,18 @@ inputFields:
     dataType: string
     selectorType: column
 - control:
+    id: inputField2
+    label: Limit by
+    type: limitby
+  request:
+  - id: inputField2
+    dataType: string
+    field: limitBy
+    data: none
+  - id: inputField2Marking
+    dataType: string
+    field: marking
+- control:
     id: alignmentMethod
     label: Alignment method
     type: radiogroup
@@ -110,6 +122,5 @@ allowedClients:
 - Analyst
 - WebPlayer
 demoUrl: https://youtu.be/rKS5HO36bvc
-limitBy: both
 minimumChartsVersion: 
 confirmSubmit: 
