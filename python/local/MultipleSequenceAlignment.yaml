@@ -1,8 +1,8 @@
-id: 60f93798-014b-2a09-ed87-d5e490b44d52
+id: b9657ce6-3399-47a2-a60d-4d4b30f5620c
 name: Multiple Sequence Alignment
 description: Performs multiple sequence alignment using a variety of algorithms
 category: Biopolymer
-version: 1.0.1
+version: 2.0.0
 serviceName: MultipleSequenceAlignment
 serviceUri: glysade.python
 executorId: Glysade.CPythonDataFxn
