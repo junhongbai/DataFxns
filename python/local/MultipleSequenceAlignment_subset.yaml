@@ -25,7 +25,7 @@ inputFields:
     selectorType: column
 - control:
     id: limitByField
-    label: Limit by
+    label: Choose limiting method 
     type: limitby
   request:
   - id: limitByField
