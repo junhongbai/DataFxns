@@ -1,0 +1,190 @@
+id: c45b5be2-ba7e-420f-d535-af8c942536c0
+name: Structure Column Search
+description: Performs near neighbors or exact match search between structures in two columns
+category: Chemistry
+version: 1.0.0
+serviceName: StructureColumnNeighbors
+serviceUri: glysade.csharp
+executorId: Glysade.CSharpDataFxn
+inputFields:
+- control:
+    id: queryStructureColumn
+    label: Query structure column
+    type: columnselect
+    filters:
+    - dataType:
+      - string
+      - binary
+      contentType:
+      - smiles
+      - chemical/x-daylight-smiles
+      - chemical/daylight-smiles
+      - chemical/x-smiles
+      - chemical/smiles
+      - mol
+      - chemical/x-mdl-molfile
+      - chemical/x-mdl-molfile-v3000
+      - chemical/mdl-molfile-v3000
+      - chemical/mdl-molfile
+    validationRules:
+    - type: required
+      message: Must select column of 2D structures
+  request:
+    id: queryStructureColumn
+    dataType: string
+    selectorType: column
+- control:
+    id: queryNameColumn
+    label: Query name column
+    type: columnselect
+    multi: !!bool false
+    validationRules:
+    - type: required
+      message: ''
+    filters:
+    - dataType:
+      - string
+      - int
+      - long
+      contentType: []
+  request:
+    id: queryNameColumn
+    dataType: string
+    selectorType: column
+- control:
+    id: targetTable
+    label: Target data table
+    type: tableselect
+    multi: !!bool false
+    validationRules:
+    - type: required
+      message: ''
+  request:
+    id: targetTable
+    dataType: string
+    selectorType: table
+- control:
+    id: targetStructureColumn
+    label: Target structure column
+    type: columnselect
+    multi: !!bool false
+    validationRules:
+    - type: required
+      message: ''
+    filters:
+    - dataType:
+      - string
+      - binary
+      contentType:
+      - smiles
+      - chemical/x-daylight-smiles
+      - chemical/daylight-smiles
+      - chemical/x-smiles
+      - chemical/smiles
+      - mol
+      - chemical/x-mdl-molfile
+      - chemical/x-mdl-molfile-v3000
+      - chemical/mdl-molfile-v3000
+      - chemical/mdl-molfile
+    tableSelectId: targetTable
+  request:
+    id: targetStructureColumn
+    dataType: string
+    selectorType: column
+- control:
+    id: targetNameColumn
+    label: Target name column
+    type: columnselect
+    multi: !!bool false
+    validationRules:
+    - type: required
+      message: ''
+    filters:
+    - dataType:
+      - string
+      - int
+      - long
+      contentType: []
+    tableSelectId: targetTable
+  request:
+    id: targetNameColumn
+    dataType: string
+    selectorType: column
+- control:
+    label: Output neighbors in new table
+    id: outputToTable
+    type: checkbox
+  request:
+    id: outputToTable
+    dataType: boolean
+    data: !!bool false
+- control:
+    label: Search type
+    id: searchType
+    type: radiogroup
+    radios:
+    - text: Near neighbors
+      value: nearNeighbors
+    - text: Exact match
+      value: exactMatch
+    validationRules:
+    - type: required
+      message: ''
+  request:
+    field: structure
+    id: searchType
+    dataType: string
+    data: nearNeighbors
+- control:
+    id: numberNeighbors
+    label: Number neighbors
+    type: text
+    tooltip: Number of neighbors is not used when calculating exact matches
+    validationRules:
+    - type: required
+      message: ''
+    - type: range
+      message: ''
+      min: !!int 1
+      max: !!int 10
+  request:
+    id: numberNeighbors
+    dataType: integer
+    data: !!int 3
+- control:
+    id: prefix
+    label: Column or table prefix
+    type: text
+    group:
+      name: Advanced
+      collapsible: !!bool true
+      collapsed: !!bool true
+  request:
+    id: prefix
+    dataType: string
+    data: ''
+- control:
+    id: suffix
+    label: Column or table suffix
+    type: text
+    group:
+      name: Advanced
+  request:
+    id: suffix
+    dataType: string
+    data: ''
+tags:
+- color: '#50AF28'
+  text: chemistry
+- color: '#e2f062'
+  text: tform
+updateBehavior: automatic
+maximumOutputColumns: !!int 50
+maximumOutputTables: !!int 1
+chemistryFunction: !!bool true
+allowedClients:
+- Analyst
+- WebPlayer
+demoUrl: 
+limitBy: runtime
+minimumChartsVersion: 4.3.0.0
