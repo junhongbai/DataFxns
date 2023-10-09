@@ -1,0 +1,83 @@
+id: 80353f4b-c5e1-4fd2-d019-25199ef1239e
+name: Antibody Structure Prediction
+description: Predict antibody 3D structure given heavy and light chain sequences.
+category: Biopolymer
+version: 1.0.0
+serviceName: Script
+serviceUri: glysade.python
+executorId: Glysade.CPythonDataFxn
+inputFields:
+- control:
+    id: heavyChain
+    label: Select column with heavy chain sequence
+    type: columnselect
+    multi: !!bool false
+    validationRules:
+    - type: required
+      message: ''
+  request:
+    id: heavyChain
+    dataType: string
+    selectorType: column
+- control:
+    id: lightChain
+    label: Select column with light chain sequence
+    type: columnselect
+    multi: !!bool false
+    validationRules:
+    - type: required
+      message: ''
+  request:
+    id: lightChain
+    dataType: string
+    selectorType: column
+- control:
+    id: outputDirectory
+    label: Specify output directory
+    type: file
+    fileTypes:
+    - extension: .smi
+      contentType: chemical/x-smiles
+      name: SMILES (*.smi)
+    - extension: .sdf
+      contentType: chemical/x-mdl-sdfile
+      name: SD file (*.sdf)
+    - extension: .mol
+      contentType: chemical/x-mdl-molfile
+      name: MOL file (*.mol)
+    - extension: .pdb
+      contentType: chemical/x-pdb
+      name: Protein Data Bank (*.pdb)
+    mode: path
+    pathType: folder
+    validationRules:
+    - type: required
+      message: ''
+  request:
+    id: outputDirectory
+    dataType: string
+tags:
+- color: '#dddddd'
+  text: MAB
+updateBehavior: automatic
+maximumOutputColumns: !!int 1
+maximumOutputTables: !!int 0
+chemistryFunction: !!bool false
+allowedClients:
+- Analyst
+- WebPlayer
+demoUrl: 
+limitBy: none
+minimumChartsVersion: 
+confirmSubmit: 
+script: 
+  from ImmuneBuilder import ABodyBuilder2
+  predictor = ABodyBuilder2()
+  
+  output_file = "c:\Temp\my_antibody.pdb"
+  sequences = {
+    'H': 'EVQLVESGGGVVQPGGSLRLSCAASGFTFNSYGMHWVRQAPGKGLEWVAFIRYDGGNKYYADSVKGRFTISRDNSKNTLYLQMKSLRAEDTAVYYCANLKDSRYSGSYYDYWGQGTLVTVS',
+    'L': 'VIWMTQSPSSLSASVGDRVTITCQASQDIRFYLNWYQQKPGKAPKLLISDASNMETGVPSRFSGSGSGTDFTFTISSLQPEDIATYYCQQYDNLPFTFGPGTKVDFK'}
+  
+  antibody = predictor.predict(sequences)
+  antibody.save(output_file)
