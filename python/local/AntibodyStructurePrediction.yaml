@@ -3,7 +3,7 @@ name: Antibody Structure Prediction
 description: Predict antibody 3D structure given heavy and light chain sequences.
 category: Biopolymer
 version: 1.0.0
-serviceName: Script
+serviceName: AntibodyStructurePrediction 
 serviceUri: glysade.python
 executorId: Glysade.CPythonDataFxn
 inputFields:
@@ -70,20 +70,3 @@ demoUrl:
 limitBy: none
 minimumChartsVersion: 
 confirmSubmit: 
-script: |
-  from df.data_transfer import DataFunctionRequest, DataFunctionResponse 
-
-  from ImmuneBuilder import ABodyBuilder2
-
-  def execute(request: DataFunctionRequest) -> DataFunctionResponse:
-    predictor = ABodyBuilder2()
-  
-    output_file = "c:\Temp\my_antibody.pdb"
-    sequences = {
-      'H': 'EVQLVESGGGVVQPGGSLRLSCAASGFTFNSYGMHWVRQAPGKGLEWVAFIRYDGGNKYYADSVKGRFTISRDNSKNTLYLQMKSLRAEDTAVYYCANLKDSRYSGSYYDYWGQGTLVTVS',
-      'L': 'VIWMTQSPSSLSASVGDRVTITCQASQDIRFYLNWYQQKPGKAPKLLISDASNMETGVPSRFSGSGSGTDFTFTISSLQPEDIATYYCQQYDNLPFTFGPGTKVDFK'}
-  
-    antibody = predictor.predict(sequences)
-    antibody.save(output_file)
-
-    return(DataFunctionResponse)
