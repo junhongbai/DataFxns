@@ -70,14 +70,18 @@ demoUrl:
 limitBy: none
 minimumChartsVersion: 
 confirmSubmit: 
-script: 
+script: |
   from ImmuneBuilder import ABodyBuilder2
-  predictor = ABodyBuilder2()
+
+  def execute(request: DataFunctionRequest) -> DataFunctionResponse:
+    predictor = ABodyBuilder2()
   
-  output_file = "c:\Temp\my_antibody.pdb"
-  sequences = {
-    'H': 'EVQLVESGGGVVQPGGSLRLSCAASGFTFNSYGMHWVRQAPGKGLEWVAFIRYDGGNKYYADSVKGRFTISRDNSKNTLYLQMKSLRAEDTAVYYCANLKDSRYSGSYYDYWGQGTLVTVS',
-    'L': 'VIWMTQSPSSLSASVGDRVTITCQASQDIRFYLNWYQQKPGKAPKLLISDASNMETGVPSRFSGSGSGTDFTFTISSLQPEDIATYYCQQYDNLPFTFGPGTKVDFK'}
+    output_file = "c:\Temp\my_antibody.pdb"
+    sequences = {
+      'H': 'EVQLVESGGGVVQPGGSLRLSCAASGFTFNSYGMHWVRQAPGKGLEWVAFIRYDGGNKYYADSVKGRFTISRDNSKNTLYLQMKSLRAEDTAVYYCANLKDSRYSGSYYDYWGQGTLVTVS',
+      'L': 'VIWMTQSPSSLSASVGDRVTITCQASQDIRFYLNWYQQKPGKAPKLLISDASNMETGVPSRFSGSGSGTDFTFTISSLQPEDIATYYCQQYDNLPFTFGPGTKVDFK'}
   
-  antibody = predictor.predict(sequences)
-  antibody.save(output_file)
+    antibody = predictor.predict(sequences)
+    antibody.save(output_file)
+
+    return(DataFunctionResponse)
