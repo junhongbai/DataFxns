@@ -71,6 +71,8 @@ limitBy: none
 minimumChartsVersion: 
 confirmSubmit: 
 script: |
+  from df.data_transfer import DataFunctionRequest, DataFunctionResponse 
+
   from ImmuneBuilder import ABodyBuilder2
 
   def execute(request: DataFunctionRequest) -> DataFunctionResponse:
