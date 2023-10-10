@@ -3,7 +3,7 @@ name: Antibody Structure Prediction
 description: Predict antibody 3D structure given heavy and light chain sequences.
 category: Biopolymer
 version: 1.0.0
-serviceName: AntibodyStructurePrediction 
+serviceName: AntibodyStructurePrediction
 serviceUri: glysade.python
 executorId: Glysade.CPythonDataFxn
 inputFields:
@@ -14,7 +14,11 @@ inputFields:
     multi: !!bool false
     validationRules:
     - type: required
-      message: ''
+      message: Select column containing heavy chain sequence
+    filters:
+    - dataType: string
+      contentType:
+      - chemical/x-sequence
   request:
     id: heavyChain
     dataType: string
@@ -26,14 +30,33 @@ inputFields:
     multi: !!bool false
     validationRules:
     - type: required
-      message: ''
+      message: Select column containing light chain sequence
+    filters:
+    - dataType: string
+      contentType:
+      - chemical/x-sequence
   request:
     id: lightChain
     dataType: string
     selectorType: column
 - control:
+    id: idColumn
+    label: ID column
+    type: columnselect
+    multi: !!bool false
+    validationRules:
+    - type: required
+      message: Specify a column with unique IDs
+    filters:
+    - dataType: string
+      contentType: []
+  request:
+    id: idColumn
+    dataType: string
+    selectorType: column
+- control:
     id: outputDirectory
-    label: Specify output directory
+    label: Output directory
     type: file
     fileTypes:
     - extension: .smi
@@ -52,13 +75,15 @@ inputFields:
     pathType: folder
     validationRules:
     - type: required
-      message: ''
+      message: Specify an output directory for the predicted structures
   request:
     id: outputDirectory
     dataType: string
 tags:
 - color: '#dddddd'
   text: MAB
+- color: '#FE92C0'
+  text: structure
 updateBehavior: automatic
 maximumOutputColumns: !!int 1
 maximumOutputTables: !!int 0
