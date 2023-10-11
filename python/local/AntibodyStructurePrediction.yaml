@@ -138,7 +138,7 @@ ironPython: |
   tableVis.Marking = Document.Data.Markings.DefaultMarkingReference
   
   threeDVis = page.Visuals.AddNew[model_type]()
-  threeDVis.SetKeyValue('visualization','molviewer-visualization')
+  threeDVis.SetKeyValue('visualization','biomolviewer-visualization')
   threeDVis.DataTable = dataTable
   threeDVis.ConfigureColumns()
   threeDVis.Marking = Document.Data.Markings.DefaultMarkingReference
