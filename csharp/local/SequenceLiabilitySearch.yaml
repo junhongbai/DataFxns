@@ -3,7 +3,7 @@ name: Sequence Liability Search
 description: Create a set of boolean columns indicating the presence or absence of predefined antibody sequence liabilities.  A column illustrating the sequence and the identified liability locations is also created.
 category: Biopolymer
 version: 1.0.1
-serviceName: PublisherCore.SequenceLiabilitySearchDataFunction
+serviceName: SequencePatternMatch
 serviceUri: glysade.csharp
 executorId: Glysade.CSharpDataFxn
 inputFields:
