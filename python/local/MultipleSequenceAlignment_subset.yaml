@@ -58,7 +58,7 @@ tags:
   text: tform
 ironPython: |
   #####################################################
-  #  Copyright 2022 Glysade LLC, All Rights Reserved  #
+  #  Copyright 2023 Glysade LLC, All Rights Reserved  #
   #####################################################
 
   import sys,clr
@@ -69,10 +69,12 @@ ironPython: |
   import Spotfire.Dxp.Application.PanelCollection
 
   from System import AppDomain
+  loadAssemblies = ['Charts', 'Common']
   for asm in AppDomain.CurrentDomain.GetAssemblies():
-      if asm.FullName.StartsWith('Charts,'):
-          clr.AddReference(asm.FullName)
+    if asm.GetName().Name in loadAssemblies:
+      clr.AddReference(asm.FullName)
 
+  from Common import ColumnIdService
   from Charts import ChartsModel
   model_type = ChartsModel
 
@@ -93,11 +95,15 @@ ironPython: |
           if panel.Visible:
               panel.Visible = False
 
-  tableVis = page.Visuals.AddNew[model_type]()
-  tableVis.SetKeyValue('visualization','table-visualization')
-  tableVis.DataTable = dataTable
-  tableVis.ConfigureColumns()
-  tableVis.Marking = Document.Data.Markings.DefaultMarkingReference
+  idSvc = Application.GetService[ColumnIdService]()
+
+  msaVis = page.Visuals.AddNew[model_type]()
+  msaVis.SetKeyValue('visualization','sequence-visualization')
+  msaVis.DataTable = dataTable
+  msaVis.ConfigureColumns()
+  alignedColumn = ResultColumns[0]
+  msaVis.SetKeyValue(tableId+'.sequence-visualization.sequenceViewer.sequenceColumnId', idSvc.GetID(alignedColumn))
+  msaVis.Marking = Document.Data.Markings.DefaultMarkingReference
 
   dendroVis = page.Visuals.AddNew[model_type]()
   dendroVis.SetKeyValue('visualization','dendrogram-visualization')
@@ -113,7 +119,7 @@ ironPython: |
               dendroVis.SetKeyValue(tableId+'.dendrogram-visualization.dendrogram.dendrogramColumnId',str(columnRef.Id))
               break
 
-  tableVis.SetActiveVisual()
+  msaVis.SetActiveVisual()
   page.AutoConfigure()
 updateBehavior: manual
 maximumOutputColumns: !!int 3
