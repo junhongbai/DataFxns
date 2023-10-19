@@ -87,5 +87,5 @@ allowedClients:
 - WebPlayer
 demoUrl: 
 limitBy: none
-minimumChartsVersion: 4.3.0.6
+minimumChartsVersion: 4.4.0.0
 confirmSubmit: 
