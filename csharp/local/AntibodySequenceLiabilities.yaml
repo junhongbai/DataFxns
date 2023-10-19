@@ -1,9 +1,9 @@
 id: 01010160-093b-55c7-746b-8a3c148111b7
-name: Sequence Liability Search 
+name: Antibody Sequence Liabilities
 description: Create a set of boolean columns indicating the presence or absence of predefined antibody sequence liabilities.  A column illustrating the sequence and the identified liability locations is also created.
 category: Biopolymer
 version: 1.0.1
-serviceName: SequenceLiabilitySearch
+serviceName: AntibodySequenceLiabilities
 serviceUri: glysade.csharp
 executorId: Glysade.CSharpDataFxn
 inputFields:
@@ -33,7 +33,7 @@ inputFields:
   request:
     id: outputColumn
     dataType: string
-    data: Annotated Sequence Liabilities
+    data: Annotated Liabilities
 - control:
     id: patterns
     label: Match patterns
