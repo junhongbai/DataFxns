@@ -1,5 +1,5 @@
 id: d35172ce-5e4b-945a-631d-14e47c9a1fc6
-name: Blast Local Column Search
+name: Blast Local Column Search (subset)
 description: Performs a BLAST search of user selected databases using queries from a sequence column. Pre-configured BLAST databases can be downloaded from https://tinyurl.com/3d38p356
 category: Biopolymer
 version: 1.1.0
