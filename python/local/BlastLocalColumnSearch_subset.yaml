@@ -13,7 +13,8 @@ inputFields:
     type: columnselect
     filters:
     - dataType: string
-      contentType: chemical/x-sequence
+      contentType:
+      - chemical/x-sequence
     - dataType: binary
       contentType: chemical/x-genbank
     validationRules:
@@ -33,7 +34,9 @@ inputFields:
     - dataType:
       - string
       - int
+      contentType: []
     tooltip: ID column is not required for Genbank encoded sequences
+    limitByControlId: limitByField
   request:
     id: idColumn
     dataType: string
@@ -196,7 +199,7 @@ ironPython: |
 
   tableVis.SetActiveVisual()
   page.AutoConfigure()
-updateBehavior: manual 
+updateBehavior: manual
 maximumOutputColumns: !!int 0
 maximumOutputTables: !!int 1
 chemistryFunction: !!bool false
