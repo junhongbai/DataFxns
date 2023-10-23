@@ -1,9 +1,10 @@
 id: 099f6c94-7e66-4150-b751-88fbe2b9053a
 name: Blast Local Text Search
+description: Performs a BLAST search of user selected databases using an input sequence. Pre-configured BLAST databases can be downloaded from https://tinyurl.com/3d38p356
 serviceName: BlastLocalTextSearch
 executorId: Glysade.CPythonDataFxn
 serviceUri: glysade.python
-version: 1.0.0
+version: 1.1.0
 inputFields:
   - control:
       id: query
@@ -54,20 +55,38 @@ inputFields:
           value: up_sp_human
         - text: Human Uniprot Trembl
           value: up_tbl_human
+        - text: Human PDB
+          value: human_pdbaa
+        - text: Human Patented Proteins
+          value: human_pataa
+        - text: Human IG Germline (Proteins)
+          value: human_IG_germline
         - text: Human NCBI NT
           value: human_nt
         - text: Human EBI ENA
           value: ena_cd_human
+        - text: Human Patented Nucleotides
+          value: human_patnt 
         - text: Mouse NCBI NR
           value: mouse_nr
+        - text: Mouse PDB
+          value: mouse_pdbaa
+        - text: Mouse Patented Proteins
+          value: mouse_pataa
         - text: Mouse NCBI NT
           value: mouse_nt
+        - text: Mouse Patented Nucleotides
+          value: mouse_patnt 
         - text: Rat NCBI NR
           value: rat_nr
+        - text: Rat PDB
+          value: rat_pdbaa
+        - text: Rat Patented Proteins
+          value: rat_pataa
         - text: Rat NCBI NT
           value: rat_nt
-        - text: Human IG Germline (Proteins)
-          value: human_IG_germline
+        - text: Rat Patented Nucleotides
+          value: rat_patnt 
       validationRules:
         - type: required
     request:
@@ -109,7 +128,6 @@ inputFields:
       id: blastDbPath
       dataType: string
       data: C:\db\ncbi
-description: Performs a BLAST search of user selected databases using a query entered as text
 category: Biopolymer
 maximumOutputColumns: !!int 0
 maximumOutputTables: !!int 1
@@ -165,3 +183,4 @@ tags:
     text  : sequence
   - color : '#f7cb2d'
     text  : search    
+demoURL: https://youtu.be/v7leIlBaiz4

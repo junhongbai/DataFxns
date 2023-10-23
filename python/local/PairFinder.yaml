@@ -156,7 +156,7 @@ ironPython: |
     tableVis.SetActiveVisual()
 
     page.AutoConfigure()
-updateBehavior: automatic
+updateBehavior: manual
 maximumOutputColumns: !!int 0
 maximumOutputTables: !!int 1
 chemistryFunction: !!bool false

@@ -47,64 +47,67 @@ tags:
   - color : '#e2f062'
     text  : tform
 ironPython: |
-    #####################################################
-    #  Copyright 2022 Glysade LLC, All Rights Reserved  #
-    #####################################################
+  #####################################################
+  #  Copyright 2023 Glysade LLC, All Rights Reserved  #
+  #####################################################
 
-    import sys,clr
-    import json
-    from Spotfire.Dxp.Data import DataTable, DataManager, DataType, DataPropertyClass,DataProperty
-    from Spotfire.Dxp.Application import PanelTypeIdentifiers
-    from Spotfire.Dxp.Application import Panel
-    import Spotfire.Dxp.Application.PanelCollection
+  import sys,clr
+  import json
+  from Spotfire.Dxp.Data import DataTable, DataManager, DataType, DataPropertyClass,DataProperty
+  from Spotfire.Dxp.Application import PanelTypeIdentifiers
+  from Spotfire.Dxp.Application import Panel
+  import Spotfire.Dxp.Application.PanelCollection
 
-    from System import AppDomain
-    for asm in AppDomain.CurrentDomain.GetAssemblies():
-        if asm.FullName.StartsWith('Charts,'):
-            clr.AddReference(asm.FullName)
+  from System import AppDomain
+  loadAssemblies = ['Charts', 'Common']
+  for asm in AppDomain.CurrentDomain.GetAssemblies():
+    if asm.GetName().Name in loadAssemblies:
+      clr.AddReference(asm.FullName)
 
-    from Charts import ChartsModel
-    model_type = ChartsModel
+  from Common import ColumnIdService
+  from Charts import ChartsModel
+  model_type = ChartsModel
 
-    #dataFxnId passed as arg
-    dataTable = InputTables[0]
+  #dataFxnId passed as arg
+  dataTable = InputTables[0]
 
-    if not dataTable:
-        raise Exception('target table not found')
+  if not dataTable:
+      raise Exception('target table not found')
 
-    tableId = dataTable.Id.ToString()
-    dataFxnId = DataFxn.DataFunctionDefinition.Settings['Id']
+  tableId = dataTable.Id.ToString()
+  dataFxnId = DataFxn.DataFunctionDefinition.Settings['Id']
 
-    page = Document.Pages.AddNew('MSA Results')
-    panelsToHide = [PanelTypeIdentifiers.DataPanel, PanelTypeIdentifiers.DetailsOnDemandPanel]
+  page = Document.Pages.AddNew('MSA Results')
+  panelsToHide = [PanelTypeIdentifiers.DataPanel, PanelTypeIdentifiers.DetailsOnDemandPanel]
 
-    for panel in page.Panels:
-        if panel.TypeId in panelsToHide:
-            if panel.Visible:
-                panel.Visible = False
+  for panel in page.Panels:
+      if panel.TypeId in panelsToHide:
+          if panel.Visible:
+              panel.Visible = False
 
-    tableVis = page.Visuals.AddNew[model_type]()
-    tableVis.SetKeyValue('visualization','table-visualization')
-    tableVis.DataTable = dataTable
-    tableVis.ConfigureColumns()
-    tableVis.Marking = Document.Data.Markings.DefaultMarkingReference
+  idSvc = Application.GetService[ColumnIdService]()
 
-    dendroVis = page.Visuals.AddNew[model_type]()
-    dendroVis.SetKeyValue('visualization','dendrogram-visualization')
-    dendroVis.SetKeyValue(tableId+'.dendrogram-visualization.dendrogram.style','0')
-    dendroVis.DataTable = dataTable
-    dendroVis.ConfigureColumns()
-    dendroVis.Marking = Document.Data.Markings.DefaultMarkingReference
-    for columnRef in dendroVis.DataColumnCollection.ColumnReferences:
-        column = columnRef.DataColumn
-        if column.Properties.DataType == DataType.String and column.Properties.HasPropertyValue('tree') and column.Properties.HasPropertyValue('ChemCharts.DFResult'):
-            dfJson = json.loads(str(column.Properties.GetProperty('ChemCharts.DFResult')))
-            if dfJson['dataFxnId'] == dataFxnId:
-                dendroVis.SetKeyValue(tableId+'.dendrogram-visualization.dendrogram.dendrogramColumnId',str(columnRef.Id))
-                break
+  msaVis = page.Visuals.AddNew[model_type]()
+  msaVis.SetKeyValue('visualization','sequence-visualization')
+  msaVis.DataTable = dataTable
+  msaVis.ConfigureColumns()
+  alignedColumn = ResultColumns[0]
+  msaVis.SetKeyValue(tableId+'.sequence-visualization.sequenceViewer.sequenceColumnId', idSvc.GetID(alignedColumn))
+  msaVis.Marking = Document.Data.Markings.DefaultMarkingReference
 
-    tableVis.SetActiveVisual()
-    page.AutoConfigure()
+  dendroVis = page.Visuals.AddNew[model_type]()
+  dendroVis.SetKeyValue('visualization','dendrogram-visualization')
+  dendroVis.SetKeyValue(tableId+'.dendrogram-visualization.dendrogram.style','0')
+  dendroVis.DataTable = dataTable
+  dendroVis.ConfigureColumns()
+  dendroVis.Marking = Document.Data.Markings.DefaultMarkingReference
+  for columnRef in dendroVis.DataColumnCollection.ColumnReferences:
+      column = columnRef.DataColumn
+      if column.Properties.DataType == DataType.String and column.Properties.HasPropertyValue('tree') and column.Properties.HasPropertyValue('ChemCharts.DFResult'):
+          dfJson = json.loads(str(column.Properties.GetProperty('ChemCharts.DFResult')))
+          if dfJson['dataFxnId'] == dataFxnId:
+              dendroVis.SetKeyValue(tableId+'.dendrogram-visualization.dendrogram.dendrogramColumnId',str(columnRef.Id))
+              break
 
-
-
+  msaVis.SetActiveVisual()
+  page.AutoConfigure()
