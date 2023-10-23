@@ -2,7 +2,7 @@ id: d35172ce-5e4b-945a-631d-14e47c9a1fc6
 name: Blast Local Column Search (subset)
 description: Performs a BLAST search of user selected databases using queries from a sequence column. Pre-configured BLAST databases can be downloaded from https://tinyurl.com/3d38p356
 category: Biopolymer
-version: 1.1.0
+version: 1.2.0
 serviceName: BlastLocalColumnSearch
 serviceUri: glysade.python
 executorId: Glysade.CPythonDataFxn
@@ -206,6 +206,5 @@ chemistryFunction: !!bool false
 allowedClients:
 - Analyst
 demoUrl: https://youtu.be/v7leIlBaiz4
-limitBy: none
-minimumChartsVersion: 
+minimumChartsVersion: 4.4.0.0
 confirmSubmit: 
