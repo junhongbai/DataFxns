@@ -1,0 +1,72 @@
+id: 70470634-68a8-4950-9d88-348bc19e3a1d
+name: Sequence Motif Search
+description: Creates boolean columns indicating the presence or absence of an input sequence motif in a sequence column - regular expressions are also supported.  A column illustrating the sequence and the identified motif locations is also created.
+category: Biopolymer
+version: 1.0.1
+serviceName: SequenceMotifRegexSearch
+serviceUri: glysade.csharp
+executorId: Glysade.CSharpDataFxn
+inputFields:
+- control:
+    id: sequenceColumn
+    label: Select sequence column
+    type: columnselect
+    filters:
+    - dataType: string
+      contentType: chemical/x-sequence
+    - dataType: binary
+      contentType: chemical/x-genbank
+    validationRules:
+    - type: required
+    multi: !!bool false
+  request:
+    id: sequenceColumn
+    dataType: string
+    selectorType: column
+- control:
+    id: columnName
+    label: Output column name
+    type: text
+    validationRules:
+    - type: required
+      message: 'Enter a name for the output boolean column.'
+  request:
+    id: columnName
+    dataType: string
+- control:
+    id: featureName
+    label: Motif name
+    type: text
+    validationRules:
+    - type: required
+      message: 'Enter a name to be used in annotating the motif.'
+  request:
+    id: featureName
+    dataType: string
+- control:
+    id: expression
+    label: Sequence motif (or regular expression)
+    type: text
+    rows: !!int 1
+    validationRules:
+    - type: required
+      message: 'A query sequence or regular expression must be entered.'
+  request:
+    id: expression
+    dataType: string
+tags:
+- color: '#337abc'
+  text: sequence
+- color: '#f1f72d'
+  text: filter
+updateBehavior: automatic
+maximumOutputColumns: !!int 2
+maximumOutputTables: !!int 0
+chemistryFunction: !!bool false
+allowedClients:
+- Analyst
+- WebPlayer
+demoUrl: 
+limitBy: none
+minimumChartsVersion: 4.4.0.0 
+confirmSubmit: 
