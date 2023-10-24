@@ -71,11 +71,6 @@ updateBehavior: automatic
 maximumOutputColumns: !!int 2
 maximumOutputTables: !!int 0
 chemistryFunction: !!bool false
-outputFields:
-- id: ctrlColor
-  name: Color
-  source: inputField
-  type: color
 allowedClients:
 - Analyst
 - WebPlayer
