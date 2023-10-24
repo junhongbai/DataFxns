@@ -79,6 +79,14 @@ inputFields:
   request:
     id: end
     dataType: integer
+- control:
+    id: uictrlColor
+    label: Select color
+    type: color
+  request:
+    id: uictrlColor
+    dataType: string
+    data: '#afc9e1'
 tags:
 - color: '#337abc'
   text: sequence
@@ -109,10 +117,14 @@ outputFields:
   name: Region end location
   source: inputField
   type: default
+- id: uictrlColor
+  name: Color
+  source: inputField
+  type: color
 allowedClients:
 - Analyst
 - WebPlayer
 demoUrl: 
 limitBy: none
-minimumChartsVersion: 4.4.0.0 
+minimumChartsVersion: 4.4.0.0
 confirmSubmit: 
