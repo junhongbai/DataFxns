@@ -2,7 +2,7 @@ id: 70470634-68a8-4950-9d88-348bc19e3a1d
 name: Sequence Motif Search
 description: Creates boolean columns indicating the presence or absence of an input sequence motif in a sequence column - regular expressions are also supported.  A column illustrating the sequence and the identified motif locations is also created.
 category: Biopolymer
-version: 1.0.1
+version: 1.1.0
 serviceName: SequenceMotifRegexSearch
 serviceUri: glysade.csharp
 executorId: Glysade.CSharpDataFxn
