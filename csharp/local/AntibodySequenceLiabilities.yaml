@@ -70,18 +70,31 @@ inputFields:
     - N-glycosylation,N[^P][TS]
     - N-terminal Glutamic Acid,^E
     - Oxidation,[MW]
+- control:
+    id: ctrlColor
+    label: Select color
+    type: color
+  request:
+    id: ctrlColor
+    dataType: string
+    data: '#ff0000'
 assembly: PublisherCore
 tags:
 - color: '#dddddd'
   text: MAB
+- color: '#AFC9E1'
+  text: annotation
 - color: '#337abc'
   text: sequence
-- color: '#f1f72d'
-  text: filter
 updateBehavior: automatic
 maximumOutputColumns: !!int 10
 maximumOutputTables: !!int 0
 chemistryFunction: !!bool false
+outputFields:
+- id: ctrlColor
+  name: Color
+  source: inputField
+  type: color
 allowedClients:
 - Analyst
 - WebPlayer
