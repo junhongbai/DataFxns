@@ -106,7 +106,7 @@ outputFields:
 - id: ctrlColor
   name: Color
   source: inputField
-  type: default
+  type: color
 allowedClients:
 - Analyst
 - WebPlayer
