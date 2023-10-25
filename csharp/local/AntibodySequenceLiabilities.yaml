@@ -36,7 +36,7 @@ inputFields:
     data: Annotated Liabilities
 - control:
     id: patterns
-    label: Sequence liabilities 
+    label: Sequence liabilities
     type: select
     multi: !!bool true
     options:
@@ -90,6 +90,23 @@ updateBehavior: automatic
 maximumOutputColumns: !!int 10
 maximumOutputTables: !!int 0
 chemistryFunction: !!bool false
+outputFields:
+- id: sequenceColumn
+  name: Sequence column
+  source: inputField
+  type: default
+- id: outputColumn
+  name: Annotated sequence output column
+  source: inputField
+  type: default
+- id: patterns
+  name: Selected liabilities
+  source: inputField
+  type: default
+- id: ctrlColor
+  name: Color
+  source: inputField
+  type: default
 allowedClients:
 - Analyst
 - WebPlayer

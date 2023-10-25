@@ -71,6 +71,27 @@ updateBehavior: automatic
 maximumOutputColumns: !!int 2
 maximumOutputTables: !!int 0
 chemistryFunction: !!bool false
+outputFields:
+- id: sequenceColumn
+  name: Sequence column
+  source: inputField
+  type: default
+- id: columnName
+  name: Annotated sequence output column
+  source: inputField
+  type: default
+- id: featureName
+  name: Motif name
+  source: inputField
+  type: default
+- id: expression
+  name: Motif expression
+  source: inputField
+  type: default
+- id: ctrlColor
+  name: Color
+  source: inputField
+  type: default
 allowedClients:
 - Analyst
 - WebPlayer
