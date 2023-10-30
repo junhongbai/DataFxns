@@ -4,7 +4,7 @@ description: Predict antibody 3D structure given heavy and light chain sequences
 category: Biopolymer
 version: 1.0.0
 serviceName: AntibodyStructurePrediction
-serviceUri: glysade_mAb.python
+serviceUri: glysade.python.mab
 executorId: Glysade.CPythonDataFxn
 inputFields:
 - control:
