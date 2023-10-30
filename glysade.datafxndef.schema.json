@@ -103,6 +103,7 @@
           "type": "string",
           "enum": [
             "checkbox",
+            "color",
             "columnselect",
             "file",
             "header",
@@ -177,6 +178,22 @@
             "type": {
               "type": "string",
               "enum": [ "checkbox" ]
+            }
+          }
+        }
+      ]
+    },
+    "colorControl": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/labelControl"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [ "color" ]
             }
           }
         }
@@ -542,6 +559,7 @@
         "control": {
           "anyOf": [
             { "$ref": "#/definitions/checkBoxControl" },
+            { "$ref": "#/definitions/colorControl" },
             { "$ref": "#/definitions/columnSelectControl" },
             { "$ref": "#/definitions/fileControl" },
             { "$ref": "#/definitions/headerControl" },
@@ -590,7 +608,7 @@
         },
         "type": {
           "type": "string",
-          "enum": ["default", "molecule", "sequence", "filter"]
+          "enum": ["default", "color", "molecule", "sequence", "filter"]
         }
       },
       "required": [ "id", "source", "type" ]

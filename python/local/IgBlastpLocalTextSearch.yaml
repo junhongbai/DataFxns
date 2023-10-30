@@ -87,6 +87,7 @@ tags:
   text: search
 allowedClients:
 - Analyst
+demoURL: https://youtu.be/v7leIlBaiz4
 ironPython: |
   ####################################################
   #  Copyright 2022 Glysade LLC, All Rights Reserved #

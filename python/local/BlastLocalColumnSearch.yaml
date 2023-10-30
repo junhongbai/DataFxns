@@ -190,3 +190,4 @@ chemistryFunction: !!bool false
 allowedClients:
 - Analyst
 limitBy: none
+demoURL: https://youtu.be/v7leIlBaiz4
