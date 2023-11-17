@@ -12,7 +12,9 @@ inputFields:
     label: Antibody sequence column
     type: columnselect
     multi: !!bool false
-    validationRules: []
+    validationRules:
+    - type: required
+      message: A sequence column must be specified
     filters:
     - dataType: string
       contentType:
@@ -51,6 +53,37 @@ inputFields:
     dataType: string
     field: marking
 - control:
+    id: uiSaveAll
+    label: Save all models
+    type: checkbox
+    group:
+      name: Model Options
+      collapsible: !!bool true
+  request:
+    id: uiSaveAll
+    dataType: boolean
+    data: !!bool false
+- control:
+    id: uiRefineAll
+    label: Refine all models
+    type: checkbox
+    group:
+      name: Model Options
+  request:
+    id: uiRefineAll
+    dataType: boolean
+    data: !!bool false
+- control:
+    id: uiDoNumbering
+    label: Perform antibody numbering
+    type: checkbox
+    group:
+      name: Antibody Numbering
+  request:
+    id: uiDoNumbering
+    dataType: boolean
+    data: !!bool false
+- control:
     id: uiNumberingScheme
     label: Antibody numbering scheme
     type: radiogroup
@@ -68,10 +101,44 @@ inputFields:
     validationRules:
     - type: required
       message: ''
+    group:
+      name: Antibody Numbering
   request:
     id: uiNumberingScheme
     dataType: string
     data: imgt
+- control:
+    id: uiCDRdef
+    label: CDR definition scheme
+    type: radiogroup
+    radios:
+    - text: Kabat
+      value: kabat
+    - text: Chothia
+      value: chothia
+    - text: IMGT
+      value: imgt
+    group:
+      name: Antibody Numbering
+      collapsible: !!bool true
+      collapsed: !!bool false
+  request:
+    id: uiCDRdef
+    dataType: string
+    data: imgt
+- control:
+    id: uiRandomSeed
+    label: Random seed
+    type: text
+    validationRules:
+    - type: required
+      message: ''
+    - type: numeric
+      message: Value must be an integer
+  request:
+    id: uiRandomSeed
+    dataType: integer
+    data: !!int 0
 - control:
     id: uiOutputDirectory
     label: Output directory
@@ -102,33 +169,41 @@ tags:
   text: MAB
 - color: '#D22A2A'
   text: structure
-ironPython: |
-  ####################################################
-  #  Copyright 2023 Glysade LLC, All Rights Reserved #
-  ####################################################
+ironPython: |-
+  #####################################################
+  #  Copyright 2023 Glysade LLC, All Rights Reserved  #
+  #####################################################
 
   import sys,clr
-  from Spotfire.Dxp.Data import DataTable, DataManager
-  from Spotfire.Dxp.Application import PanelTypeIdentifiers
-  from Spotfire.Dxp.Application import Panel
+  from Spotfire.Dxp.Application import Panel, PanelTypeIdentifiers
+  from Spotfire.Dxp.Application.Layout import LayoutDefinition
   import Spotfire.Dxp.Application.PanelCollection
-
   from System import AppDomain
+
+  loadAssemblies = ['Charts', 'ChemistryService', 'Common']
   for asm in AppDomain.CurrentDomain.GetAssemblies():
-      if asm.GetName().Name == 'Charts':
+      if asm.GetName().Name in loadAssemblies:
           clr.AddReference(asm.FullName)
 
+  from Common import ColumnIdService
+  from ChemistryService import DataFxnInput, DataFxnRequest, DataFxnInputField
   from Charts import ChartsModel
   model_type = ChartsModel
 
-  #tableId pass in args
-  dataTable = InputTables[0]
+  #remove after testing
+  #dataTable = Document.ActiveDataTableReference
+  #structureColumn = dataTable.Columns['Structure Files']
+
+  dataTable = ResultTables[0]
+  structureColumn = dataTable.Columns['Structure Files']
+  tableId = dataTable.Id.ToString()
+  idSvc = Application.GetService[ColumnIdService]()
 
   if not dataTable:
       raise Exception('target table not found')
 
   page = Document.Pages.AddNew('Antibody Structure Prediction Results')
-  panelsToHide = [PanelTypeIdentifiers.DataPanel, PanelTypeIdentifiers.DetailsOnDemandPanel]
+  panelsToHide = [PanelTypeIdentifiers.DataPanel, PanelTypeIdentifiers.DetailsOnDemandPanel, PanelTypeIdentifiers.FilterPanel]
 
   for panel in page.Panels:
       if panel.TypeId in panelsToHide:
@@ -144,20 +219,37 @@ ironPython: |
   tableVis.ConfigureColumns()
   tableVis.Marking = Document.Data.Markings.DefaultMarkingReference
 
-  threeDVis = page.Visuals.AddNew[model_type]()
-  threeDVis.SetKeyValue('visualization','biomolviewer-visualization')
-  threeDVis.DataTable = dataTable
-  threeDVis.ConfigureColumns()
-  threeDVis.Marking = Document.Data.Markings.DefaultMarkingReference
+  alignedSequenceColumn = None
+  for column in dataTable.Columns:
+      if column.Properties.ContentType != 'chemical/x-genbank' and column.Name.Contains('Aligned Sequence'):
+          alignedSequenceColumn = column
+          break
+
+  biomolVis = page.Visuals.AddNew[model_type]()
+
+  if alignedSequenceColumn:
+      biomolVis.SetKeyValue(tableId+'.biomolviewer-visualization.bioMolViewer.sequenceColumnId', idSvc.GetID(alignedSequenceColumn))
+  if structureColumn:
+      biomolVis.SetKeyValue(tableId+'.biomolviewer-visualization.bioMolViewer.defaultDisplayObjects', '[["'+idSvc.GetID(structureColumn)+'",{"contacts":{"contextColumnId":"none","labelsVisible":true,"visible":false},"structure":{"color":{"color":"#808080","scheme":"element","reverse":false,"scale":"OrRd"},"contextDistance":10,"contextColumnId":"none","contextFilterSele":"","displayUnmappedChains":true,"hydrogenStyle":"none","style":"line","visible":true,"water":true},"surface":{"color":{"color":"#808080","scheme":"uniform","reverse":false,"scale":"OrRd"},"contextColumnId":"none","contextDistance":5,"filterSele":"","opacity":0.7,"type":"av","visible":false,"wireframe":false},"protein":{"tube":{"color":{"color":"#808080","scheme":"bfactor","reverse":false,"scale":"OrRd"},"visible":false},"cartoon":{"color":{"color":"#808080","scheme":"bfactor","reverse":false,"scale":"OrRd"},"visible":true}},"visible":true}]]')
+  biomolVis.SetKeyValue('visualization','biomolviewer-visualization')
+  biomolVis.DataTable = dataTable
+  biomolVis.ConfigureColumns()
+  biomolVis.Marking = Document.Data.Markings.DefaultMarkingReference
+
+  layout = LayoutDefinition()
+  layout.BeginSideBySideSection()
+  layout.Add(biomolVis.Visual, 75.0)
+  layout.Add(tableVis.Visual, 25.0)
+  layout.EndSection()
+  page.ApplyLayout(layout)
 
   tableVis.SetActiveVisual()
-  page.AutoConfigure()
 updateBehavior: manual
 maximumOutputColumns: !!int 0
 maximumOutputTables: !!int 1
 chemistryFunction: !!bool false
 outputFields:
-- id: uiAbSequence
+- id: uiAbSeqCol
   name: Antibody sequence column
   source: inputField
   type: sequence
@@ -165,12 +257,36 @@ outputFields:
   name: ID column
   source: inputField
   type: default
-- id: uiOutputDirectory
-  name: Output directory
-  source: inputField
-  type: default
 - id: uiLimitBy
   name: Limit by
+  source: inputField
+  type: default
+- id: uiSaveAll
+  name: Save all
+  source: inputField
+  type: default
+- id: uiRefineAll
+  name: Refine All
+  source: inputField
+  type: default
+- id: uiDoNumbering
+  name: Perform antibody numbering
+  source: inputField
+  type: default
+- id: uiNumberingScheme
+  name: Antbody numbering scheme
+  source: inputField
+  type: default
+- id: uiCDRdef
+  name: CDR definition scheme
+  source: inputField
+  type: default
+- id: uiRandomSeed
+  name: Random seed
+  source: inputField
+  type: default
+- id: uiOutputDirectory
+  name: Output directory
   source: inputField
   type: default
 allowedClients:
@@ -178,5 +294,5 @@ allowedClients:
 - WebPlayer
 demoUrl: 
 limitBy: none
-minimumChartsVersion: 
+minimumChartsVersion: 4.4.0.0
 confirmSubmit: 
