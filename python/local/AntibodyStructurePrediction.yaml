@@ -127,19 +127,6 @@ inputFields:
     dataType: string
     data: imgt
 - control:
-    id: uiRandomSeed
-    label: Random seed
-    type: text
-    validationRules:
-    - type: required
-      message: ''
-    - type: numeric
-      message: Value must be an integer
-  request:
-    id: uiRandomSeed
-    dataType: integer
-    data: !!int 0
-- control:
     id: uiOutputDirectory
     label: Output directory
     type: file
@@ -279,10 +266,6 @@ outputFields:
   type: default
 - id: uiCDRdef
   name: CDR definition scheme
-  source: inputField
-  type: default
-- id: uiRandomSeed
-  name: Random seed
   source: inputField
   type: default
 - id: uiOutputDirectory
