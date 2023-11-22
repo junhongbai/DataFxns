@@ -1,0 +1,69 @@
+id: 0a381320-fab1-b415-cf9c-22db4c201ef9
+name: HELM Fingerprint Similarity
+description: Computes tanimoto similarities between a query HELM and a column of HELM records
+category: HELM
+version: 1.0.0
+serviceName: HelmFingerprintSimilarity
+serviceUri: glysade.csharp
+executorId: Glysade.CSharpDataFxn
+inputFields:
+- control:
+    id: helmColumn
+    label: Helm Column
+    type: columnselect
+    filters:
+    - dataType: string
+      contentType: chemical/x-helm
+    validationRules:
+    - type: required
+    multi: !!bool false
+  request:
+    id: helmColumn
+    dataType: string
+    selectorType: column
+- control:
+    id: query
+    label: HELM Query
+    type: textarea
+  request:
+    id: query
+    dataType: string
+- control:
+    id: outputColumn
+    label: Result column name
+    type: text
+    validationRules:
+    - type: required
+      message: Enter a name for the annotated output column.
+  request:
+    id: outputColumn
+    dataType: string
+    data: 'HELM Tanimoto '
+assembly: PublisherCore
+tags:
+- color: '#ba660b'
+  text: analyze
+- color: '#50AF28'
+  text: chemistry
+- color: '#90fc03'
+  text: HELM
+updateBehavior: automatic
+maximumOutputColumns: !!int 1
+maximumOutputTables: !!int 0
+chemistryFunction: !!bool false
+outputFields:
+- id: inputField7569
+  name: Enter label
+  source: inputField
+  type: default
+- id: outputColumn
+  name: Result column
+  source: column
+  type: default
+allowedClients:
+- Analyst
+- WebPlayer
+demoUrl: 
+limitBy: none
+minimumChartsVersion: 4.4.0.0
+confirmSubmit: 
