@@ -126,31 +126,6 @@ inputFields:
     id: uiCDRdef
     dataType: string
     data: imgt
-- control:
-    id: uiOutputDirectory
-    label: Output directory
-    type: file
-    fileTypes:
-    - extension: .smi
-      contentType: chemical/x-smiles
-      name: SMILES (*.smi)
-    - extension: .sdf
-      contentType: chemical/x-mdl-sdfile
-      name: SD file (*.sdf)
-    - extension: .mol
-      contentType: chemical/x-mdl-molfile
-      name: MOL file (*.mol)
-    - extension: .pdb
-      contentType: chemical/x-pdb
-      name: Protein Data Bank (*.pdb)
-    mode: path
-    pathType: folder
-    validationRules:
-    - type: required
-      message: Specify an output directory for the predicted structures
-  request:
-    id: uiOutputDirectory
-    dataType: string
 tags:
 - color: '#dddddd'
   text: MAB
@@ -177,12 +152,8 @@ ironPython: |-
   from Charts import ChartsModel
   model_type = ChartsModel
 
-  #remove after testing
-  #dataTable = Document.ActiveDataTableReference
-  #structureColumn = dataTable.Columns['Structure Files']
-
   dataTable = ResultTables[0]
-  structureColumn = dataTable.Columns['Structure Files']
+  structureColumn = dataTable.Columns['Compressed Structures']
   tableId = dataTable.Id.ToString()
   idSvc = Application.GetService[ColumnIdService]()
 
@@ -266,10 +237,6 @@ outputFields:
   type: default
 - id: uiCDRdef
   name: CDR definition scheme
-  source: inputField
-  type: default
-- id: uiOutputDirectory
-  name: Output directory
   source: inputField
   type: default
 allowedClients:
