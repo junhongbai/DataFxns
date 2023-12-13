@@ -41,7 +41,7 @@ inputFields:
     multi: !!bool true
     options:
     - text: Asparagine Deamidation
-      value: Asparagine Deamidation,(?=(N[GSTN]))
+      value: Asparagine Deamidation,(?=(N[GSTNH]))
     - text: Aspartic Acid Fragmentation
       value: Aspartic Acid Fragmentation,DP
     - text: Aspartic Acid Isomerization
@@ -62,7 +62,7 @@ inputFields:
     id: patterns
     dataType: list(string)
     data:
-    - Asparagine Deamidation,(?=(N[GSTN]))
+    - Asparagine Deamidation,(?=(N[GSTNH]))
     - Aspartic Acid Fragmentation,DP
     - Aspartic Acid Isomerization,(?=(D[GSTDH]))
     - Cysteine,C
