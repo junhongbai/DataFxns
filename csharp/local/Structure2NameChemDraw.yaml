@@ -1,9 +1,9 @@
-id: 139c7469-cc7f-bebb-6cc5-a030c26c4cab
+id: 7e0aa17d-d453-4269-b9e8-e41b9f3c759d
 name: Structure2Name (ChemDraw)
 description: Calculates IUPAC names from structures.
 category: Chemistry
 version: 1.0.0
-serviceName: PKIChemistry.Structure2NameDataFxn
+serviceName: ChemDrawChemistry.Structure2NameDataFxn
 serviceUri: glysade.csharp
 executorId: Glysade.CSharpDataFxn
 inputFields:
@@ -43,7 +43,7 @@ inputFields:
     id: outColumnName
     dataType: string
     data: IUPAC Name
-assembly: PKIChemistry
+assembly: ChemDrawTk
 tags:
 - color: '#50AF28'
   text: chemistry
