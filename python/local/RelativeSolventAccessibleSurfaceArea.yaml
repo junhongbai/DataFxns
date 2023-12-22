@@ -1,0 +1,88 @@
+id: d8831560-5f1d-29c6-2606-6624346c96a9
+name: Relative Solvent Accessible Surface Area (RASA)
+description: Compute the Relevant Solvent Accessible Surface Area (RASA) of the amino acid residues of a protein.
+category: Biopolymer
+version: 1.0.0
+serviceName: ProteinRASA
+serviceUri: glysade.python.mab
+executorId: Glysade.CPythonDataFxn
+inputFields:
+- control:
+    id: uiStructureColumn
+    label: Select structure column
+    type: text
+    validationRules:
+    - type: required
+      message: A structure column must be selected
+    tooltip: Select a column with structure data
+  request:
+    id: uiStructureColumn
+    dataType: string
+    contentType: chemical/x-pdb
+- control:
+    id: uiSequenceColumn
+    label: Select sequence column
+    type: text
+    validationRules:
+    - type: required
+      message: A sequence column must be selected
+    tooltip: Select a column with sequence data
+  request:
+    id: uiSequenceColumn
+    dataType: string
+    contentType: chemical/x-sequence
+- control:
+    id: uiIDColumn
+    label: Select an ID column (optional)
+    type: text
+    tooltip: Select and optional ID column
+  request:
+    id: uiIDColumn
+    dataType: string
+- control:
+    id: uiRASACutoff
+    label: Percent RASA cutoff (this value or above is considred "exposed")
+    type: text
+    validationRules:
+    - type: numeric
+      message: An integer value between 0 and 100 is required.
+    - type: range
+      message: An integer value between 0 and 100 is required.
+      max: !!int 100
+    - type: required
+      message: An integer value between 0 and 100 is required.
+  request:
+    id: uiRASACutoff
+    dataType: integer
+    data: !!int 20
+- control:
+    id: uiLimitBy
+    label: Apply data function to
+    type: limitby
+    tooltip: Select limiting options
+  request:
+  - id: uiLimitBy
+    dataType: string
+    field: limitBy
+    data: none
+  - id: uiLimitByMarking
+    dataType: string
+    field: marking
+tags:
+- color: '#dddddd'
+  text: MAB
+- color: '#ba660b'
+  text: analyze
+- color: '#AFC9E1'
+  text: annotation
+updateBehavior: manual
+maximumOutputColumns: !!int 0
+maximumOutputTables: !!int 0
+chemistryFunction: !!bool false
+allowedClients:
+- Analyst
+- WebPlayer
+demoUrl: 
+limitBy: none
+minimumChartsVersion: 
+confirmSubmit: 
