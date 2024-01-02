@@ -1,6 +1,6 @@
 id: d8831560-5f1d-29c6-2606-6624346c96a9
 name: Relative Solvent Accessible Surface Area (RASA)
-description: Compute the Relevant Solvent Accessible Surface Area (RASA) of the amino acid residues of a protein.
+description: Compute the Relative Solvent Accessible Surface Area (RASA) of the amino acid residues of a protein.
 category: Biopolymer
 version: 1.0.0
 serviceName: ProteinRASA
@@ -9,36 +9,55 @@ executorId: Glysade.CPythonDataFxn
 inputFields:
 - control:
     id: uiStructureColumn
-    label: Select structure column
-    type: text
+    label: Select a structure column
+    type: columnselect
+    multi: !!bool false
     validationRules:
     - type: required
-      message: A structure column must be selected
-    tooltip: Select a column with structure data
+      message: A structure column is required
+    filters:
+    - dataType:
+      - binary
+      contentType:
+      - chemical/x-pdb
+    limitByControlId: uiLimitBy
+    tooltip: Select a structure column
   request:
     id: uiStructureColumn
     dataType: string
-    contentType: chemical/x-pdb
+    selectorType: column
 - control:
     id: uiSequenceColumn
-    label: Select sequence column
-    type: text
+    label: Select a sequence column
+    type: columnselect
+    multi: !!bool false
+    tooltip: Select a sequence column
     validationRules:
     - type: required
-      message: A sequence column must be selected
-    tooltip: Select a column with sequence data
+      message: A sequence column is required
+    filters:
+    - dataType:
+      - binary
+      - string
+      contentType:
+      - chemical/x-sequence
+      - chemical/x-genbank
+    limitByControlId: uiLimitBy
   request:
     id: uiSequenceColumn
     dataType: string
-    contentType: chemical/x-sequence
+    selectorType: column
 - control:
     id: uiIDColumn
     label: Select an ID column (optional)
-    type: text
-    tooltip: Select and optional ID column
+    type: columnselect
+    multi: !!bool false
+    tooltip: Select an ID column (optional)
+    limitByControlId: uiLimitBy
   request:
     id: uiIDColumn
     dataType: string
+    selectorType: column
 - control:
     id: uiRASACutoff
     label: Percent RASA cutoff (this value or above is considred "exposed")
@@ -83,6 +102,6 @@ allowedClients:
 - Analyst
 - WebPlayer
 demoUrl: 
-limitBy: none
+limitBy: filteredRows
 minimumChartsVersion: 
 confirmSubmit: 
