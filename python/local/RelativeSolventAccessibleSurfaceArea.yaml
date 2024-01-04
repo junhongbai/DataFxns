@@ -70,10 +70,53 @@ inputFields:
       max: !!int 100
     - type: required
       message: An integer value between 0 and 100 is required.
+    group:
+      name: Annotations options
   request:
     id: uiRASACutoff
     dataType: integer
     data: !!int 20
+- control:
+    id: uiExposedColor
+    label: Exposed residue color
+    type: color
+    tooltip: Exposed residue color
+    validationRules:
+    - type: required
+      message: ''
+    group:
+      name: Annotations options
+  request:
+    id: uiExposedColor
+    dataType: string
+    data: '#FF0000'
+- control:
+    id: uiLabelAll
+    label: Annotate all residues
+    type: checkbox
+    tooltip: Annotate all residues
+    group:
+      name: Annotations options
+  request:
+    id: uiLabelAll
+    dataType: boolean
+    data: !!bool false
+- control:
+    id: uiAllColor
+    label: All residue annotation color
+    type: color
+    tooltip: All residue annotation color
+    validationRules:
+    - type: required
+      message: ''
+    group:
+      name: Annotations options
+      collapsible: !!bool false
+      collapsed: !!bool false
+  request:
+    id: uiAllColor
+    dataType: string
+    data: '#CCCCCC'
 - control:
     id: uiLimitBy
     label: Apply data function to
