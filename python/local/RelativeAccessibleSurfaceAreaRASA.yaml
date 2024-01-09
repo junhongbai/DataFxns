@@ -1,6 +1,6 @@
 id: d8831560-5f1d-29c6-2606-6624346c96a9
-name: Relative Solvent Accessible Surface Area (RASA)
-description: Compute the Relative Solvent Accessible Surface Area (RASA) of the amino acid residues of a protein.
+name: Relative Accessible Surface Area (RASA)
+description: Compute the Relative Accessible Surface Area (RASA) of the amino acid residues of a protein.
 category: Biopolymer
 version: 1.0.0
 serviceName: ProteinRASA
@@ -48,16 +48,18 @@ inputFields:
     dataType: string
     selectorType: column
 - control:
-    id: uiIDColumn
-    label: Select an ID column (optional)
-    type: columnselect
-    multi: !!bool false
-    tooltip: Select an ID column (optional)
-    limitByControlId: uiLimitBy
+    id: uiLimitBy
+    label: Apply data function to
+    type: limitby
+    tooltip: Select limiting options
   request:
-    id: uiIDColumn
+  - id: uiLimitBy
     dataType: string
-    selectorType: column
+    field: limitBy
+    data: none
+  - id: uiLimitByMarking
+    dataType: string
+    field: marking
 - control:
     id: uiRASACutoff
     label: Percent RASA cutoff (this value or above is considred "exposed")
@@ -92,44 +94,46 @@ inputFields:
     data: '#FF0000'
 - control:
     id: uiLabelAll
-    label: Annotate all residues
+    label: Annotate all residues with a color gradient
     type: checkbox
     tooltip: Annotate all residues
     group:
       name: Annotations options
+    validationRules: []
   request:
     id: uiLabelAll
     dataType: boolean
-    data: !!bool false
+    data: !!bool true
 - control:
-    id: uiAllColor
-    label: All residue annotation color
+    id: uiStartColor
+    label: Starting gradient color (corresponds to RASA = 0)
     type: color
-    tooltip: All residue annotation color
+    tooltip: Starting color
     validationRules:
     - type: required
       message: ''
     group:
       name: Annotations options
-      collapsible: !!bool false
-      collapsed: !!bool false
   request:
-    id: uiAllColor
+    id: uiStartColor
     dataType: string
-    data: '#CCCCCC'
+    data: '#FECD92'
 - control:
-    id: uiLimitBy
-    label: Apply data function to
-    type: limitby
-    tooltip: Select limiting options
+    id: uiEndColor
+    label: Ending gradient color (corresponds to RASA = 100%)
+    type: color
+    tooltip: Ending color
+    group:
+      name: Annotations options
+      collapsible: !!bool true
+      collapsed: !!bool true
+    validationRules:
+    - type: required
+      message: ''
   request:
-  - id: uiLimitBy
+    id: uiEndColor
     dataType: string
-    field: limitBy
-    data: none
-  - id: uiLimitByMarking
-    dataType: string
-    field: marking
+    data: '#7DA4C8'
 tags:
 - color: '#dddddd'
   text: MAB
