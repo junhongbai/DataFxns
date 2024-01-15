@@ -1,8 +1,8 @@
 id: fa95f9fa-27b8-67cc-9b3d-583f7ee9c82f
 name: Extract Genbank Regions
-description: Extracts all regions matching a feature key and qualifier from a column of genbank sequences into new columns
+description: Extracts all regions matching a feature key and qualifier from a column of Genbank sequences into new columns.
 category: Biopolymer
-version: 1.0.0
+version: 1.1.0
 serviceName: ExtractGenbankRegions
 serviceUri: glysade.python
 executorId: Glysade.CPythonDataFxn
@@ -35,12 +35,10 @@ inputFields:
     data: region
 - control:
     id: featureQualifier
-    label: Feature qualifier
+    label: Feature qualifier (optional)
     type: text
     tooltip: The qualifier whose value will be used as the region name
-    validationRules:
-    - type: required
-      message: ''
+    validationRules: []
   request:
     id: featureQualifier
     dataType: string
@@ -68,9 +66,12 @@ tags:
   text: tform
 updateBehavior: automatic
 maximumOutputColumns: !!int 100
-maximumOutputTables: !!int 0
+maximumOutputTables: !!int 1
 chemistryFunction: !!bool false
 allowedClients:
 - Analyst
 - WebPlayer
+demoUrl: 
 limitBy: none
+minimumChartsVersion: 
+confirmSubmit: 
