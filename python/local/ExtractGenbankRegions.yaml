@@ -22,6 +22,16 @@ inputFields:
     dataType: string
     selectorType: column
 - control:
+    id: uiIDColumn
+    label: Select Unique ID column
+    type: columnselect
+    multi: !!bool false
+    tooltip: Select a column with unique IDs for each row.
+  request:
+    id: uiIDColumn
+    dataType: string
+    selectorType: column
+- control:
     id: featureKey
     label: Feature key
     type: text
