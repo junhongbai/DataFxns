@@ -61,9 +61,9 @@ inputFields:
       id: outputFormat
       type: radiogroup
       radios:
-        - text: chemical/x-mdl-molfile
+        - text: MOL
           value: chemical/x-mdl-molfile
-        - text: chemical/x-smiles
+        - text: SMILES
           value: chemical/x-smiles
       validationRules:
         - type: required
