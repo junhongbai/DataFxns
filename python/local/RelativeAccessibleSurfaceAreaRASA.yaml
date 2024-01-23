@@ -1,0 +1,154 @@
+id: d8831560-5f1d-29c6-2606-6624346c96a9
+name: Relative Accessible Surface Area (RASA)
+description: Compute the Relative Accessible Surface Area (RASA) of the amino acid residues of a protein.
+category: Biopolymer
+version: 1.0.0
+serviceName: ProteinRASA
+serviceUri: glysade.python.mab
+executorId: Glysade.CPythonDataFxn
+inputFields:
+- control:
+    id: uiStructureColumn
+    label: Select a structure column
+    type: columnselect
+    multi: !!bool false
+    validationRules:
+    - type: required
+      message: A structure column is required
+    filters:
+    - dataType:
+      - binary
+      contentType:
+      - chemical/x-pdb
+    limitByControlId: uiLimitBy
+    tooltip: Select a structure column
+  request:
+    id: uiStructureColumn
+    dataType: string
+    selectorType: column
+- control:
+    id: uiSequenceColumn
+    label: Select a sequence column
+    type: columnselect
+    multi: !!bool false
+    tooltip: Select a sequence column
+    validationRules:
+    - type: required
+      message: A sequence column is required
+    filters:
+    - dataType:
+      - binary
+      - string
+      contentType:
+      - chemical/x-sequence
+      - chemical/x-genbank
+    limitByControlId: uiLimitBy
+  request:
+    id: uiSequenceColumn
+    dataType: string
+    selectorType: column
+- control:
+    id: uiLimitBy
+    label: Apply data function to
+    type: limitby
+    tooltip: Select limiting options
+  request:
+  - id: uiLimitBy
+    dataType: string
+    field: limitBy
+    data: none
+  - id: uiLimitByMarking
+    dataType: string
+    field: marking
+- control:
+    id: uiRASACutoff
+    label: Percent RASA cutoff (this value or above is considred "exposed")
+    type: text
+    validationRules:
+    - type: numeric
+      message: An integer value between 0 and 100 is required.
+    - type: range
+      message: An integer value between 0 and 100 is required.
+      max: !!int 100
+    - type: required
+      message: An integer value between 0 and 100 is required.
+    group:
+      name: Annotations options
+  request:
+    id: uiRASACutoff
+    dataType: integer
+    data: !!int 20
+- control:
+    id: uiExposedColor
+    label: Exposed residue color
+    type: color
+    tooltip: Exposed residue color
+    validationRules:
+    - type: required
+      message: ''
+    group:
+      name: Annotations options
+  request:
+    id: uiExposedColor
+    dataType: string
+    data: '#FF0000'
+- control:
+    id: uiLabelAll
+    label: Annotate all residues with a color gradient
+    type: checkbox
+    tooltip: Annotate all residues
+    group:
+      name: Annotations options
+    validationRules: []
+  request:
+    id: uiLabelAll
+    dataType: boolean
+    data: !!bool true
+- control:
+    id: uiStartColor
+    label: Starting gradient color (corresponds to RASA = 0)
+    type: color
+    tooltip: Starting color
+    validationRules:
+    - type: required
+      message: ''
+    group:
+      name: Annotations options
+  request:
+    id: uiStartColor
+    dataType: string
+    data: '#FECD92'
+- control:
+    id: uiEndColor
+    label: Ending gradient color (corresponds to RASA = 100%)
+    type: color
+    tooltip: Ending color
+    group:
+      name: Annotations options
+      collapsible: !!bool true
+      collapsed: !!bool true
+    validationRules:
+    - type: required
+      message: ''
+  request:
+    id: uiEndColor
+    dataType: string
+    data: '#7DA4C8'
+tags:
+- color: '#dddddd'
+  text: MAB
+- color: '#ba660b'
+  text: analyze
+- color: '#AFC9E1'
+  text: annotation
+updateBehavior: manual
+maximumOutputColumns: !!int 0
+maximumOutputTables: !!int 0
+chemistryFunction: !!bool false
+allowedClients:
+- Analyst
+- WebPlayer
+demoUrl: 
+limitBy: filteredRows
+minimumChartsVersion: 
+confirmSubmit: 

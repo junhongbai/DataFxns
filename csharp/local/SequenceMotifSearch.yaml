@@ -2,7 +2,7 @@ id: 70470634-68a8-4950-9d88-348bc19e3a1d
 name: Sequence Motif Search
 description: Creates boolean columns indicating the presence or absence of an input sequence motif in a sequence column - regular expressions are also supported.  A column illustrating the sequence and the identified motif locations is also created.
 category: Biopolymer
-version: 1.0.1
+version: 1.1.0
 serviceName: SequenceMotifRegexSearch
 serviceUri: glysade.csharp
 executorId: Glysade.CSharpDataFxn
@@ -29,7 +29,7 @@ inputFields:
     type: text
     validationRules:
     - type: required
-      message: 'Enter a name for the output boolean column.'
+      message: Enter a name for the output boolean column.
   request:
     id: columnName
     dataType: string
@@ -39,7 +39,7 @@ inputFields:
     type: text
     validationRules:
     - type: required
-      message: 'Enter a name to be used in annotating the motif.'
+      message: Enter a name to be used in annotating the motif.
   request:
     id: featureName
     dataType: string
@@ -50,19 +50,48 @@ inputFields:
     rows: !!int 1
     validationRules:
     - type: required
-      message: 'A query sequence or regular expression must be entered.'
+      message: A query sequence or regular expression must be entered.
   request:
     id: expression
     dataType: string
+- control:
+    id: ctrlColor
+    label: Select color
+    type: color
+  request:
+    id: ctrlColor
+    dataType: string
+    data: '#ffa500'
 tags:
+- color: '#AFC9E1'
+  text: annotation
 - color: '#337abc'
   text: sequence
-- color: '#f1f72d'
-  text: filter
 updateBehavior: automatic
 maximumOutputColumns: !!int 2
 maximumOutputTables: !!int 0
 chemistryFunction: !!bool false
+outputFields:
+- id: sequenceColumn
+  name: Sequence column
+  source: inputField
+  type: default
+- id: columnName
+  name: Annotated sequence output column
+  source: inputField
+  type: default
+- id: featureName
+  name: Motif name
+  source: inputField
+  type: default
+- id: expression
+  name: Motif expression
+  source: inputField
+  type: default
+- id: ctrlColor
+  name: Color
+  source: inputField
+  type: color
 allowedClients:
 - Analyst
 - WebPlayer
