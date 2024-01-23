@@ -1,0 +1,248 @@
+id: db2af994-2c2e-c6aa-4495-e4bdce0d8edb
+name: Antibody Structure Prediction
+description: Predict antibody 3D structure given heavy and light chain amino acid sequences.  Sequences should be concatenated with the heavy chain preceding the light chain.
+category: Biopolymer
+version: 1.0.0
+serviceName: AntibodyStructurePrediction
+serviceUri: glysade.python.mab
+executorId: Glysade.CPythonDataFxn
+inputFields:
+- control:
+    id: uiAbSeqCol
+    label: Antibody sequence column
+    type: columnselect
+    multi: !!bool false
+    validationRules:
+    - type: required
+      message: A sequence column must be specified
+    filters:
+    - dataType: string
+      contentType:
+      - chemical/x-sequence
+    limitByControlId: uiLimitBy
+  request:
+    id: uiAbSeqCol
+    dataType: string
+    selectorType: column
+- control:
+    id: uiIDCol
+    label: ID column
+    type: columnselect
+    multi: !!bool false
+    validationRules:
+    - type: required
+      message: Specify a column with unique IDs
+    filters:
+    - dataType: string
+      contentType: []
+    limitByControlId: uiLimitBy
+  request:
+    id: uiIDCol
+    dataType: string
+    selectorType: column
+- control:
+    id: uiLimitBy
+    label: Apply data function to
+    type: limitby
+  request:
+  - id: uiLimitBy
+    dataType: string
+    field: limitBy
+    data: none
+  - id: uiLimitByMarking
+    dataType: string
+    field: marking
+- control:
+    id: uiSaveAll
+    label: Save all models
+    type: checkbox
+    group:
+      name: Model Options
+      collapsible: !!bool true
+  request:
+    id: uiSaveAll
+    dataType: boolean
+    data: !!bool false
+- control:
+    id: uiRefineAll
+    label: Refine all models
+    type: checkbox
+    group:
+      name: Model Options
+  request:
+    id: uiRefineAll
+    dataType: boolean
+    data: !!bool false
+- control:
+    id: uiDoNumbering
+    label: Perform antibody numbering
+    type: checkbox
+    group:
+      name: Antibody Numbering
+  request:
+    id: uiDoNumbering
+    dataType: boolean
+    data: !!bool false
+- control:
+    id: uiNumberingScheme
+    label: Antibody numbering scheme
+    type: radiogroup
+    radios:
+    - text: Kabat
+      value: kabat
+    - text: Chothia
+      value: chothia
+    - text: IMGT
+      value: imgt
+    - text: Martin (extended Chothia)
+      value: martin
+    - text: Aho
+      value: aho
+    validationRules:
+    - type: required
+      message: ''
+    group:
+      name: Antibody Numbering
+  request:
+    id: uiNumberingScheme
+    dataType: string
+    data: imgt
+- control:
+    id: uiCDRdef
+    label: CDR definition scheme
+    type: radiogroup
+    radios:
+    - text: Kabat
+      value: kabat
+    - text: Chothia
+      value: chothia
+    - text: IMGT
+      value: imgt
+    group:
+      name: Antibody Numbering
+      collapsible: !!bool true
+      collapsed: !!bool false
+  request:
+    id: uiCDRdef
+    dataType: string
+    data: imgt
+tags:
+- color: '#dddddd'
+  text: MAB
+- color: '#D22A2A'
+  text: structure
+ironPython: |-
+  #####################################################
+  #  Copyright 2023 Glysade LLC, All Rights Reserved  #
+  #####################################################
+
+  import sys,clr
+  from Spotfire.Dxp.Application import Panel, PanelTypeIdentifiers
+  from Spotfire.Dxp.Application.Layout import LayoutDefinition
+  import Spotfire.Dxp.Application.PanelCollection
+  from System import AppDomain
+
+  loadAssemblies = ['Charts', 'ChemistryService', 'Common']
+  for asm in AppDomain.CurrentDomain.GetAssemblies():
+      if asm.GetName().Name in loadAssemblies:
+          clr.AddReference(asm.FullName)
+
+  from Common import ColumnIdService
+  from ChemistryService import DataFxnInput, DataFxnRequest, DataFxnInputField
+  from Charts import ChartsModel
+  model_type = ChartsModel
+
+  dataTable = ResultTables[0]
+  structureColumn = dataTable.Columns['Compressed Structures']
+  tableId = dataTable.Id.ToString()
+  idSvc = Application.GetService[ColumnIdService]()
+
+  if not dataTable:
+      raise Exception('target table not found')
+
+  page = Document.Pages.AddNew('Antibody Structure Prediction Results')
+  panelsToHide = [PanelTypeIdentifiers.DataPanel, PanelTypeIdentifiers.DetailsOnDemandPanel, PanelTypeIdentifiers.FilterPanel]
+
+  for panel in page.Panels:
+      if panel.TypeId in panelsToHide:
+          if panel.Visible:
+              panel.Visible = False
+
+  filteringScheme = Document.FilteringSchemes[0]
+  page.FilterPanel.FilteringSchemeReference = filteringScheme
+
+  tableVis = page.Visuals.AddNew[model_type]()
+  tableVis.SetKeyValue('visualization','table-visualization')
+  tableVis.DataTable = dataTable
+  tableVis.ConfigureColumns()
+  tableVis.Marking = Document.Data.Markings.DefaultMarkingReference
+
+  alignedSequenceColumn = None
+  for column in dataTable.Columns:
+      if column.Properties.ContentType != 'chemical/x-genbank' and column.Name.Contains('Aligned Sequence'):
+          alignedSequenceColumn = column
+          break
+
+  biomolVis = page.Visuals.AddNew[model_type]()
+
+  if alignedSequenceColumn:
+      biomolVis.SetKeyValue(tableId+'.biomolviewer-visualization.bioMolViewer.sequenceColumnId', idSvc.GetID(alignedSequenceColumn))
+  if structureColumn:
+      biomolVis.SetKeyValue(tableId+'.biomolviewer-visualization.bioMolViewer.defaultDisplayObjects', '[["'+idSvc.GetID(structureColumn)+'",{"contacts":{"contextColumnId":"none","labelsVisible":true,"visible":false},"structure":{"color":{"color":"#808080","scheme":"element","reverse":false,"scale":"OrRd"},"contextDistance":10,"contextColumnId":"none","contextFilterSele":"","displayUnmappedChains":true,"hydrogenStyle":"none","style":"line","visible":true,"water":true},"surface":{"color":{"color":"#808080","scheme":"uniform","reverse":false,"scale":"OrRd"},"contextColumnId":"none","contextDistance":5,"filterSele":"","opacity":0.7,"type":"av","visible":false,"wireframe":false},"protein":{"tube":{"color":{"color":"#808080","scheme":"bfactor","reverse":false,"scale":"OrRd"},"visible":false},"cartoon":{"color":{"color":"#808080","scheme":"bfactor","reverse":false,"scale":"OrRd"},"visible":true}},"visible":true}]]')
+  biomolVis.SetKeyValue('visualization','biomolviewer-visualization')
+  biomolVis.DataTable = dataTable
+  biomolVis.ConfigureColumns()
+  biomolVis.Marking = Document.Data.Markings.DefaultMarkingReference
+
+  layout = LayoutDefinition()
+  layout.BeginSideBySideSection()
+  layout.Add(biomolVis.Visual, 75.0)
+  layout.Add(tableVis.Visual, 25.0)
+  layout.EndSection()
+  page.ApplyLayout(layout)
+
+  tableVis.SetActiveVisual()
+updateBehavior: manual
+maximumOutputColumns: !!int 0
+maximumOutputTables: !!int 1
+chemistryFunction: !!bool false
+outputFields:
+- id: uiAbSeqCol
+  name: Antibody sequence column
+  source: inputField
+  type: sequence
+- id: uiIDColumn
+  name: ID column
+  source: inputField
+  type: default
+- id: uiLimitBy
+  name: Limit by
+  source: inputField
+  type: default
+- id: uiSaveAll
+  name: Save all
+  source: inputField
+  type: default
+- id: uiRefineAll
+  name: Refine All
+  source: inputField
+  type: default
+- id: uiDoNumbering
+  name: Perform antibody numbering
+  source: inputField
+  type: default
+- id: uiNumberingScheme
+  name: Antbody numbering scheme
+  source: inputField
+  type: default
+- id: uiCDRdef
+  name: CDR definition scheme
+  source: inputField
+  type: default
+allowedClients:
+- Analyst
+- WebPlayer
+demoUrl: 
+limitBy: none
+minimumChartsVersion: 4.4.0.0
+confirmSubmit: 
