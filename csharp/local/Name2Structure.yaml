@@ -3,7 +3,7 @@ name: Name2Structure (ChemDraw)
 description: Transforms a column of IUPAC names into structures.
 category: Chemistry
 version: 1.0.0
-serviceName: PKIChemistry.Name2StructureDataFxn
+serviceName: ChemDrawChemistry.Name2StructureDataFxn
 serviceUri: glysade.csharp
 executorId: Glysade.CSharpDataFxn
 inputFields:
@@ -50,7 +50,7 @@ inputFields:
     id: outColumnName
     dataType: string
     data: Structure
-assembly: PKIChemistry
+assembly: ChemDrawTk
 tags:
 - color: '#50AF28'
   text: chemistry

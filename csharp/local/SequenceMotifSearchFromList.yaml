@@ -1,0 +1,75 @@
+id: 8497f5ae-96c3-33d1-bd1e-85551cb72cc5
+name: Sequence Motif Search from List
+description: Creates boolean columns indicating the presence or absence of input sequence motifs in a sequence column - regular expressions are also supported.  Columns illustrating the sequence and the identified motif locations are also created.
+category: Biopolymer
+version: 1.0.0
+serviceName: SequenceMotifRegexSearchFromList
+serviceUri: glysade.csharp
+executorId: Glysade.CSharpDataFxn
+inputFields:
+- control:
+    id: sequenceColumn
+    label: Select sequence column
+    type: columnselect
+    filters:
+    - dataType: string
+      contentType: chemical/x-sequence
+    - dataType: binary
+      contentType: chemical/x-genbank
+    validationRules:
+    - type: required
+    multi: !!bool false
+  request:
+    id: sequenceColumn
+    dataType: string
+    selectorType: column
+- control:
+    id: uiMotifListDescription
+    label: 'Enter a double pipe delimited list with columns corresponding to the motif (can be a regular expression), motif name, and the output column name.  The list can not be longer than 100 lines.  For example:'
+    type: description
+  request: []
+- control:
+    id: uiMotifListExampleLine1
+    label: GGG||TriGly||Triple Glycine
+    type: description
+  request: []
+- control:
+    id: uiMotifListExampleLine2
+    label: GGG[^ILV]||TriGlyNoBCAA||Triple Glycine - No Branched Chains
+    type: description
+  request: []
+- control:
+    id: uiMotifList
+    label: Motif/regular expression, motif name, and column name
+    type: textarea
+    tooltip: Enter a double pipe delimited list of motifs, motif names, and column names.
+    validationRules:
+    - type: required
+      message: A double pipe delimited list is required.
+  request:
+    id: uiMotifList
+    dataType: string
+- control:
+    id: ctrlColor
+    label: Select color
+    type: color
+  request:
+    id: ctrlColor
+    dataType: string
+    data: '#ffa500'
+tags:
+- color: '#AFC9E1'
+  text: annotation
+- color: '#337abc'
+  text: sequence
+updateBehavior: automatic
+maximumOutputColumns: !!int 101
+maximumOutputTables: !!int 0
+chemistryFunction: !!bool false
+allowedClients:
+- Analyst
+- WebPlayer
+demoUrl: 
+limitBy: none
+minimumChartsVersion: 4.5.0.0
+confirmSubmit: 

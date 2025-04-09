@@ -1,0 +1,54 @@
+id: f1f10bda-221d-358d-66a8-e59d90004ad9
+name: Apply Depiction Template (ChemDraw)
+description: Applies depiction template and transform coordinates of input structures.
+category: Chemistry
+version: 1.0.0
+serviceName: ChemDrawChemistry.ApplyTemplateDataFxn
+serviceUri: glysade.csharp
+executorId: Glysade.CSharpDataFxn
+inputFields:
+- control:
+    id: structureColumn
+    label: Select structure column
+    type: columnselect
+    filters:
+    - dataType: string
+      contentType:
+      - chemical/x-mdl-molfile
+      - chemical/x-mdl-molfile-v3000
+      - chemical/x-smiles
+      - chemical/x-daylight-smiles
+      - chemical/x-cdx
+      - chemical/x-cdxml
+    - dataType: binary
+      contentType:
+      - chemical/x-mdl-molfile
+      - chemical/x-mdl-molfile-v3000
+      - chemical/x-cdx
+    validationRules:
+    - type: required
+      message: Must select column of 2D structures
+  request:
+    id: structureColumn
+    dataType: string
+    selectorType: column
+assembly: ChemDrawTk
+tags:
+- color: '#50AF28'
+  text: chemistry
+- color: '#e2f062'
+  text: tform
+updateBehavior: manual
+maximumOutputColumns: !!int 1
+maximumOutputTables: !!int 0
+chemistryFunction: !!bool false
+outputFields:
+- id: column1
+  name: Result column
+  source: column
+  type: default
+allowedClients:
+- Analyst
+- WebPlayer
+demoUrl: 
+limitBy: none

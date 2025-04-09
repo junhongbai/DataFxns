@@ -1,0 +1,102 @@
+id: 68350fa4-e948-9823-af6c-2864fd625aca
+name: Sphere Exclusion Clustering
+description: Sphere Exclusion Clustering Service
+category: Chemistry
+version: 1.0.0
+serviceName: SphereExclusionClustering
+serviceUri: glysade.csharp
+executorId: Glysade.CSharpDataFxn
+inputFields:
+- control:
+    id: structureColumn
+    label: Structure column
+    type: columnselect
+    multi: !!bool false
+    filters:
+    - dataType: binary
+      contentType:
+      - chemical/x-mdl-molfile
+      - chemical/x-mdl-molfile-v3000
+    - dataType: string
+      contentType:
+      - chemical/x-mdl-molfile
+      - chemical/x-mdl-molfile-v3000
+    - dataType: string
+      contentType: chemical/x-smiles
+    - dataType: string
+      contentType: chemical/x-daylight-smiles
+    validationRules:
+    - type: required
+      message: ''
+  request:
+    id: structureColumn
+    dataType: string
+    selectorType: column
+- control:
+    id: numClusters
+    label: Number of clusters
+    type: text
+    tooltip: Number of clusters to be created
+    validationRules:
+    - type: required
+      message: ''
+    - type: numeric
+      message: ''
+    - type: range
+      message: ''
+      min: !!int 2
+  request:
+    id: numClusters
+    dataType: integer
+    data: !!int 100
+- control:
+    label: Align cluster molecules
+    id: alignClusterMolecules
+    type: checkbox
+    tooltip: Aligns the molecules in each cluster.  Can be slow for large datasets.  Small datasets will always be aligned.
+  request:
+    id: alignClusterMolecules
+    dataType: boolean
+    data: !!bool false
+- control:
+    id: fpType
+    label: Fingerprint Type
+    type: radiogroup
+    group:
+      name: Advanced
+      collapsible: !!bool true
+      collapsed: !!bool true
+    radios:
+    - value: morgan
+      text: Morgan
+    - value: rdkit
+      text: RDKit
+    - text: Pattern
+      value: pattern
+    - text: MACCS
+      value: maccs
+    - text: Atom Pair
+      value: atompair
+    - value: topological
+      text: Topological Torsion
+    tooltip: Type of fingerprint to be used for the clustering similarity calculation.
+    validationRules:
+    - type: required
+      message: ''
+  request:
+    id: fpType
+    dataType: string
+tags:
+- color: '#50AF28'
+  text: chemistry
+- color: '#ba660b'
+  text: analyze
+updateBehavior: automatic
+maximumOutputColumns: !!int 5
+maximumOutputTables: !!int 0
+chemistryFunction: !!bool false
+allowedClients:
+- Analyst
+- WebPlayer
+demoUrl: 
+limitBy: none

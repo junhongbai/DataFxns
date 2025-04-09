@@ -219,7 +219,7 @@ ironPython: |-
   if not dataTable:
     raise Exception('target table not found')
 
-  page = Document.Pages.AddNew('Blast (local) column query Results')
+  page = Document.Pages.AddNew('Structure Column Search Results')
   panelsToHide = [PanelTypeIdentifiers.DataPanel, PanelTypeIdentifiers.DetailsOnDemandPanel]
 
   for panel in page.Panels:
@@ -247,5 +247,5 @@ allowedClients:
 - WebPlayer
 demoUrl: 
 limitBy: none
-minimumChartsVersion: 
+minimumChartsVersion: 4.3.0.0
 confirmSubmit: 
