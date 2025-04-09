@@ -118,6 +118,10 @@ script: |
   
           norm_mol = Chem.Mol(mol)
           norm_mol = rdmolops.RemoveHs(norm_mol)
+          if inputs['metal_disconnect']:
+              norm_mol = metal_disconnector.Disconnect(norm_mol)
+          if inputs['parent_fragment']:
+              norm_mol = rdMolStandardize.FragmentParent(norm_mol)
           if inputs['normalize']:
               norm_mol = rdMolStandardize.Normalize(norm_mol)
           if inputs['neutralize']:
@@ -125,10 +129,6 @@ script: |
               norm_mol = uncharger.uncharge(norm_mol)
           if inputs['reionize']:
               norm_mol = rdMolStandardize.Reionize(norm_mol)
-          if inputs['parent_fragment']:
-              norm_mol = rdMolStandardize.FragmentParent(norm_mol)
-          if inputs['metal_disconnect']:
-              norm_mol = metal_disconnector.Disconnect(norm_mol)
           if inputs['canonical_tautomer']:
               norm_mol = rdMolStandardize.CanonicalTautomer(norm_mol)
   

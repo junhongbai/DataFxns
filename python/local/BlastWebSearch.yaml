@@ -151,4 +151,4 @@ ironPython: |
       threeDVis.Marking = Document.Data.Markings.DefaultMarkingReference
 
     tableVis.SetActiveVisual()
-demoURL: https://youtu.be/v7leIlBaiz4
+demoURL: https://youtu.be/v7leIlBaiz4?si=O4ndyaMe7Jt06M1J

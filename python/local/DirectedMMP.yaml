@@ -1,0 +1,392 @@
+id: 9d5219da-1eee-f5c5-89f2-804345d1dedf
+name: Directed MMP
+description: Finds MMP transformations and associated property predictions for selected parts of query structure
+category: Chemistry
+version: 1.0.0
+serviceName: Script
+serviceUri: glysade.python
+executorId: Glysade.CPythonDataFxn
+inputFields:
+- control:
+    id: queryData
+    label: Enter query structure
+    type: sketcher
+    validationRules:
+    - type: structure
+      message: Must enter a structure
+    - type: atomSelection
+    - type: bondSelection
+  request:
+  - id: queryData
+    dataType: string
+    contentType: chemical/x-mdl-molfile
+    field: structure
+  - id: atoms
+    dataType: list(integer)
+    field: atomSelection
+  - id: bonds
+    dataType: list(integer)
+    field: bondSelection
+- control:
+    id: structureColumn
+    label: Select structure column
+    type: columnselect
+    filters:
+    - dataType: string
+      contentType:
+      - chemical/x-mdl-molfile
+      - chemical/x-mdl-molfile-v3000
+      - chemical/x-smiles
+      - chemical/x-daylight-smiles
+    - dataType: binary
+      contentType:
+      - chemical/x-mdl-molfile
+      - chemical/x-mdl-molfile-v3000
+    validationRules:
+    - type: required
+      message: Must select column of 2D structures
+  request:
+    id: structureColumn
+    dataType: string
+    selectorType: column
+- control:
+    id: propertyFields
+    label: MMP Properties
+    type: columnselect
+    multi: !!bool true
+    tooltip: Select columns containing MMP Properties
+    validationRules:
+    - type: oneOrMoreRequired
+      message: ''
+    filters:
+    - dataType:
+      - double
+      - int
+      - float
+      - long
+  request:
+    id: propertyFields
+    dataType: list(string)
+    selectorType: column
+- control:
+    id: idColumn
+    label: Name of ID Column
+    type: columnselect
+    multi: !!bool false
+    validationRules:
+    - type: required
+      message: ''
+    filters:
+    - dataType:
+      - string
+      - int
+      contentType: []
+  request:
+    id: idColumn
+    dataType: string
+    selectorType: column
+tags:
+- color: '#50AF28'
+  text: chemistry
+- color: '#f7cb2d'
+  text: search
+ironPython: |-
+  ####################################################
+  #  Copyright 2024 Glysade LLC, All Rights Reserved #
+  ####################################################
+
+  import sys, clr, json
+  from System import Guid, String
+  from Spotfire.Dxp.Data import DataTable, DataManager
+  from Spotfire.Dxp.Application import PanelTypeIdentifiers
+  from Spotfire.Dxp.Application import Panel
+  from Spotfire.Dxp.Application.Layout import LayoutDefinition
+  import Spotfire.Dxp.Application.PanelCollection
+
+  from System import AppDomain
+  for asm in AppDomain.CurrentDomain.GetAssemblies():
+      if asm.GetName().Name == 'Charts' or asm.GetName().Name == 'Common':
+          clr.AddReference(asm.FullName)
+
+  from Common import ColumnIdService
+  from Charts import ChartsModel
+
+  dataTable = ResultTables[0]
+  tableId = dataTable.Id.ToString()
+
+  if not dataTable:
+      raise Exception('target table not found')
+
+  idService = Application.GetService(ColumnIdService)
+
+  page = Document.Pages.AddNew('Directed MMP Results')
+
+  tableVis = page.Visuals.AddNew[ChartsModel]()
+  tableVis.SetKeyValue('visualization','table-visualization')
+  tableVis.DataTable = dataTable
+  tableVis.ConfigureColumns()
+  tableVis.Title = 'Directed MMP Results'
+  tableVis.Marking = Document.Data.Markings.DefaultMarkingReference
+  tableVis.SetKeyValue(tableId+".table-visualization.table.transposed","true")
+  if dataTable.Columns.Contains('LHS'):
+      tableVis.SetColumnRenderer(dataTable.Columns['LHS'], 'RDKit')
+  if dataTable.Columns.Contains('RHS'):
+      tableVis.SetColumnRenderer(dataTable.Columns['RHS'], 'RDKit')
+  if dataTable.Columns.Contains('Replaced (LHS)'):
+      tableVis.SetColumnRenderer(dataTable.Columns['Replaced (LHS)'], 'RDKit')
+  if dataTable.Columns.Contains('Replacement (RHS)'):
+      tableVis.SetColumnRenderer(dataTable.Columns['Replacement (RHS)'], 'RDKit')
+  removed = []
+  unfixed = []
+
+  tableVis.SetKeyValue(tableId+".table-visualization.table.removedColumnIds", json.dumps(removed))
+  tableVis.SetKeyValue(tableId+".table-visualization.table.unfixedColumnIds", json.dumps(unfixed))
+
+  #add SarMap Visual
+  sarMapVis = page.Visuals.AddNew[ChartsModel]()
+  sarMapVis.SetKeyValue('visualization','sar-map-visualization')
+  sarMapVis.DataTable = dataTable
+  sarMapVis.ConfigureColumns()
+  if dataTable.Columns.Contains('Replaced (LHS)'):
+      replacedColumn = dataTable.Columns['Replaced (LHS)']
+      sarMapVis.ValueGroup1Column = replacedColumn
+      sarMapVis.SetColumnRenderer(replacedColumn, 'RDKit')
+      
+  if dataTable.Columns.Contains('Replacement (RHS)'):
+      replacementColumn = dataTable.Columns['Replacement (RHS)']
+      sarMapVis.ValueGroup2Column = replacementColumn
+      sarMapVis.SetColumnRenderer(replacementColumn, 'RDKit')
+   
+  sarMapVis.Marking = Document.Data.Markings.DefaultMarkingReference
+  sarMapVis.Title = "Directed MMPs"
+
+  mpoVis = page.Visuals.AddNew[ChartsModel]()
+  mpoVis.SetKeyValue('visualization','mpo-visualization')
+  mpoVis.DataTable = dataTable
+  mpoVis.ConfigureColumns()
+  mpoVis.Title = 'MMP Properties'
+  mpoVis.Marking = Document.Data.Markings.DefaultMarkingReference
+  configured = []
+  for column in dataTable.Columns:
+      if column.DataType.IsNumeric:
+          configured.append({'columnId': idService.GetID(column),'logScale':False,'inverted':False})
+  mpoVis.SetKeyValue(tableId+".mpo-visualization.mpo.axes",json.dumps(configured))
+
+  tableVis.SetActiveVisual()
+  page.AutoConfigure()
+
+  page.FilterPanel.Visible = True
+  page.DetailsOnDemandPanel.Visible = False
+
+  filterPanel = page.FilterPanel
+  for group in filterPanel.TableGroups:
+      if group.Name != dataTable.Name:
+          group.Visible = False
+
+  layout = LayoutDefinition()
+  layout.BeginStackedSection()
+  layout.BeginSideBySideSection()
+  layout.Add(sarMapVis.Visual,50.0)
+  layout.Add(mpoVis.Visual,50.0)
+  layout.EndSection()
+  layout.Add(tableVis.Visual)
+  layout.EndSection()
+  page.ApplyLayout(layout)
+updateBehavior: manual
+maximumOutputColumns: !!int 0
+maximumOutputTables: !!int 1
+chemistryFunction: !!bool false
+script: |
+  from collections import defaultdict
+  from typing import Union
+
+  from df.chem_helper import (
+      column_to_molecules,
+      input_field_to_molecule,
+      molecules_to_column,
+  )
+  from df.data_transfer import (
+      DataFunctionRequest,
+      DataFunctionResponse,
+      DataType,
+      ColumnData,
+      TableData,
+      string_input_field,
+      string_list_input_field,
+  )
+
+  from df.directed_mmp import find_pairs
+  from ruse.rdkit.rdkit_utils import sanitize_mol
+  from rdkit import Chem
+
+
+  def extract_query_structure(request: DataFunctionRequest) -> tuple[Chem.Mol, list[int]]:
+      input_query_mol = input_field_to_molecule(request, "queryData")
+      sanitize_mol(input_query_mol)
+      atoms_data = request.inputFields["atoms"]
+      return input_query_mol, atoms_data.data
+
+
+  def extract_column_data(
+      request: DataFunctionRequest,
+  ) -> tuple[
+      list[Chem.Mol], list[Union[str, int]], dict[str, tuple[DataType, list[float]]]
+  ]:
+      column_id = string_input_field(request, "structureColumn")
+      input_column = request.inputColumns[column_id]
+      mols = [m for m in column_to_molecules(input_column)]
+      props = string_list_input_field(request, "propertyFields")
+      properties = {}
+      for prop in props:
+          prop_col = request.inputColumns[prop]
+          properties[prop_col.name] = (prop_col.dataType, prop_col.values)
+
+      id_column = string_input_field(request, "idColumn")
+      mol_ids_col = request.inputColumns[id_column]
+      mol_ids = [str(v) for v in mol_ids_col.values]
+      for i, mol in enumerate(mols, 0):
+          if mol is not None:
+              mol.SetProp("RowNum", f"{i}")
+
+      return mols, mol_ids, properties
+
+
+  def get_sorted_output_order(
+      pairs: list[tuple[Chem.Mol, Chem.Mol, Chem.Mol, Chem.Mol]]
+  ) -> list[tuple[Chem.Mol, Chem.Mol, Chem.Mol, Chem.Mol]]:
+      """
+      Sort the pairs based on the number of times the difference SMILES
+      strings appear in a pair.  The delta-properties for these have the
+      most evidence of a statistical trend.
+      Also returns the SMILES strings for the differences.
+      """
+      mol_diffs_smis = [Chem.MolToSmiles(pair[3]) for pair in pairs]
+      mol_diffs_smis_cnts = defaultdict(int)
+      for mds in mol_diffs_smis:
+          mol_diffs_smis_cnts[mds] += 1
+      tmp = []
+      for i, mds in enumerate(mol_diffs_smis):
+          tmp.append((mds, i, mol_diffs_smis_cnts[mds]))
+      tmp.sort(key=lambda x: x[0])
+      tmp.sort(key=lambda x: x[2], reverse=True)
+      return [pairs[t[1]] for t in tmp]
+
+
+  def build_output_table(
+      pairs: list[tuple[Chem.Mol, Chem.Mol, Chem.Mol, Chem.Mol]],
+      mol_ids: list[Union[str, int]],
+      properties: dict[str, tuple[DataType, list[float]]],
+  ) -> TableData:
+
+      pairs = get_sorted_output_order(pairs)
+      prop_cols = []
+      for prop, prop_values in properties.items():
+          delta_props = []
+          for pair in pairs:
+              mol1_row = int(pair[0].GetProp("RowNum"))
+              mol2_row = int(pair[1].GetProp("RowNum"))
+              try:
+                  dp = prop_values[1][mol1_row] - prop_values[1][mol2_row]
+              except TypeError:
+                  dp = None
+              delta_props.append(dp)
+          prop_cols.append(
+              ColumnData(
+                  name=f"Delta {prop}",
+                  values=delta_props,
+                  dataType=prop_values[0],
+                  contentType=None,
+                  columnId=None,
+                  limitBy=None,
+                  limitByMarking=None,
+              )
+          )
+
+      pair1_mols = [pair[0] for pair in pairs]
+      pair2_mols = [pair[1] for pair in pairs]
+      pair1_ids = [mol_ids[int(mol.GetProp("RowNum"))] for mol in pair1_mols]
+      pair2_ids = [mol_ids[int(mol.GetProp("RowNum"))] for mol in pair2_mols]
+      mol1_column = molecules_to_column(pair1_mols, "LHS", DataType.BINARY)
+      ids1_column = ColumnData(
+          name="LHS ID",
+          values=pair1_ids,
+          dataType=DataType.STRING,
+          contentType=None,
+          columnId=None,
+          limitBy=None,
+          limitByMarking=None,
+      )
+      mol2_column = molecules_to_column(pair2_mols, "RHS", DataType.BINARY)
+      ids2_column = ColumnData(
+          name="RHS ID",
+          values=pair2_ids,
+          dataType=DataType.STRING,
+          contentType=None,
+          columnId=None,
+          limitBy=None,
+          limitByMarking=None,
+      )
+      replaced_smis = [Chem.MolToSmiles(p[2]) for p in pairs]
+      replaced_smis_column = ColumnData(
+          name="Replaced (LHS)",
+          values=replaced_smis,
+          dataType=DataType.STRING,
+          contentType=None,
+          columnId=None,
+          limitBy=None,
+          limitByMarking=None,
+      )
+      replacement_column = molecules_to_column(
+          [pair[3] for pair in pairs], "Replacement (RHS)", DataType.BINARY
+      )
+
+      # Make a column of bools that says whether a pair is symmetric or
+      # not.  It's symmetric if A->B and B->A.  Quite often they're not.
+      in_pairs = defaultdict(int)
+      for p1, p2 in zip(pair1_ids, pair2_ids):
+          if p1 > p2:
+              p2, p1 = p1, p2
+          in_pairs[(p1, p2)] += 1
+      symmetric = []
+      for p1, p2 in zip(pair1_ids, pair2_ids):
+          if p1 > p2:
+              p2, p1 = p1, p2
+          symmetric.append(in_pairs[(p1, p2)] == 2)
+      symmetric_column = ColumnData(
+          name="Symmetric Pair",
+          values=symmetric,
+          dataType=DataType.BOOLEAN,
+          contentType=None,
+          columnId=None,
+          limitBy=None,
+          limitByMarking=None,
+      )
+
+      all_cols = [
+          mol1_column,
+          mol2_column,
+          ids1_column,
+          ids2_column,
+          replaced_smis_column,
+          replacement_column,
+          symmetric_column,
+      ]
+      all_cols.extend(prop_cols)
+
+      return TableData(tableName="Directed MMP", columns=all_cols)
+
+
+  def execute(data_request: DataFunctionRequest) -> DataFunctionResponse:
+      query_mol, query_atoms = extract_query_structure(data_request)
+      mols, mol_ids, properties = extract_column_data(data_request)
+      pairs = find_pairs(mols, query_mol, query_atoms)
+      output_table = build_output_table(pairs, mol_ids, properties)
+      response = DataFunctionResponse(outputTables=[output_table])
+      return response
+allowedClients:
+- Analyst
+- WebPlayer
+demoUrl: 
+limitBy: none
+minimumChartsVersion: 
+confirmSubmit: 

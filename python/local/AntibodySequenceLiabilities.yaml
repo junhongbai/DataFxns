@@ -1,0 +1,121 @@
+id: 01010160-093b-55c7-746b-8a3c148111b7
+name: Antibody Sequence Liabilities
+description: Create a set of boolean columns indicating the presence or absence of predefined antibody sequence liabilities.  A column illustrating the sequence and the identified liability locations is also created.
+category: Biopolymer
+version: 2.0.0
+serviceName: AntibodySequenceLiabilities
+serviceUri: glysade.python.mab
+executorId: Glysade.CPythonDataFxn
+inputFields:
+- control:
+    id: sequenceColumn
+    label: Select sequence column (must contain protein sequences).
+    type: columnselect
+    filters:
+    - dataType: string
+      contentType: chemical/x-sequence
+    - dataType: binary
+      contentType: chemical/x-genbank
+    validationRules:
+    - type: required
+    multi: !!bool false
+  request:
+    id: sequenceColumn
+    dataType: string
+    selectorType: column
+- control:
+    id: uiSequenceRASADescription
+    label: If the selected sequence column contains Relative Accessible Surface Area information, only residues marked "Solvent Exposed Residue" will be considered.
+    type: description
+  request: []
+- control:
+    id: outputColumn
+    label: Annotated output column name
+    type: text
+    validationRules:
+    - type: required
+      message: Enter a name for the annotated output column.
+  request:
+    id: outputColumn
+    dataType: string
+    data: Annotated Liabilities
+- control:
+    id: patterns
+    label: Sequence liabilities
+    type: select
+    multi: !!bool true
+    options:
+    - text: Asparagine Deamidation
+      value: Asparagine Deamidation,(?=(N[GSTNH]))
+    - text: Aspartic Acid Fragmentation
+      value: Aspartic Acid Fragmentation,DP
+    - text: Aspartic Acid Isomerization
+      value: Aspartic Acid Isomerization,(?=(D[GSTDH]))
+    - text: Cysteine
+      value: Cysteine,C
+    - text: Lysine N-glycation
+      value: Lysine N-glycation,(?<=(K[DE]|[DE]K))
+    - text: N-glycosylation
+      value: N-glycosylation,N[^P][TS]
+    - text: N-terminal Glutamic Acid
+      value: N-terminal Glutamic Acid,^E
+    - text: Oxidation
+      value: Oxidation,[MW]
+    validationRules:
+    - type: required
+  request:
+    id: patterns
+    dataType: list(string)
+    data:
+    - Asparagine Deamidation,(?=(N[GSTNH]))
+    - Aspartic Acid Fragmentation,DP
+    - Aspartic Acid Isomerization,(?=(D[GSTDH]))
+    - Cysteine,C
+    - Lysine N-glycation,(?<=(K[DE]|[DE]K))
+    - N-glycosylation,N[^P][TS]
+    - N-terminal Glutamic Acid,^E
+    - Oxidation,[MW]
+- control:
+    id: ctrlColor
+    label: Select color
+    type: color
+  request:
+    id: ctrlColor
+    dataType: string
+    data: '#ff0000'
+assembly: PublisherCore
+tags:
+- color: '#dddddd'
+  text: MAB
+- color: '#AFC9E1'
+  text: annotation
+- color: '#337abc'
+  text: sequence
+updateBehavior: automatic
+maximumOutputColumns: !!int 9
+maximumOutputTables: !!int 0
+chemistryFunction: !!bool false
+outputFields:
+- id: sequenceColumn
+  name: Sequence column
+  source: inputField
+  type: default
+- id: outputColumn
+  name: Annotated sequence output column
+  source: inputField
+  type: default
+- id: patterns
+  name: Selected liabilities
+  source: inputField
+  type: default
+- id: ctrlColor
+  name: Color
+  source: inputField
+  type: color
+allowedClients:
+- Analyst
+- WebPlayer
+demoUrl: 
+limitBy: none
+minimumChartsVersion: 4.4.0.0
+confirmSubmit: 

@@ -1,0 +1,69 @@
+id: f6d56da2-c646-6409-66fa-7af27b6d99b3
+name: String2Real
+description: Converts a column of numbers represented as strings to a column of decimal numbers
+category: General
+version: 1.0.0
+serviceName: Script
+serviceUri: glysade.python
+executorId: Glysade.CPythonDataFxn
+inputFields:
+- control:
+    id: stringColumn
+    label: Select string column
+    type: columnselect
+    filters:
+    - dataType: string
+      contentType: []
+    validationRules:
+    - type: required
+      message: Must select structure column
+  request:
+    id: stringColumn
+    dataType: string
+    selectorType: column
+tags:
+- color: '#e2f062'
+  text: tform
+updateBehavior: automatic
+maximumOutputColumns: !!int 1
+maximumOutputTables: !!int 0
+chemistryFunction: !!bool false
+script: |2-
+
+  import re
+  from df.data_transfer import DataFunctionRequest, DataFunctionResponse, DataType, ColumnData, string_input_field
+
+
+  def execute(request: DataFunctionRequest) -> DataFunctionResponse:
+      column_id = string_input_field(request, 'stringColumn')
+      input_column = request.inputColumns[column_id]
+      strValues = input_column.values
+      realValues = []
+      try:
+          for value in strValues:
+              x = re.findall('\d+\.\d+|\d+',value)
+              if len(x) > 0:
+                  realValues.append(float(x[0]))
+              else:
+                  realValues.append(None)
+      except:
+          realValues.append(None)
+      output_column = ColumnData(name=f'{input_column.name} Values', dataType=DataType.DOUBLE, values=realValues)
+      response = DataFunctionResponse(outputColumns=[output_column])
+      return response
+outputFields:
+- id: structureColumn
+  source: inputField
+  type: default
+  name: String column
+- id: column1
+  source: column
+  type: default
+  name: Output number column
+allowedClients:
+- Analyst
+- WebPlayer
+demoUrl: 
+limitBy: none
+minimumChartsVersion: 
+confirmSubmit: 

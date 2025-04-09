@@ -57,7 +57,7 @@ ironPython: |-
       columnId = idSvc.GetID(ResultColumns[0])
 
       for visual in page.Visuals:
-          if visual.TypeId.Name == 'Lead Discovery ChemCharts':
+          if visual.TypeId.Name == 'Lead Discovery ChemCharts' or visual.TypeId.Name == 'ChemCharts':
               model = visual.As[ChartsModel]()
               if model.GetKeyValue('visualization') == 'table-visualization' and model.DataTable.Equals(InputTables[0]):
                   model.SetSortCriteria(columnId, 'asc', 0)
@@ -115,6 +115,6 @@ outputFields:
 allowedClients:
 - Analyst
 - WebPlayer
-demoUrl: https://www.youtube.com/watch?v=wYFAi9ouO84
+demoUrl: https://www.youtube.com/watch?v=WsOxjievP4E
 limitBy: none
 minimumChartsVersion: 

@@ -1,0 +1,770 @@
+id: 93d02491-8387-44c3-890a-24a6e998432e
+name: Library Enumeration
+description: Enumerate a scaffold with functional group replacements on building blocks
+category: Chemistry
+version: 1.0.0
+serviceName: Script
+serviceUri: glysade.python
+executorId: Glysade.CPythonDataFxn
+inputFields:
+- control:
+    id: structureColumn
+    label: Select Reagents Column
+    type: columnselect
+    filters:
+      - dataType: string
+        contentType:
+          - chemical/x-mdl-molfile
+          - chemical/x-mdl-molfile-v3000
+          - chemical/x-smiles
+          - chemical/x-daylight-smiles
+      - dataType: binary
+        contentType:
+          - chemical/x-mdl-molfile
+          - chemical/x-mdl-molfile-v3000
+    validationRules:
+      - type: required
+        message: Must select column of 2D structures for reagents
+  request:
+    id: structureColumn
+    dataType: string
+    selectorType: column
+- control:
+    id: queryData
+    label: Enter template scaffold complete with R1, R2..
+    type: sketcher
+    validationRules:
+    - type: structure
+      message: Must enter a structure
+  request:
+  - id: queryData
+    dataType: string
+    contentType: chemical/x-mdl-molfile
+    field: structure
+- control:
+    id: functional_group_ctrl
+    label: R1 functional group
+    type: select
+    multi: !!bool false
+    options:
+    - value: None
+      text: <None>    
+    - value: AcidChloride
+      text: Acid Chloride
+    - value: AcidChloride.Aliphatic
+      text: Acid Chloride Aliphatic
+    - value: AcidChloride.Aromatic
+      text: Acid Chloride Aromatic
+    - value: Alcohol
+      text: Alcohol
+    - value: Alcohol.Aliphatic
+      text: Alcohol Aliphatic
+    - value: Alcohol.Aromatic
+      text: Alcohol Aromatic
+    - value: Aldehyde
+      text: Aldehyde
+    - value: Aldehyde.Aliphatic
+      text: Aldehyde Aliphatic
+    - value: Aldehyde.Aromatic
+      text: Aldehyde Aromatic
+    - value: Amine
+      text: Amine
+    - value: Amine.Aliphatic
+      text: Amine Aliphatic
+    - value: Amine.Aromatic
+      text: Amine Aromatic
+    - value: Amine.Cyclic.Opening
+      text: Amine Cyclic (Opening)
+    - value: Amine.Cyclic.Fusion
+      text: Amine Cyclic (Fusion)
+    - value: Amine.Primary
+      text: Amine Primary
+    - value: Amine.Primary.Aliphatic
+      text: Amine Primary Aliphatic
+    - value: Amine.Primary.Aromatic
+      text: Amine Primary Aromatic
+    - value: Amine.Secondary
+      text: Amine Secondary
+    - value: Amine.Secondary.Aliphatic
+      text: Amine Secondary Aliphatic
+    - value: Amine.Secondary.Aromatic
+      text: Amine Secondary Aromatic
+    - value: Amine.Tertiary
+      text: Amine Tertiary
+    - value: Amine.Tertiary.Aliphatic
+      text: Amine Tertiary Aliphatic
+    - value: Amine.Tertiary.Aromatic
+      text: Amine Tertiary Aromatic
+    - value: Azide
+      text: Azide
+    - value: Azide.Aliphatic
+      text: Azide Aliphatic
+    - value: Azide.Aromatic
+      text: Azide Aromatic
+    - value: BoronicAcid
+      text: BoronicAcid
+    - value: BoronicAcid.Aliphatic
+      text: BoronicAcid Aliphatic
+    - value: BoronicAcid.Aromatic
+      text: BoronicAcid Aromatic
+    - value: CarboxylicAcid
+      text: CarboxylicAcid
+    - value: CarboxylicAcid.Aliphatic
+      text: CarboxylicAcid Aliphatic
+    - value: CarboxylicAcid.AlphaAmino
+      text: CarboxylicAcid AlphaAmino
+    - value: CarboxylicAcid.Aromatic
+      text: CarboxylicAcid Aromatic
+    - value: Halogen
+      text: Halogen
+    - value: Halogen.Aliphatic
+      text: Halogen Aliphatic
+    - value: Halogen.Aromatic
+      text: Halogen Aromatic
+    - value: Halogen.Bromine
+      text: Halogen Bromine
+    - value: Halogen.Bromine.Aliphatic
+      text: Halogen Bromine Aliphatic
+    - value: Halogen.Bromine.Aromatic
+      text: Halogen Bromine Aromatic
+    - value: Halogen.Bromine.BromoKetone
+      text: Halogen Bromine BromoKetone
+    - value: Halogen.NotFluorine
+      text: Halogen NotFluorine
+    - value: Halogen.NotFluorine.Aliphatic
+      text: Halogen NotFluorine Aliphatic
+    - value: Halogen.NotFluorine.Aromatic
+      text: Halogen NotFluorine Aromatic
+    - value: Isocyanate
+      text: Isocyanate
+    - value: Isocyanate.Aliphatic
+      text: Isocyanate Aliphatic
+    - value: Isocyanate.Aromatic
+      text: Isocyanate Aromatic
+    - value: Nitro
+      text: Nitro
+    - value: Nitro.Aliphatic
+      text: Nitro Aliphatic
+    - value: Nitro.Aromatic
+      text: Nitro Aromatic
+    - value: SulfonylChloride
+      text: SulfonylChloride
+    - value: SulfonylChloride.Aliphatic
+      text: SulfonylChloride Aliphatic
+    - value: SulfonylChloride.Aromatic
+      text: SulfonylChloride Aromatic
+    - value: Terminal Alkyne
+      text: Terminal Alkyne
+    validationRules:
+    - type: required
+      message: ''
+  request:
+    id: functional_group1
+    dataType: string
+- control:
+    id: functional_group_ctr2
+    label: R2 functional group
+    type: select
+    multi: !!bool false
+    options:
+    - value: None
+      text: <None>    
+    - value: AcidChloride
+      text: Acid Chloride
+    - value: AcidChloride.Aliphatic
+      text: Acid Chloride Aliphatic
+    - value: AcidChloride.Aromatic
+      text: Acid Chloride Aromatic
+    - value: Alcohol
+      text: Alcohol
+    - value: Alcohol.Aliphatic
+      text: Alcohol Aliphatic
+    - value: Alcohol.Aromatic
+      text: Alcohol Aromatic
+    - value: Aldehyde
+      text: Aldehyde
+    - value: Aldehyde.Aliphatic
+      text: Aldehyde Aliphatic
+    - value: Aldehyde.Aromatic
+      text: Aldehyde Aromatic
+    - value: Amine
+      text: Amine
+    - value: Amine.Aliphatic
+      text: Amine Aliphatic
+    - value: Amine.Aromatic
+      text: Amine Aromatic
+    - value: Amine.Cyclic.Opening
+      text: Amine Cyclic (Opening)
+    - value: Amine.Cyclic.Fusion
+      text: Amine Cyclic (Fusion)
+    - value: Amine.Primary
+      text: Amine Primary
+    - value: Amine.Primary.Aliphatic
+      text: Amine Primary Aliphatic
+    - value: Amine.Primary.Aromatic
+      text: Amine Primary Aromatic
+    - value: Amine.Secondary
+      text: Amine Secondary
+    - value: Amine.Secondary.Aliphatic
+      text: Amine Secondary Aliphatic
+    - value: Amine.Secondary.Aromatic
+      text: Amine Secondary Aromatic
+    - value: Amine.Tertiary
+      text: Amine Tertiary
+    - value: Amine.Tertiary.Aliphatic
+      text: Amine Tertiary Aliphatic
+    - value: Amine.Tertiary.Aromatic
+      text: Amine Tertiary Aromatic
+    - value: Azide
+      text: Azide
+    - value: Azide.Aliphatic
+      text: Azide Aliphatic
+    - value: Azide.Aromatic
+      text: Azide Aromatic
+    - value: BoronicAcid
+      text: BoronicAcid
+    - value: BoronicAcid.Aliphatic
+      text: BoronicAcid Aliphatic
+    - value: BoronicAcid.Aromatic
+      text: BoronicAcid Aromatic
+    - value: CarboxylicAcid
+      text: CarboxylicAcid
+    - value: CarboxylicAcid.Aliphatic
+      text: CarboxylicAcid Aliphatic
+    - value: CarboxylicAcid.AlphaAmino
+      text: CarboxylicAcid AlphaAmino
+    - value: CarboxylicAcid.Aromatic
+      text: CarboxylicAcid Aromatic
+    - value: Halogen
+      text: Halogen
+    - value: Halogen.Aliphatic
+      text: Halogen Aliphatic
+    - value: Halogen.Aromatic
+      text: Halogen Aromatic
+    - value: Halogen.Bromine
+      text: Halogen Bromine
+    - value: Halogen.Bromine.Aliphatic
+      text: Halogen Bromine Aliphatic
+    - value: Halogen.Bromine.Aromatic
+      text: Halogen Bromine Aromatic
+    - value: Halogen.Bromine.BromoKetone
+      text: Halogen Bromine BromoKetone
+    - value: Halogen.NotFluorine
+      text: Halogen NotFluorine
+    - value: Halogen.NotFluorine.Aliphatic
+      text: Halogen NotFluorine Aliphatic
+    - value: Halogen.NotFluorine.Aromatic
+      text: Halogen NotFluorine Aromatic
+    - value: Isocyanate
+      text: Isocyanate
+    - value: Isocyanate.Aliphatic
+      text: Isocyanate Aliphatic
+    - value: Isocyanate.Aromatic
+      text: Isocyanate Aromatic
+    - value: Nitro
+      text: Nitro
+    - value: Nitro.Aliphatic
+      text: Nitro Aliphatic
+    - value: Nitro.Aromatic
+      text: Nitro Aromatic
+    - value: SulfonylChloride
+      text: SulfonylChloride
+    - value: SulfonylChloride.Aliphatic
+      text: SulfonylChloride Aliphatic
+    - value: SulfonylChloride.Aromatic
+      text: SulfonylChloride Aromatic
+    - value: Terminal Alkyne
+      text: Terminal Alkyne
+  request:
+    id: functional_group2
+    dataType: string
+- control:
+    id: functional_group_ctr3
+    label: R3 functional group
+    type: select
+    multi: !!bool false
+    options:
+    - value: None
+      text: <None>    
+    - value: AcidChloride
+      text: Acid Chloride
+    - value: AcidChloride.Aliphatic
+      text: Acid Chloride Aliphatic
+    - value: AcidChloride.Aromatic
+      text: Acid Chloride Aromatic
+    - value: Alcohol
+      text: Alcohol
+    - value: Alcohol.Aliphatic
+      text: Alcohol Aliphatic
+    - value: Alcohol.Aromatic
+      text: Alcohol Aromatic
+    - value: Aldehyde
+      text: Aldehyde
+    - value: Aldehyde.Aliphatic
+      text: Aldehyde Aliphatic
+    - value: Aldehyde.Aromatic
+      text: Aldehyde Aromatic
+    - value: Amine
+      text: Amine
+    - value: Amine.Aliphatic
+      text: Amine Aliphatic
+    - value: Amine.Aromatic
+      text: Amine Aromatic
+    - value: Amine.Cyclic.Opening
+      text: Amine Cyclic (Opening)
+    - value: Amine.Cyclic.Fusion
+      text: Amine Cyclic (Fusion)
+    - value: Amine.Primary
+      text: Amine Primary
+    - value: Amine.Primary.Aliphatic
+      text: Amine Primary Aliphatic
+    - value: Amine.Primary.Aromatic
+      text: Amine Primary Aromatic
+    - value: Amine.Secondary
+      text: Amine Secondary
+    - value: Amine.Secondary.Aliphatic
+      text: Amine Secondary Aliphatic
+    - value: Amine.Secondary.Aromatic
+      text: Amine Secondary Aromatic
+    - value: Amine.Tertiary
+      text: Amine Tertiary
+    - value: Amine.Tertiary.Aliphatic
+      text: Amine Tertiary Aliphatic
+    - value: Amine.Tertiary.Aromatic
+      text: Amine Tertiary Aromatic
+    - value: Azide
+      text: Azide
+    - value: Azide.Aliphatic
+      text: Azide Aliphatic
+    - value: Azide.Aromatic
+      text: Azide Aromatic
+    - value: BoronicAcid
+      text: BoronicAcid
+    - value: BoronicAcid.Aliphatic
+      text: BoronicAcid Aliphatic
+    - value: BoronicAcid.Aromatic
+      text: BoronicAcid Aromatic
+    - value: CarboxylicAcid
+      text: CarboxylicAcid
+    - value: CarboxylicAcid.Aliphatic
+      text: CarboxylicAcid Aliphatic
+    - value: CarboxylicAcid.AlphaAmino
+      text: CarboxylicAcid AlphaAmino
+    - value: CarboxylicAcid.Aromatic
+      text: CarboxylicAcid Aromatic
+    - value: Halogen
+      text: Halogen
+    - value: Halogen.Aliphatic
+      text: Halogen Aliphatic
+    - value: Halogen.Aromatic
+      text: Halogen Aromatic
+    - value: Halogen.Bromine
+      text: Halogen Bromine
+    - value: Halogen.Bromine.Aliphatic
+      text: Halogen Bromine Aliphatic
+    - value: Halogen.Bromine.Aromatic
+      text: Halogen Bromine Aromatic
+    - value: Halogen.Bromine.BromoKetone
+      text: Halogen Bromine BromoKetone
+    - value: Halogen.NotFluorine
+      text: Halogen NotFluorine
+    - value: Halogen.NotFluorine.Aliphatic
+      text: Halogen NotFluorine Aliphatic
+    - value: Halogen.NotFluorine.Aromatic
+      text: Halogen NotFluorine Aromatic
+    - value: Isocyanate
+      text: Isocyanate
+    - value: Isocyanate.Aliphatic
+      text: Isocyanate Aliphatic
+    - value: Isocyanate.Aromatic
+      text: Isocyanate Aromatic
+    - value: Nitro
+      text: Nitro
+    - value: Nitro.Aliphatic
+      text: Nitro Aliphatic
+    - value: Nitro.Aromatic
+      text: Nitro Aromatic
+    - value: SulfonylChloride
+      text: SulfonylChloride
+    - value: SulfonylChloride.Aliphatic
+      text: SulfonylChloride Aliphatic
+    - value: SulfonylChloride.Aromatic
+      text: SulfonylChloride Aromatic
+    - value: Terminal Alkyne
+      text: Terminal Alkyne
+  request:
+    id: functional_group3
+    dataType: string
+- control:
+    id: maxProducts
+    label: Maximum number of products
+    type: text
+    tooltip: Maximum number of products to generate (useful for large Numbers of reagents)
+    validationRules:
+    - type: required
+      message: ''
+    - type: range
+      message: ''
+      min: !!int 1
+      max: !!int 10000000
+  request:
+    id: maxProducts
+    dataType: integer
+    data: !!int 10000
+tags:
+  - color: '#50AF28'
+    text: chemistry
+  - color: '#c6fc00'
+    text: calcprop
+updateBehavior: automatic
+maximumOutputColumns: !!int 10
+maximumOutputTables: !!int 1
+chemistryFunction: !!bool false
+script: |
+  from collections import defaultdict, deque
+  from typing import Optional
+  
+  from rdkit import Chem
+  from rdkit.Chem import AllChem
+  from rdkit.Chem.rdChemReactions import ChemicalReaction
+  from rdkit.Chem.rdchem import MolSanitizeException
+  import logging, time
+  
+  from df.chem_helper import column_to_molecules, input_field_to_molecule, \
+      molecules_to_column
+  from df.data_transfer import (DataFunctionRequest, DataFunctionResponse, DataType,
+                                Notification, NotificationLevel, TableData, integer_input_field,
+                                string_input_field, string_list_input_field)
+  from ruse.rdkit.rdkit_utils import sanitize_mol
+  logging.basicConfig()
+  logging.getLogger().setLevel(logging.INFO)
+  RLABEL = "_MolFileRLabel"
+  FGROUPS = {       
+      "AcidChloride":"[*:1]-C(=O)Cl>>[Y][*:1]",
+      "AcidChloride.Aliphatic":"[*:1]-[$(C-&!@[A&!Cl])](=O)Cl>>[Y][*:1]",
+      "AcidChloride.Aromatic":"[*:1]-[$(C-&!@a)](=O)Cl>>[Y][*:1]",
+      "Alcohol":"[*:1]-[O&H1&$(O-&!@[#6&!$(C=&!@[O,N,S])])]>>[Y][*:1]",
+      "Alcohol.Aliphatic":"[*:1]-[O&H1&$(O-&!@[C&!$(C=&!@[O,N,S])])]>>[Y][*:1]",
+      "Alcohol.Aromatic":"[*:1]-[O&H1&$(O-&!@c)]>>[Y][*:1]",
+      "Aldehyde":"[*:1]-[C&H1&D2&!$(C-[!#6&!#1])]=O>>[Y][*:1]",
+      "Aldehyde.Aliphatic":"[*:1]-[C&H1&D2&$(C-&!@C)]=O>>[Y][*:1]",
+      "Aldehyde.Aromatic":"[*:1]-[C&H1&D2&$(C-&!@a)]=O>>[Y][*:1]",
+      "Amine":"[*:1]-[N&$(N-[#6])&!$(N-[!#6&!#1])&!$(N-C=[O,N,S])]>>[Y][*:1]",
+      "Amine.Aliphatic":"[*:1]-[N&!$(N-c)&$(N-C)&!$(N-[!#6&!#1])&!$(N-C=[O,N,S])]>>[Y][*:1]",
+      "Amine.Aromatic":"[*:1]-[N&$(N-c)&!$(N-[!#6&!#1])&!$(N-C=[O,N,S])]>>[Y][*:1]",
+      "Amine.Cyclic.Opening":"[*:1]-[N&R&$(N-[#6])&!$(N-[!#6&!#1])&!$(N-C=[O,N,S])]>>[Y]N[*:1]",
+      "Amine.Cyclic.Fusion":"[N&R&$(N-[#6])&!$(N-[!#6&!#1])&!$(N-C=[O,N,S]):1]>>[Y][*:1]",
+      "Amine.Primary":"[*:1]-[N&H2&D1&$(N-&!@[#6])&!$(N-C=[O,N,S])]>>[Y][*:1]",
+      "Amine.Primary.Aliphatic":"[*:1]-[N&H2&D1&$(N-&!@C)&!$(N-C=[O,N,S])]>>[Y][*:1]",
+      "Amine.Primary.Aromatic":"[*:1]-[N&H2&D1&$(N-&!@c)&!$(N-C=[O,N,S])]>>[Y][*:1]",
+      "Amine.Secondary":"[*:1]-[N&H1&D2&$(N(-[#6])-[#6])&!$(N-C=[O,N,S])]>>[Y][*:1]",
+      "Amine.Secondary.Aliphatic":"[*:1]-[N&H1&D2&$(N(-C)-C)&!$(N-C=[O,N,S])]>>[Y][*:1]",
+      "Amine.Secondary.Aromatic":"[*:1]-[N&H1&D2&$(N(-c)-[#6])&!$(N-C=[O,N,S])]>>[Y][*:1]",
+      "Amine.Tertiary":"[*:1]-[N&H0&D3&$(N(-[#6])(-[#6])-[#6])&!$(N-C=[O,N,S])]>>[Y][*:1]",
+      "Amine.Tertiary.Aliphatic":"[*:1]-[N&H0&D3&$(N(-C)(-C)-C)&!$(N-C=[O,N,S])]>>[Y][*:1]",
+      "Amine.Tertiary.Aromatic":"[*:1]-[N&H0&D3&$(N(-c)(-[#6])-[#6])&$(N-C=[O,N,S])]>>[Y][*:1]",
+      "Azide":"[*:1]-[N&H0&$(N-[#6])&D2]=[N&D2]=[N&D1]>>[Y][*:1]",
+      "Azide.Aliphatic":"[*:1]-[N&H0&$(N-C)&D2]=[N&D2]=[N&D1]>>[Y][*:1]",
+      "Azide.Aromatic":"[*:1]-[N&H0&$(N-c)&D2]=[N&D2]=[N&D1]>>[Y][*:1]",
+      "BoronicAcid":"[*:1]-[$(B-&!@[#6])](O)O>>[Y][*:1]",
+      "BoronicAcid.Aliphatic":"[*:1]-[$(B-&!@C)](O)O>>[Y][*:1]",
+      "BoronicAcid.Aromatic":"[*:1]-[$(B-&!@c)](O)O>>[Y][*:1]",
+      "CarboxylicAcid":"[*:1]-C(=O)[O;H1,-]>>[Y][*:1]",
+      "CarboxylicAcid.Aliphatic":"[*:1]-[$(C-&!@[A&!O])](=O)[O;H1,-]>>[Y][*:1]",
+      "CarboxylicAcid.AlphaAmino":"[*:1]-[$(C-[C&!$(C=[!#6])]-[N&!H0&!$(N-[!#6&!#1])&!$(N-C=[O,N,S])])](=O)[O;H1,-]>>[Y][*:1]",
+      "CarboxylicAcid.Aromatic":"[*:1]-[$(C-&!@a)](=O)[O;H1,-]>>[Y][*:1]",
+      "Halogen":"[*:1]-[$([F,Cl,Br,I]-&!@[#6])&!$([F,Cl,Br,I]-&!@C-&!@[F,Cl,Br,I])&!$([F,Cl,Br,I]-[C,S]=[O,S,N])]>>[Y][*:1]",
+      "Halogen.Aliphatic":"[*:1]-[$([F,Cl,Br,I]-&!@C)&!$([F,Cl,Br,I]-&!@C-&!@[F,Cl,Br,I])]>>[Y][*:1]",
+      "Halogen.Aromatic":"[*:1]-[F,Cl,Br,I;$(*-&!@c)]>>[Y][*:1]",
+      "Halogen.Bromine":"[*:1]-[Br&$(Br-&!@[#6])&!$(Br-&!@C-&!@[F,Cl,Br,I])&!$(Br-[C,S]=[O,S,N])]>>[Y][*:1]",
+      "Halogen.Bromine.Aliphatic":"[*:1]-[Br&$(Br-&!@C)&!$(Br-&!@C-&!@[F,Cl,Br,I])&!$(Br-[C,S]=[O,S,N])]>>[Y][*:1]",
+      "Halogen.Bromine.Aromatic":"[*:1]-[Br&$(Br-&!@c)]>>[Y][*:1]",
+      "Halogen.Bromine.BromoKetone":"[*:1]-[Br&$(Br-[C&H2]-C(=O)-[#6])]>>[Y][*:1]",
+      "Halogen.NotFluorine":"[*:1]-[$([Cl,Br,I]-&!@[#6])&!$([Cl,Br,I]-&!@C-&!@[F,Cl,Br,I])&!$([Cl,Br,I]-[C,S]=[O,S,N])]>>[Y][*:1]",
+      "Halogen.NotFluorine.Aliphatic":"[*:1]-[$([Cl,Br,I]-&!@C)&!$([Cl,Br,I]-&!@C-&!@[F,Cl,Br,I])&!$([Cl,Br,I]-[C,S]=[O,S,N])]>>[Y][*:1]",
+      "Halogen.NotFluorine.Aromatic":"[*:1]-[$([Cl,Br,I]-&!@c)]>>[Y][*:1]",
+      "Isocyanate":"[*:1]-[$(N-&!@[#6])]=&!@C=&!@O>>[Y][*:1]",
+      "Isocyanate.Aliphatic":"[*:1]-[$(N-&!@C)]=&!@C=&!@O>>[Y][*:1]",
+      "Isocyanate.Aromatic":"[*:1]-[$(N-&!@c)]=&!@C=&!@O>>[Y][*:1]",
+      "Nitro":"[*:1]-[N&H0&$(N-[#6])&D3](=[O&D1])~[O&D1]>>[Y][*:1]",
+      "Nitro.Aliphatic":"[*:1]-[N&H0&$(N-C)&D3](=[O&D1])~[O&D1]>>[Y][*:1]",
+      "Nitro.Aromatic":"[*:1]-[N&H0&$(N-c)&D3](=[O&D1])~[O&D1]>>[Y][*:1]",
+      "SulfonylChloride":"[*:1]-[$(S-&!@[#6])](=O)(=O)Cl>>[Y][*:1]",
+      "SulfonylChloride.Aliphatic":"[*:1]-[$(S-&!@C)](=O)(=O)Cl>>[Y][*:1]",
+      "SulfonylChloride.Aromatic":"[*:1]-[$(S-&!@c)](=O)(=O)Cl>>[Y][*:1]",
+      "TerminalAlkyne":"[*:1]-[C&$(C#[C&H1])]>>[Y][*:1]"}
+  
+  def MarkMolecule(mol, rxn, rgroup_idx=1, fusion=False):
+    """Replace a functional group with an R1"""
+    assert rgroup_idx > 0, "Must have a positive rgroup label/index"
+    
+    prods = []
+    hits = set()
+    for res in rxn.RunReactants([mol]):
+        for prod in res:
+            h = Chem.MolToSmiles(prod)
+            if h not in hits:
+                prods.append(prod)
+                hits.add(h)
+
+    if len(prods) == 1:
+        prod = prods[0]
+        atom = prod.GetAtomWithIdx(0)
+        atom.SetAtomicNum([0,39,23,41][rgroup_idx])
+        atom.SetIntProp(RLABEL, rgroup_idx)
+        AllChem.Compute2DCoords(prod)
+        #print(Chem.MolToSmiles(mol), " -> ", Chem.MolToSmiles(prod))
+        return prod
+    return ""
+
+
+  def combine_prods_to_one_mol(prods: tuple[Chem.Mol]) -> Optional[Chem.Mol]:
+      new_prod = Chem.Mol()
+      for prod in prods:
+          new_prod = Chem.CombineMols(new_prod, prod)
+      try:
+          Chem.SanitizeMol(new_prod)
+      except MolSanitizeException:
+          return None
+      # sometimes we'll get  molecule that sanitizes but
+      # generates a bad SMILES.  Skip those.  But return the
+      # original product if it's kosher, because it will retain the
+      # props from the original, crucially old_mapno which is used for
+      # highlighting the bits that didn't change.
+      smi = Chem.MolToSmiles(new_prod)
+      check_mol = Chem.MolFromSmiles(smi)
+      if check_mol is None:
+          return None
+      else:
+          # Any new bits have zero coords which makes for a substandard
+          # depiction.
+          AllChem.Compute2DCoords(new_prod)
+          return new_prod
+
+  def run_reactions(mols: list[Chem.Mol],
+                    template: Chem.Mol,
+                    functional_group: str,
+                    functional_group2: str,
+                    functional_group3: str,
+                    max_products: int) -> list[tuple[Chem.Mol, Optional[Chem.Mol]]]:
+      """
+      Given a template molecule, assign the functional group queries
+      to R1 and optionally R2 and R3.
+
+      Filter all the input molecules into their appropriate building block lists
+      then run the reactions up to max_products results.
+
+      In the case of a badly formed template that cannot be sanitized,
+      2 * max_products samples will be analyzed before exiting.
+      """
+      reaction_mode = "singleReaction"
+      notifications = []
+      all_prods = []
+      # check reaction
+      rlabels = set()
+      rxn = AllChem.ChemicalReaction()
+      for atom in template.GetAtoms():
+          if atom.HasProp(RLABEL):
+              rgroup = atom.GetIntProp(RLABEL)
+              rlabels.add(rgroup)
+              atom.SetAtomMapNum(rgroup)
+
+      # add the R1 template, this is matched by Yttrium in our fake reaction
+      rxn.AddProductTemplate(template)
+      sma = Chem.MolFromSmarts("[#39][*:1]")
+      rxn.AddReactantTemplate(sma)
+
+      errors = []
+      if functional_group and 1 not in rlabels: errors.append("Template missing R1")
+      if functional_group2 and 2 not in rlabels: errors.append("Template missing R2")
+      if functional_group3 and 3 not in rlabels: errors.append("Template missing R3")
+
+      if errors:
+          notifications.append(Notification(level=NotificationLevel.ERROR,
+                                            title = "Missing RGroups in template",
+                                            summary = "Template is missing specified RGRoups",
+                                            details = "\n".join(errors)))
+                                            
+      def mark_molecules(mols, functional_group, rgroup_idx):
+          assert functional_group in FGROUPS
+          mark_rxn = AllChem.ReactionFromSmarts(FGROUPS[functional_group])
+          mark_rxn.Initialize()
+          
+          for m in mols:
+              if m is None: continue
+              marked = MarkMolecule(m, mark_rxn, rgroup_idx=rgroup_idx)
+              if marked:
+                  yield marked, m
+      BBS = []
+      ORIG_BBS = []
+      t1 = time.time()
+      bbs = [(marked, orig) for marked, orig in mark_molecules(mols, functional_group, 1)]
+      t2 = time.time()
+      logging.info(f"Took {t2-t1:0.2} seconds to mark bb 1")
+
+      ORIG_BBS.append([orig for _,orig in bbs])
+      BBS.append([marked for marked,_ in bbs])
+
+      if functional_group2:
+          t1 = time.time()
+          bbs = [(marked, orig) for marked, orig in mark_molecules(mols, functional_group2, 2)]
+          ORIG_BBS.append([orig for _,orig in bbs])
+          BBS.append([marked for marked,_ in bbs])
+          sma = Chem.MolFromSmarts("[#23][*:2]")
+          rxn.AddReactantTemplate(sma)
+          t2 = time.time()
+          logging.info(f"Took {t2-t1:0.2} seconds to mark bb 2")
+
+      if functional_group3:
+          t1 = time.time()
+          bbs = [(marked, orig) for marked, orig in mark_molecules(mols, functional_group3, 3)]
+          ORIG_BBS.append([orig for _,orig in bbs])
+          BBS.append([marked for marked,_ in bbs])
+          sma = Chem.MolFromSmarts("[#41][*:3]")
+          rxn.AddReactantTemplate(sma)
+          t2 = time.time()
+          logging.info(f"Took {t2-t1:0.2} seconds to mark bb 3")
+
+      used_bbs = []
+      for _ in BBS:
+          used_bbs.append([])
+          
+      rxn.Initialize()
+      logging.info(f"rxn\n{AllChem.ReactionToRxnBlock(rxn)}")
+      lib = AllChem.EnumerateLibrary(rxn, BBS)
+
+      # give a bit of wiggle room when looking for products
+      max_attempts = 2 * max_products
+      logging.info(f"Started enumerating, {max_attempts=}")
+
+      t1 = time.time()
+      for idx, prods in enumerate(lib):
+          if idx >= max_attempts or len(all_prods) >= max_products:
+              print("Stopping for max attempts", idx)
+              break
+          if idx and idx % 1000 == 0:
+             logging.info(f"== {idx} attempts")
+          s = set()
+          prod = None
+          if len(prods) > 1:
+              print("# results", len(prods))
+              pos = lib.GetPosition()
+              for pdx, idx in enumerate(pos):
+                  print(f"R{pdx}", Chem.MolToSmiles(BBS[pdx][idx]))
+              for i, p in enumerate(prods):
+                  for m in p:
+                      print(i, Chem.MolToSmiles(m))
+                  
+          assert len(prods) == 1
+          for p in prods:
+              next_prod = combine_prods_to_one_mol(p)
+              if next_prod is not None:
+                  prod = next_prod
+                  break
+          if prod:
+              res = prod # add bb positions ehre
+              pos = lib.GetPosition()
+              for i,bbs in enumerate(ORIG_BBS):
+                  pos_idx = pos[i]
+                  used_bbs[i].append(bbs[pos_idx])
+                  
+              all_prods.append(res)
+
+      t2=time.time()
+      logging.info(f"Ended enumeration at {t2-t1:0.2} seconds")
+      return all_prods, used_bbs, notifications
+  
+  
+  def execute(request: DataFunctionRequest) -> DataFunctionResponse:
+      column_id = string_input_field(request, 'structureColumn')
+      maxProducts = integer_input_field(request, 'maxProducts')
+      template = input_field_to_molecule(request, "queryData")
+  
+      input_column = request.inputColumns[column_id]
+      t1 = time.time()
+      mols = column_to_molecules(input_column)
+      t2 = time.time()
+      logging.info(f"Took {t2-t1:0.2} seconds to load input molecules")
+      functional_group = string_input_field(request, 'functional_group1')
+      fgroup = string_input_field(request, 'functional_group2')
+      if fgroup:
+          functional_group2 = fgroup
+      else:
+          functional_group2 = None
+      fgroup = string_input_field(request, 'functional_group3')
+      if fgroup:
+          functional_group3 = fgroup
+      else:
+          functional_group3 = None
+  
+      products, used_bbs, notifications = run_reactions(mols, template,
+                                                        functional_group,
+                                                        functional_group2,
+                                                        functional_group3,
+                                                        max_products = maxProducts)
+
+      logging.info(f"Number of results {len(products)}")
+      for idx, bbs in enumerate(used_bbs):
+          logging.info(f"BB{idx+1} {len(bbs)}")
+          
+      columns = [molecules_to_column(products, f'Reaction Product',
+                                            DataType.BINARY)]
+      columns.extend(
+          [molecules_to_column(bbs, f'RGroup {i+1}', DataType.BINARY)
+           for i,bbs in enumerate(used_bbs)]
+      )
+      output_table = TableData(tableName='Template Reaction Products',
+                               columns=columns)
+      response = DataFunctionResponse(outputTables=[output_table], notifications=notifications)
+      return response
+
+allowedClients:
+  - Analyst
+  - WebPlayer
+demoUrl:
+limitBy: none
+minimumChartsVersion: 4.6.0.0
+ironPython: |
+  ####################################################
+  #  Copyright 2024 Glysade LLC, All Rights Reserved #
+  ####################################################
+
+  import sys,clr
+  from Spotfire.Dxp.Data import DataTable, DataManager
+  from Spotfire.Dxp.Application import PanelTypeIdentifiers
+  from Spotfire.Dxp.Application import Panel
+  import Spotfire.Dxp.Application.PanelCollection
+
+  from System import AppDomain
+  for asm in AppDomain.CurrentDomain.GetAssemblies():
+      if asm.GetName().Name == 'Charts':
+          clr.AddReference(asm.FullName)
+
+  from Charts import ChartsModel
+  model_type = ChartsModel
+
+  #tableId pass in args
+  dataTable = ResultTables[0]
+
+  if not dataTable:
+      raise Exception('target table not found')
+
+  page = Document.Pages.AddNew('Template Reaction Products')
+  panelsToHide = [PanelTypeIdentifiers.DataPanel, PanelTypeIdentifiers.DetailsOnDemandPanel]
+
+  for panel in page.Panels:
+      if panel.TypeId in panelsToHide:
+          if panel.Visible:
+              panel.Visible = False
+
+  filteringScheme = Document.FilteringSchemes[0]
+  page.FilterPanel.FilteringSchemeReference = filteringScheme
+
+  tableVis = page.Visuals.AddNew[model_type]()
+  tableVis.SetKeyValue('visualization','table-visualization')
+  tableVis.DataTable = dataTable
+  tableVis.ConfigureColumns()
+  tableVis.Marking = Document.Data.Markings.DefaultMarkingReference
+
+  tableVis.SetActiveVisual()
+  page.AutoConfigure()

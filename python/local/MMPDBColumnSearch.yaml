@@ -98,7 +98,7 @@ ironPython: |
 
     idService = Application.GetService(ColumnIdService)
 
-    page = Document.Pages.AddNew('MMP Search Results')
+    page = Document.Pages.AddNew('MMP Project Search Results')
 
     tableVis = page.Visuals.AddNew[ChartsModel]()
     tableVis.SetKeyValue('visualization','table-visualization')

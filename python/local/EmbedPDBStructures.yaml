@@ -1,0 +1,84 @@
+id: 7236d5d5-76b0-1842-662e-ce26cdd4655a
+name: Embed PDB Structures
+description: Retrieves PDB structures by URL and stores them in a DataTable as binary data
+category: Chemistry
+version: 1.0.0
+serviceName: Script
+serviceUri: glysade.python
+executorId: Glysade.CPythonDataFxn
+inputFields:
+- control:
+    id: urlColumn
+    label: Select URL column
+    type: columnselect
+    filters:
+    - dataType: string
+      contentType: []
+    validationRules:
+    - type: required
+      message: Must select URL column
+  request:
+    id: urlColumn
+    dataType: string
+    selectorType: column
+tags:
+- color: '#50AF28'
+  text: chemistry
+- color: '#e2f062'
+  text: tform
+updateBehavior: manual
+maximumOutputColumns: !!int 1
+maximumOutputTables: !!int 0
+chemistryFunction: !!bool false
+script: |2+
+
+  import sys
+  import traceback
+  import urllib.request
+  import gzip
+  import base64
+  from df.data_transfer import DataFunctionRequest, DataFunctionResponse, DataType, ColumnData, \
+      string_input_field
+
+
+  def execute(request: DataFunctionRequest) -> DataFunctionResponse:
+      column_id = string_input_field(request, 'urlColumn')
+      input_column = request.inputColumns[column_id]
+      pdbs = []
+
+      for url in input_column.values:
+          try:
+              if url.startswith('http://') or url.startswith('https://'):
+                  response = urllib.request.urlopen(url)
+                  if url.endswith('pdb.gz'):
+                      data = response.read()
+                  elif url.endswith('.pdb'):
+                      data = gzip.compress(response.read())
+              elif url.startswith('file://'):
+                  if url.endswith('.pdb.gz'):
+                      with urllib.request.urlopen(url, 'rb') as fh:
+                          data = fh.read()
+                  elif url.endswith('.pdb'):
+                      with urllib.request.urlopen(url, 'r') as fh:
+                          data = gzip.compress(fh.read())
+              if data:
+                  pdbs.append(base64.b64encode(data).decode('utf-8'))
+              else:
+                  pdbs.append(None)
+          except Exception:
+              print(traceback.format_exc())
+              pdbs.append(None)
+              sys.exit(1)
+
+      output_column = ColumnData(name=f'PDB Structures', dataType=DataType.BINARY, values=pdbs, properties={'contentType':'chemical/x-pdb'})
+      response = DataFunctionResponse(outputColumns=[output_column])
+      return response
+
+
+allowedClients:
+- Analyst
+- WebPlayer
+demoUrl: 
+limitBy: none
+minimumChartsVersion: 4.4.0.0
+confirmSubmit: 

@@ -1,0 +1,457 @@
+id: 5fa62128-76a0-69f6-c778-b214361634ab
+name: Antibody Dashboard
+description: Generates a dashboard for antibody analysis and prioritization.  Combines Antibody Structure Prediction, Antibody Numbering, Relative Accessible Surface Area, Antibody Developability, and Antibody Sequence Liabilities.
+category: Biopolymer
+version: 1.0.0
+serviceName: AntibodyDashboard
+serviceUri: glysade.python.mab
+executorId: Glysade.CPythonDataFxn
+inputFields:
+- control:
+    id: uiAbSeqCol
+    label: Antibody sequence column (Heavy and Light chains concatenated)
+    type: columnselect
+    multi: !!bool false
+    validationRules:
+    - type: required
+      message: A sequence column must be specified
+    filters:
+    - dataType: string
+      contentType:
+      - chemical/x-sequence
+    limitByControlId: uiLimitBy
+  request:
+    id: uiAbSeqCol
+    dataType: string
+    selectorType: column
+- control:
+    id: uiIDCol
+    label: ID column
+    type: columnselect
+    multi: !!bool false
+    validationRules:
+    - type: required
+      message: Specify a column with unique IDs
+    filters:
+    - dataType: string
+      contentType: []
+    limitByControlId: uiLimitBy
+  request:
+    id: uiIDCol
+    dataType: string
+    selectorType: column
+- control:
+    id: uiLimitBy
+    label: Apply data function to
+    type: limitby
+  request:
+  - id: uiLimitBy
+    dataType: string
+    field: limitBy
+    data: none
+  - id: uiLimitByMarking
+    dataType: string
+    field: marking
+tags:
+- color: '#dddddd'
+  text: MAB
+- color: '#ba660b'
+  text: analyze
+- color: '#AFC9E1'
+  text: annotation
+- color: '#337abc'
+  text: sequence
+- color: '#D22A2A'
+  text: structure
+- color: '#e2f062'
+  text: tform
+ironPython: |-
+  #####################################################
+  #  Copyright 2024 Glysade LLC, All Rights Reserved  #
+  #####################################################
+
+  ########################################
+  # imports from ConfigureCharts4
+  ########################################
+
+  import sys,clr
+  import json
+  import __builtin__
+  from System import AppDomain, Exception
+  from Spotfire.Dxp.Data import *
+
+  loadAssemblies = ['Charts', 'Common', 'Publisher', 'ChemistryService']
+  for asm in AppDomain.CurrentDomain.GetAssemblies():
+      if asm.GetName().Name in loadAssemblies:
+          clr.AddReference(asm.FullName)
+      elif asm.GetName().Name == 'Newtonsoft.Json' and asm.GetName().Version.Major == 13:
+          clr.AddReference(asm.FullName)
+
+  from Newtonsoft.Json import JsonConvert
+  from Newtonsoft.Json.Linq import JObject
+  from Publisher import PublisherValueRendererSettings
+  from ChemistryService import ChemistryService, ChemistryServiceFxn
+  ########################################
+
+  ########################################
+  # function definitions from ConfigureCharts4
+  ########################################
+  
+  def RemoveIDFromGroupConfig(groupConfig, id):
+    if id in groupConfig['fixedGroup']['columnIds']:
+    	groupConfig['fixedGroup'][columnIds].remove(id)
+    if id in groupConfig['removedGroup']['columnIds']:
+    	groupConfig['removedGroup'][columnIds].remove(id)
+    for unfixed in groupConfig['unfixedGroups']:
+    	if id in unfixed['columnIds']:
+    		unfixed['columnIds'].remove(id)
+
+  def AddColumnsToGroup(visual, groupName, columnNames=[]):
+    if type(columnNames) != type([]):
+    	raise Exception('Column names must be passed to AddColumnsToGroup as a list')
+    if not visual.ContainsKey(visual.DataTable.Id.ToString()+'.table-visualization.table.columnGroupConfig'):
+    	raise Exception('Table grouping not initialized')
+    groupConfig = json.loads(visual.GetKeyValue(visual.DataTable.Id.ToString()+'.table-visualization.table.columnGroupConfig'))
+
+    group = None
+    if groupName == 'fixed' or groupName == 'fixedGroup':
+    	group = groupConfig['fixedGroup']
+    elif groupName == 'removed' or groupName == 'removedGroup':
+    	group = groupConfig['removedGroup']
+    else:
+    	groups = filter(lambda x: x['name']==groupName, groupConfig['unfixedGroups'])
+    	if groups:
+    		group = groups[0]
+
+    if group:
+    	dataTable = visual.DataTable
+    	columnIds = []
+    	idSvc = visual.GetService[ColumnIdService]()
+    	for name in columnNames:
+    		if dataTable.Columns.Contains(name):
+    			id = idSvc.GetID(dataTable.Columns[name])
+    			if id not in group['columnIds']:
+    				RemoveIDFromGroupConfig(groupConfig, id)
+    				group['columnIds'].append(id)
+    	visual.SetKeyValue(visual.DataTable.Id.ToString()+'.table-visualization.table.columnGroupConfig', json.dumps(groupConfig))
+    else:
+    	raise Exception('Requested group not found')
+
+  def InsertTableGroup(visual, newGroupName, columnNames=[], hexColor=""):
+  	if not visual.ContainsKey(visual.DataTable.Id.ToString()+'.table-visualization.table.columnGroupConfig'):
+  		raise Exception('Table grouping not initialized')
+  	groupConfig = json.loads(visual.GetKeyValue(visual.DataTable.Id.ToString()+'.table-visualization.table.columnGroupConfig'))
+  
+  	newGroup = filter(lambda x: x['name']==newGroupName, groupConfig['unfixedGroups'])
+  	dataTable = visual.DataTable
+  	columnIds = []
+  	idSvc = visual.GetService[ColumnIdService]()
+  	for name in columnNames:
+  		if dataTable.Columns.Contains(name):
+  			id = idSvc.GetID(dataTable.Columns[name])
+  			columnIds.append(id)
+  			RemoveIDFromGroupConfig(groupConfig, id)
+  
+  	if not newGroup:
+  		groupConfig['unfixedGroups'].insert(0,{"name":newGroupName,"type":"user","color":hexColor,"columnIds":columnIds,"canRemove":True,"canEdit":True,"canReorder":True})
+  
+  	visual.SetKeyValue(visual.DataTable.Id.ToString()+'.table-visualization.table.columnGroupConfig',json.dumps(groupConfig))
+
+  def SetColoring(visual, coloring):
+    jobj = JsonConvert.DeserializeObject(coloring)
+    visual.Coloring.FromJson(jobj)
+
+  def AddMPOColumn(visual, columnName, logScale=None, inverted=None, autoMinMaxFilters=False, minVal=None, maxVal=None, color=""):
+    key = visual.DataTable.Id.ToString()+'.mpo-visualization.mpo.axes'
+    if visual.ContainsKey(key):
+        axesJson = json.loads(visual.GetKeyValue(key))
+    else:
+        axesJson = []
+    idService = Application.GetService[ColumnIdService]()
+    if visual.DataTable.Columns.Contains(columnName):
+        column = visual.DataTable.Columns[columnName]
+        columnId = idService.GetID(column)
+        if columnId:
+            axisJson = {'columnId':columnId}
+            axisJson['logScale'] = True if logScale else False
+            axisJson['inverted'] = True if inverted else False
+            axisJson['autoMinMaxFilters'] = True if autoMinMaxFilters else False
+            if (minVal is not None) and (maxVal is not None):
+                axisJson['userDefinedMin'] = True
+                axisJson['min'] = minVal
+                axisJson['userDefinedMax'] = True
+                axisJson['max'] = maxVal
+            else:
+                axisJson['userDefinedMin'] = False 
+                axisJson['userDefinedMax'] = False
+            axisJson['color'] = color
+
+            axesJson.append(axisJson)
+            visual.SetKeyValue(key, json.dumps(axesJson))
+
+  def AddMPOColorArea(visual, color="", name="", ranges={}):
+    """
+    Add Color Areas to an MPO visualization
+
+    :param visual: The visual object, e.g., the object obtained from page.Visuals.AddNew[model_type]()
+    :param color: A six digit hex color, e.g. #FFFFFF
+    :param name: The name of the area
+    :param ranges: A dictionary with keys being the column names used for the X-axis of the MPO visual,
+                   and values a named tuple with a min and max value used for the extents of the color area
+    :return: No return value
+    """
+
+    key = visual.DataTable.Id.ToString() + '.mpo-visualization.mpo.colorAreas'
+
+    if visual.ContainsKey(key):
+        areasJson = json.loads(visual.GetKeyValue(key))
+    else:
+        areasJson = []
+    idService = Application.GetService[ColumnIdService]()
+
+    areaJson = {'color': color}
+    areaJson['name'] = name
+    areaJson['ranges'] = {}
+    for columnName, (min_val, max_val) in ranges.items():
+        if visual.DataTable.Columns.Contains(columnName):
+            column = visual.DataTable.Columns[columnName]
+            columnId = idService.GetID(column)
+            if columnId:
+              areaJson['ranges'][columnId] = {'min': min_val, 'max': max_val}
+
+    if len(areaJson['ranges']) != 0:
+        areasJson.append(areaJson)
+        visual.SetKeyValue(key, json.dumps(areasJson))
+
+  def InitializeTableGroup(visual):
+    groupConfigStr = '{"fixedGroup":{"name":"Fixed","type":"fixed","color":"","columnIds":[],"canRemove":false,"canEdit":false,"canReorder":false},"unfixedGroups":[{"name":"Uncategorized","type":"uncategorized","color":"","columnIds":[],"canRemove":false,"canEdit":true,"canReorder":true}],"removedGroup":{"name":"Removed","type":"removed","color":"","columnIds":[],"canRemove":false,"canEdit":false,"canReorder":false}}'
+    groupConfig = json.loads(groupConfigStr)
+    idSvc = visual.GetService[ColumnIdService]()
+    uncategorized = filter(lambda x: x['name']=='Uncategorized', groupConfig['unfixedGroups'])[0]
+    uncategorized['columnIds'] = [idSvc.GetID(column) for column in visual.DataTable.Columns]
+    visual.SetKeyValue(visual.DataTable.Id.ToString()+'.table-visualization.table.columnGroupConfig',json.dumps(groupConfig))
+    visual.SetKeyValue(visual.DataTable.Id.ToString()+'.table-visualization.table.columnDisplayMode','grouped')
+
+  ########################################
+  # standard Data Function IronPython imports
+  ########################################
+
+  import sys, clr
+  from Spotfire.Dxp.Application import Panel, PanelTypeIdentifiers
+  from Spotfire.Dxp.Application.Layout import LayoutDefinition
+  import Spotfire.Dxp.Application.PanelCollection
+  from System import AppDomain
+
+  loadAssemblies = ['Charts', 'ChemistryService', 'Common']
+  for asm in AppDomain.CurrentDomain.GetAssemblies():
+    if asm.GetName().Name in loadAssemblies:
+  	  clr.AddReference(asm.FullName)
+
+  from Common import ColumnIdService
+  from ChemistryService import DataFxnInput, DataFxnRequest, DataFxnInputField
+  from Charts import ChartsModel
+  model_type = ChartsModel
+
+  ########################################
+  # Add new page and setup
+  ########################################
+
+  page = Document.Pages.AddNew('Antibody Dashboard')
+  panelsToHide = [PanelTypeIdentifiers.DataPanel, PanelTypeIdentifiers.DetailsOnDemandPanel]
+
+  for panel in page.Panels:
+    if panel.TypeId in panelsToHide:
+  	  if panel.Visible:
+  		  panel.Visible = False
+
+  filteringScheme = Document.FilteringSchemes[0]
+  page.FilterPanel.FilteringSchemeReference = filteringScheme
+
+  ########################################
+  # Antibody Development Data Table settings
+  ########################################
+
+  dataTable = ResultTables[0]
+  tableId = dataTable.Id.ToString()
+  idSvc = Application.GetService[ColumnIdService]()
+
+  if not dataTable:
+    raise Exception('target table not found')
+
+  tableVis = page.Visuals.AddNew[model_type]()
+  tableVis.SetKeyValue('visualization','table-visualization')
+  tableVis.DataTable = dataTable
+
+  coloringJSON = '{ "coloring": [ { "dataTable": "0b6c6081-c4d7-4c28-9df5-9b53b1976ad7", "displayName": "AsnDeamid", "columnNames": [ "Asparagine Deamidation" ], "dataType": "Boolean", "rules": [ { "type": "BooleanExpression", "color": "#D55E4B", "ruleType": "BooleanExpression", "expression": "[Asparagine Deamidation]=True" }, { "type": "Fixed", "color": "#FFFFFF", "ruleType": "All" }, { "type": "Fixed", "color": "#FFFFFF", "ruleType": "Empty" } ] }, { "dataTable": "0b6c6081-c4d7-4c28-9df5-9b53b1976ad7", "displayName": "AspFrag", "columnNames": [ "Aspartic Acid Fragmentation" ], "dataType": "Boolean", "rules": [ { "type": "BooleanExpression", "color": "#D55E4B", "ruleType": "BooleanExpression", "expression": "[Aspartic Acid Fragmentation]=True" }, { "type": "Fixed", "color": "#FFFFFF", "ruleType": "All" }, { "type": "Fixed", "color": "#FFFFFF", "ruleType": "Empty" } ] }, { "dataTable": "0b6c6081-c4d7-4c28-9df5-9b53b1976ad7", "displayName": "AspIso", "columnNames": [ "Aspartic Acid Isomerization" ], "dataType": "Boolean", "rules": [ { "type": "BooleanExpression", "color": "#D55E4B", "ruleType": "BooleanExpression", "expression": "[Aspartic Acid Isomerization]=True" }, { "type": "Fixed", "color": "#FFFFFF", "ruleType": "All" }, { "type": "Fixed", "color": "#FFFFFF", "ruleType": "Empty" } ] }, { "dataTable": "0b6c6081-c4d7-4c28-9df5-9b53b1976ad7", "displayName": "Cys", "columnNames": [ "Cysteine" ], "dataType": "Boolean", "rules": [ { "type": "BooleanExpression", "color": "#D55E4B", "ruleType": "BooleanExpression", "expression": "[Cysteine]=True" }, { "type": "Fixed", "color": "#FFFFFF", "ruleType": "All" }, { "type": "Fixed", "color": "#FFFFFF", "ruleType": "Empty" } ] }, { "dataTable": "0b6c6081-c4d7-4c28-9df5-9b53b1976ad7", "displayName": "LysNGly", "columnNames": [ "Lysine N-glycation" ], "dataType": "Boolean", "rules": [ { "type": "BooleanExpression", "color": "#D55E4B", "ruleType": "BooleanExpression", "expression": "[Lysine N-glycation]=True" }, { "type": "Fixed", "color": "#FFFFFF", "ruleType": "All" }, { "type": "Fixed", "color": "#FFFFFF", "ruleType": "Empty" } ] }, { "dataTable": "0b6c6081-c4d7-4c28-9df5-9b53b1976ad7", "displayName": "NGlyco", "columnNames": [ "N-glycosylation" ], "dataType": "Boolean", "rules": [ { "type": "BooleanExpression", "color": "#D55E4B", "ruleType": "BooleanExpression", "expression": "[N-glycosylation]=True" }, { "type": "Fixed", "color": "#FFFFFF", "ruleType": "All" }, { "type": "Fixed", "color": "#FFFFFF", "ruleType": "Empty" } ] }, { "dataTable": "0b6c6081-c4d7-4c28-9df5-9b53b1976ad7", "displayName": "NTermGlu", "columnNames": [ "N-terminal Glutamic Acid" ], "dataType": "Boolean", "rules": [ { "type": "BooleanExpression", "color": "#D55E4B", "ruleType": "BooleanExpression", "expression": "[N-terminal Glutamic Acid]=True" }, { "type": "Fixed", "color": "#FFFFFF", "ruleType": "All" }, { "type": "Fixed", "color": "#FFFFFF", "ruleType": "Empty" } ] }, { "dataTable": "0b6c6081-c4d7-4c28-9df5-9b53b1976ad7", "displayName": "Oxid", "columnNames": [ "Oxidation" ], "dataType": "Boolean", "rules": [ { "type": "BooleanExpression", "color": "#D55E4B", "ruleType": "BooleanExpression", "expression": "[N-terminal Glutamic Acid]=True" }, { "type": "Fixed", "color": "#FFFFFF", "ruleType": "All" }, { "type": "Fixed", "color": "#FFFFFF", "ruleType": "Empty" } ] }, { "dataTable": "0b6c6081-c4d7-4c28-9df5-9b53b1976ad7", "displayName": "DevMetRedAlert", "columnNames": [ "Developability Red Alert Count" ], "dataType": "Integer", "rules": [ { "type": "Range", "ruleType": "Gradient", "scalePerColumn": true, "breakpoints": [ { "value": 0, "color": "#D55E4B", "columnValueType": "Max" }, { "value": 0, "color": "#FFFFFF", "columnValueType": "Value" } ] }, { "type": "Fixed", "color": "#FFFFFF", "ruleType": "Empty" } ] }, { "dataTable": "0b6c6081-c4d7-4c28-9df5-9b53b1976ad7", "displayName": "DevMetYellowAlert", "columnNames": [ "Developability Yellow Alert Count" ], "dataType": "Integer", "rules": [ { "type": "Range", "ruleType": "Gradient", "scalePerColumn": true, "breakpoints": [ { "value": 0, "color": "#F5CC0A", "columnValueType": "Max" }, { "value": 0, "color": "#FFFFFF", "columnValueType": "Value" } ] }, { "type": "Fixed", "color": "#FFFFFF", "ruleType": "Empty" } ] }, { "dataTable": "0b6c6081-c4d7-4c28-9df5-9b53b1976ad7", "displayName": "Total CDR Length", "columnNames": [ "Total CDR Length" ], "dataType": "Integer", "rules": [ { "type": "Numeric", "color": "#337538", "ruleType": "LessOrEqual", "compareValue": 54, "columnValueType": "Value" }, { "type": "Between", "color": "#F5CC0A", "ruleType": "Between", "compareValue": 54, "columnValueType": "Value", "compareValue1": 60, "columnValueType1": "Value" }, { "type": "Numeric", "color": "#D55E4B", "ruleType": "Greater", "compareValue": 60, "columnValueType": "Value" }, { "type": "Range", "ruleType": "Segments", "scalePerColumn": true, "breakpoints": [ { "value": 0, "color": "#2E6072", "columnValueType": "Max" }, { "value": 0, "color": "#FFFFFF", "columnValueType": "Min" } ] }, { "type": "Fixed", "color": "#FFFFFF", "ruleType": "Empty" } ] }, { "dataTable": "0b6c6081-c4d7-4c28-9df5-9b53b1976ad7", "displayName": "PSH", "columnNames": [ "Patches of Surface Hydrophobicity Metric (PSH)" ], "dataType": "Real", "rules": [ { "type": "Between", "color": "#337538", "ruleType": "Between", "compareValue": 112.691, "columnValueType": "Value", "compareValue1": 139.3260040283203, "columnValueType1": "Value" }, { "type": "Between", "color": "#F5CC0A", "ruleType": "Between", "compareValue": 139.326, "columnValueType": "Value", "compareValue1": 147.79800415039062, "columnValueType1": "Value" }, { "type": "Between", "color": "#F5CC0A", "ruleType": "Between", "compareValue": 104.593, "columnValueType": "Value", "compareValue1": 112.69100189208984, "columnValueType1": "Value" }, { "type": "Numeric", "color": "#D55E4B", "ruleType": "Less", "compareValue": 104.593, "columnValueType": "Value" }, { "type": "Numeric", "color": "#D55E4B", "ruleType": "Greater", "compareValue": 147.798, "columnValueType": "Value" }, { "type": "Range", "ruleType": "Segments", "scalePerColumn": true, "breakpoints": [ { "value": 0, "color": "#2E6072", "columnValueType": "Max" }, { "value": 0, "color": "#E0EAF3", "columnValueType": "Min" } ] }, { "type": "Fixed", "color": "#FFFFFF", "ruleType": "Empty" } ] }, { "dataTable": "0b6c6081-c4d7-4c28-9df5-9b53b1976ad7", "displayName": "PPC", "columnNames": [ "Patches of Positive Charge Metric (PPC)" ], "dataType": "Real", "rules": [ { "type": "Numeric", "color": "#337538", "ruleType": "LessOrEqual", "compareValue": 1.17, "columnValueType": "Value" }, { "type": "Numeric", "color": "#D55E4B", "ruleType": "GreaterOrEqual", "compareValue": 2.927, "columnValueType": "Value" }, { "type": "Between", "color": "#F5CC0A", "ruleType": "Between", "compareValue": 1.17, "columnValueType": "Value", "compareValue1": 2.927000045776367, "columnValueType1": "Value" }, { "type": "Range", "ruleType": "Segments", "scalePerColumn": true, "breakpoints": [ { "value": 0, "color": "#2E6072", "columnValueType": "Max" }, { "value": 0, "color": "#E0EAF3", "columnValueType": "Min" } ] }, { "type": "Fixed", "color": "#FFFFFF", "ruleType": "Empty" } ] }, { "dataTable": "0b6c6081-c4d7-4c28-9df5-9b53b1976ad7", "displayName": "PNC", "columnNames": [ "Patches of Negative Charge Metric (PNC)" ], "dataType": "Real", "rules": [ { "type": "Numeric", "color": "#D55E4B", "ruleType": "Greater", "compareValue": 2.95, "columnValueType": "Value" }, { "type": "Between", "color": "#F5CC0A", "ruleType": "Between", "compareValue": 1.556, "columnValueType": "Value", "compareValue1": 2.950000047683716, "columnValueType1": "Value" }, { "type": "Numeric", "color": "#337538", "ruleType": "Less", "compareValue": 1.556, "columnValueType": "Value" }, { "type": "Range", "ruleType": "Segments", "scalePerColumn": true, "breakpoints": [ { "value": 0, "color": "#2E6072", "columnValueType": "Max" }, { "value": 0, "color": "#E0EAF3", "columnValueType": "Min" } ] }, { "type": "Fixed", "color": "#FFFFFF", "ruleType": "Empty" } ] }, { "dataTable": "0b6c6081-c4d7-4c28-9df5-9b53b1976ad7", "displayName": "SFvCSP", "columnNames": [ "Structural Charge Symmetry Parameter (SFvCSP)" ], "dataType": "Real", "rules": [ { "type": "Numeric", "color": "#337538", "ruleType": "Greater", "compareValue": -4.55, "columnValueType": "Value" }, { "type": "Between", "color": "#F5CC0A", "ruleType": "Between", "compareValue": -15.83, "columnValueType": "Value", "compareValue1": -4.550000190734863, "columnValueType1": "Value" }, { "type": "Numeric", "color": "#D55E4B", "ruleType": "Less", "compareValue": -15.83, "columnValueType": "Value" }, { "type": "Range", "ruleType": "Segments", "scalePerColumn": true, "breakpoints": [ { "value": 0, "color": "#2E6072", "columnValueType": "Max" }, { "value": 0, "color": "#E0EAF3", "columnValueType": "Min" } ] }, { "type": "Fixed", "color": "#FFFFFF", "ruleType": "Empty" } ] } ] }'
+  SetColoring(tableVis, coloringJSON)
+
+  ########################################
+  # Column Grouping using ConfigureCharts4
+  ########################################
+
+  InitializeTableGroup(tableVis)
+  AddColumnsToGroup(tableVis, 'fixedGroup', ['ID', 'Annotated Antibody Sequence'])
+  InsertTableGroup(tableVis, 'Developability Metrics',
+    ['Developability Yellow Alert Count', 'Developability Red Alert Count',
+     'Structural Charge Symmetry Parameter (SFvCSP)', 'Patches of Negative Charge Metric (PNC)',
+     'Patches of Positive Charge Metric (PPC)', 'Patches of Surface Hydrophobicity Metric (PSH)',
+     'Total CDR Length', 'CDR-L1 Length', 'CDR-L2 Length', 'CDR-L3 Length', 
+     'CDR-H1 Length', 'CDR-H2 Length', 'CDR-H3 Length'],
+    hexColor = '#AFC9E1')
+  InsertTableGroup(tableVis, 'Sequence Liabilities', 
+    ['Asparagine Deamidation', 'Aspartic Acid Isomerization', 'Aspartic Acid Fragmentation',
+     'Cysteine', 'Lysine N-glycation', 'N-glycosylation', 'N-terminal Glutamic Acid', 'Oxidation'],
+    hexColor = '#3A6C9A')
+
+  tableVis.Title = 'Antibody Developability Data'
+  tableVis.ConfigureColumns()
+  tableVis.Marking = Document.Data.Markings.DefaultMarkingReference
+
+  annotatedColumn = None
+  for column in dataTable.Columns:
+    if column.Properties.ContentType != 'chemical/x-genbank' and column.Name.Contains('Annotated Antibody Sequence'):
+  	  annotatedColumn = column
+  	  break
+
+  ########################################
+  # Predicted Antibody Structures Biomolecule Viewer settings
+  ########################################
+
+  biomolVis = page.Visuals.AddNew[model_type]()
+  structureColumn = dataTable.Columns['Compressed PDB Structures']
+
+  if annotatedColumn:
+    biomolVis.SetKeyValue(tableId+'.biomolviewer-visualization.bioMolViewer.sequenceColumnId', idSvc.GetID(annotatedColumn))
+  if structureColumn:
+    biomolVis.SetKeyValue(tableId+'.biomolviewer-visualization.bioMolViewer.defaultDisplayObjects', '[["'+idSvc.GetID(structureColumn)+'",{"contacts":{"contextColumnId":"none","labelsVisible":true,"visible":false},"structure":{"color":{"color":"#808080","scheme":"element","reverse":false,"scale":"OrRd"},"contextDistance":10,"contextColumnId":"none","contextFilterSele":"","displayUnmappedChains":true,"hydrogenStyle":"none","style":"line","visible":true,"water":true},"surface":{"color":{"color":"#808080","scheme":"uniform","reverse":false,"scale":"OrRd"},"contextColumnId":"none","contextDistance":5,"filterSele":"","opacity":0.7,"type":"av","visible":false,"wireframe":false},"protein":{"tube":{"color":{"color":"#808080","scheme":"bfactor","reverse":false,"scale":"OrRd"},"visible":false},"cartoon":{"color":{"color":"#808080","scheme":"bfactor","reverse":false,"scale":"OrRd"},"visible":true}},"visible":true}]]')
+  biomolVis.SetKeyValue('visualization','biomolviewer-visualization')
+  biomolVis.DataTable = dataTable
+  biomolVis.Title = 'Predicted Antibody Structures'
+  biomolVis.ConfigureColumns()
+  biomolVis.Marking = Document.Data.Markings.DefaultMarkingReference
+
+  ########################################
+  # Antibody Developability Metrics MPO settings
+  ########################################
+
+  mpoVis = page.Visuals.AddNew[model_type]()
+
+  cdr_column = None
+  psh_column = None
+  ppc_column = None
+  pnc_column = None
+  sfvcsp_column = None
+
+  for column in dataTable.Columns:
+    if column.Properties.ContentType != 'chemical/x-genbank':
+      if column.Name.Contains('Total CDR Length'):
+  	  cdr_column = column
+      if column.Name.Contains('PSH'):
+  	  psh_column = column
+      if column.Name.Contains('PPC'):
+  	  ppc_column = column
+      if column.Name.Contains('PNC'):
+  	  pnc_column = column
+      if column.Name.Contains('SFvCSP'):
+  	  sfvcsp_column = column
+
+  cdr_values = [v.ValidValue for v in cdr_column.RowValues.GetEnumerator()]
+  psh_values = [v.ValidValue for v in psh_column.RowValues.GetEnumerator()]
+  ppc_values = [v.ValidValue for v in ppc_column.RowValues.GetEnumerator()]
+  pnc_values = [v.ValidValue for v in pnc_column.RowValues.GetEnumerator()]
+  sfvcsp_values = [v.ValidValue for v in sfvcsp_column.RowValues.GetEnumerator()]
+
+  cdr_range = (min(cdr_values), max(cdr_values))
+  psh_range = (min(psh_values), max(psh_values))
+  ppc_range = (min(ppc_values), max(ppc_values))
+  pnc_range = (min(pnc_values), max(pnc_values))
+  sfvcsp_range = (min(sfvcsp_values), max(sfvcsp_values))
+
+  mpoVis.SetKeyValue('visualization', 'mpo-visualization')
+  mpoVis.DataTable = dataTable
+
+  AddMPOColumn(mpoVis, 'Structural Charge Symmetry Parameter (SFvCSP)', inverted=True, minVal=min(-20, sfvcsp_range[0]), maxVal=max(30, sfvcsp_range[1]), color="#2E2585")
+  AddMPOColumn(mpoVis, 'Patches of Negative Charge Metric (PNC)', minVal=min(0, pnc_range[0]), maxVal=max(3.25, pnc_range[1]), color="#2E2585")
+  AddMPOColumn(mpoVis, 'Patches of Positive Charge Metric (PPC)', minVal=(0, ppc_range[0]), maxVal=max(3.25, ppc_range[1]), color="#2E2585")
+  AddMPOColumn(mpoVis, 'Patches of Surface Hydrophobicity Metric (PSH)', minVal=min(100, psh_range[0]), maxVal=max(150, psh_range[1]), color="#2E2585")
+  AddMPOColumn(mpoVis, 'Total CDR Length', minVal=min(50, cdr_range[0]), maxVal=max(65, cdr_range[1]), color="#2E2585")
+
+  AddMPOColorArea(visual=mpoVis, color='#D55E48', name='Too low', 
+                  ranges={'Total CDR Length': (None, 0.000001),
+                          'Patches of Surface Hydrophobicity Metric (PSH)': (None, 104.593),
+                          'Patches of Negative Charge Metric (PNC)': (None, 0.000001),
+                          'Patches of Positive Charge Metric (PPC)': (None, 0.000001),
+                          'Structural Charge Symmetry Parameter (SFvCSP)': (27.000001, None)})
+  AddMPOColorArea(visual=mpoVis, color='#CCAA09', name='Marginal', 
+                  ranges={'Total CDR Length': (54, 61),
+                          'Patches of Surface Hydrophobicity Metric (PSH)': (139.326, 147.798),
+                          'Patches of Negative Charge Metric (PNC)': (1.556, 2.95),
+                          'Patches of Positive Charge Metric (PPC)': (1.17, 2.927),
+                          'Structural Charge Symmetry Parameter (SFvCSP)': (-15.83, -4.55)})
+  AddMPOColorArea(visual=mpoVis, color='#D55E48', name='Too high', 
+                  ranges={'Total CDR Length': (61, None),
+                          'Patches of Surface Hydrophobicity Metric (PSH)': (147.798, None),
+                          'Patches of Negative Charge Metric (PNC)': (2.95, None),
+                          'Patches of Positive Charge Metric (PPC)': (2.927, None),
+                          'Structural Charge Symmetry Parameter (SFvCSP)': (None, -14.83)})
+  AddMPOColorArea(visual=mpoVis, color='#CCAA09', name='Marginal', 
+                  ranges={'Total CDR Length': (None, 0.000001),
+                          'Patches of Surface Hydrophobicity Metric (PSH)': (104.593, 112.691),
+                          'Patches of Negative Charge Metric (PNC)': (None, 0.000001),
+                          'Patches of Positive Charge Metric (PPC)': (None, 0.000001),
+                          'Structural Charge Symmetry Parameter (SFvCSP)': (10000, None)})
+  AddMPOColorArea(visual=mpoVis, color='#337538', name='Optimal', 
+                  ranges={'Total CDR Length': (None, 54),
+                          'Patches of Surface Hydrophobicity Metric (PSH)': (None, None),
+                          'Patches of Negative Charge Metric (PNC)': (None, 1.556),
+                          'Patches of Positive Charge Metric (PPC)': (None, 2.927),
+                          'Structural Charge Symmetry Parameter (SFvCSP)': (-4.55, None)})
+
+
+  mpoVis.Title = 'Antibody Developabiity Metrics'
+  mpoVis.ConfigureColumns()
+  mpoVis.Marking = Document.Data.Markings.DefaultMarkingReference
+
+  ########################################
+  # Layout settings
+  ########################################
+
+  layout = LayoutDefinition()
+  layout.BeginSideBySideSection()
+  layout.Add(biomolVis.Visual, 65.0)
+  layout.BeginStackedSection(35.0)
+  layout.Add(mpoVis.Visual, 50.0)
+  layout.Add(tableVis.Visual, 50.0)
+  layout.EndSection()
+  layout.EndSection()
+  page.ApplyLayout(layout)
+
+  tableVis.SetActiveVisual()
+updateBehavior: manual
+maximumOutputColumns: !!int 0
+maximumOutputTables: !!int 1
+chemistryFunction: !!bool false
+outputFields:
+- id: uiAbSeqCol
+  name: Antibody Sequence Column
+  source: inputField
+  type: default
+- id: uiIDCol
+  name: ID Column
+  source: inputField
+  type: default
+- id: uiLimitBy
+  name: Limit By
+  source: inputField
+  type: default
+- id: table1
+  name: Output Table
+  source: table
+  type: default
+allowedClients:
+- Analyst
+- WebPlayer
+demoUrl: 
+limitBy: none
+minimumChartsVersion: 4.5.0.0 
+confirmSubmit: 

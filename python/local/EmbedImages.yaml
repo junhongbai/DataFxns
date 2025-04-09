@@ -1,0 +1,79 @@
+id: dc23cbf8-0088-03bf-487f-fecf942e093f
+name: Embed Images
+description: Retrieves images URL and stores them in a DataTable as binary data
+category: General
+version: 1.0.0
+serviceName: Script
+serviceUri: glysade.python
+executorId: Glysade.CPythonDataFxn
+inputFields:
+- control:
+    id: urlColumn
+    label: Select URL column
+    type: columnselect
+    filters:
+    - dataType: string
+      contentType: []
+    validationRules:
+    - type: required
+      message: Must select URL column
+  request:
+    id: urlColumn
+    dataType: string
+    selectorType: column
+tags:
+- color: '#e2f062'
+  text: tform
+updateBehavior: manual
+maximumOutputColumns: !!int 1
+maximumOutputTables: !!int 0
+chemistryFunction: !!bool false
+script: |2+
+
+
+  import sys
+  import traceback
+  import urllib.request
+  import gzip
+  import base64
+  from df.data_transfer import DataFunctionRequest, DataFunctionResponse, DataType, ColumnData, \
+      string_input_field
+  import urllib.request as urlopen
+
+  def execute(request: DataFunctionRequest) -> DataFunctionResponse:
+      column_id = string_input_field(request, 'urlColumn')
+      input_column = request.inputColumns[column_id]
+      imgs = []
+
+      contentType = 'image'
+      for url in input_column.values:
+          try:
+              if url.startswith('http://') or url.startswith('https://'):
+                  req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+                  with urllib.request.urlopen(req) as response:
+                      data = response.read()
+                      data = gzip.compress(data)
+              elif url.startswith('file://'):
+                  with urllib.request.urlopen(url, 'rb') as fh:
+                      data = fh.read()
+                      data = gzip.compress(data)
+              if data:
+                  imgs.append(base64.b64encode(data).decode('utf-8'))
+              else:
+                  imgs.append(None)
+          except Exception:
+              imgs.append(None)
+              #raise Exception(traceback.format_exc())
+
+      output_column = ColumnData(name=f'Images', dataType=DataType.BINARY, values=imgs)
+      response = DataFunctionResponse(outputColumns=[output_column])
+      return response
+
+
+allowedClients:
+- Analyst
+- WebPlayer
+demoUrl: 
+limitBy: none
+minimumChartsVersion: 
+confirmSubmit: 

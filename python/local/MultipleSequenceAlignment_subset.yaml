@@ -128,7 +128,7 @@ chemistryFunction: !!bool false
 allowedClients:
 - Analyst
 - WebPlayer
-demoUrl:
+demoUrl: https://youtu.be/mMeIc81uujM?si=2-BeD-KFIKHFf_Aa
 limitBy: none
 minimumChartsVersion: 4.3.0.6
 confirmSubmit: 

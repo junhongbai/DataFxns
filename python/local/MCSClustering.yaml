@@ -1,0 +1,122 @@
+id: 1f0070b7-e8b1-7b9a-3132-2850508d41fb
+name: MCS Clustering
+description: Uses RDKit's RASCAL maximum common substructure (MCS) method to cluster molecules.
+category: Chemistry
+version: 1.0.0
+serviceName: Script
+serviceUri: glysade.python
+executorId: Glysade.CPythonDataFxn
+inputFields:
+- control:
+    id: structureColumn
+    label: Select structure column
+    type: columnselect
+    filters:
+    - dataType: string
+      contentType:
+      - chemical/x-mdl-molfile
+      - chemical/x-mdl-molfile-v3000
+      - chemical/x-smiles
+      - chemical/x-daylight-smiles
+    - dataType: binary
+      contentType:
+      - chemical/x-mdl-molfile
+      - chemical/x-mdl-molfile-v3000
+    validationRules:
+    - type: required
+      message: Must select column of 2D structures
+  request:
+    id: structureColumn
+    dataType: string
+    selectorType: column
+- control:
+    id: simThreshold
+    label: Similarity Cutoff
+    type: text
+    group:
+      name: Advanced
+      collapsible: !!bool true
+      collapsed: !!bool true
+    validationRules:
+    - type: numeric
+      message: ''
+    - type: range
+      message: ''
+      max: !!int 1
+    tooltip: Cutoff in similarity for 2 molecules to be in the same cluster.
+  request:
+    id: simThreshold
+    dataType: float
+    data: !!float 0.7
+tags:
+- color: '#50AF28'
+  text: chemistry
+- color: '#c6fc00'
+  text: calcprop
+updateBehavior: manual
+maximumOutputColumns: !!int 2
+maximumOutputTables: !!int 0
+chemistryFunction: !!bool false
+script: |
+  from rdkit import rdBase
+  # print(rdBase.rdkitVersion)
+  
+  from rdkit import Chem
+  from rdkit.Chem import rdRascalMCES
+  from df.chem_helper import column_to_molecules
+  from df.data_transfer import DataFunctionRequest, DataFunctionResponse, DataType, ColumnData, \
+      string_input_field, double_input_field
+  
+  
+  def extract_input_values(request: DataFunctionRequest) -> tuple[list[Chem.Mol], list[int], float]:
+      """
+      Fish the molecules out of the column.  Also returns the index of
+      each molecule in case of empty cells.
+      Args:
+          request (DataFunctionRequest: input data source
+  
+      Returns:
+          list of molecules in column, associated row index, similarity cutoff
+      """
+      column_id = string_input_field(request, 'structureColumn')
+      input_column = request.inputColumns[column_id]
+      mols = []
+      mol_inds = []
+      for i, mol in enumerate(column_to_molecules(input_column)):
+           if mol is not None:
+              mols.append(mol)
+              mol_inds.append(i)
+  
+      sim_cutoff = double_input_field(request, 'simThreshold')
+      return mols, mol_inds, sim_cutoff
+  
+  
+  def execute(request: DataFunctionRequest) -> DataFunctionResponse:
+      column_id = string_input_field(request, 'structureColumn')
+      input_column = request.inputColumns[column_id]
+      num_rows = len(input_column.values)
+      mols, mol_inds, sim_cutoff = extract_input_values(request)
+      output_data = [None] * num_rows
+  
+      clus_opts = rdRascalMCES.RascalClusterOptions()
+      clus_opts.similarityCutoff = sim_cutoff
+      clusters = rdRascalMCES.RascalButinaCluster(mols, clus_opts)
+      for i, cluster in enumerate(clusters, 1):
+          for clus_mem in cluster:
+              output_data[mol_inds[clus_mem]] = i
+  
+      output_column = ColumnData(name=f'{input_column.name} MCS Cluster Number',
+                                 dataType=DataType.INTEGER, values=output_data)
+      response = DataFunctionResponse(outputColumns=[output_column])
+      return response
+outputFields:
+- id: column1
+  source: column
+  type: filter
+allowedClients:
+- Analyst
+- WebPlayer
+demoUrl: 
+limitBy: none
+minimumChartsVersion: 
+confirmSubmit: 

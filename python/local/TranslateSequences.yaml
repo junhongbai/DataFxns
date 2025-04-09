@@ -3,7 +3,7 @@ name: Translate Sequences (bidirectional)
 serviceName: TranslateSequences
 executorId: Glysade.CPythonDataFxn
 serviceUri: glysade.python
-version: 1.0.0
+version: 1.1.0
 inputFields:
   - control:
       id: sequenceColumn
@@ -121,10 +121,30 @@ inputFields:
       id: codonTableName
       dataType: string
       data: Standard
+  - control:
+      id: initMethod
+      label: Initiation site detection method
+      type: select
+      multi: !!bool false
+      options:
+      - text: Use start of sequence
+        value: asis
+      - text: Find first ATG
+        value: ATG
+      - text: Find first initiation site from codon table
+        value: table
+      validationRules:
+      - type: required
+        message: ''
+    request:
+      id: initMethod
+      dataType: string
+      data: asis
 description: Translates DNA To protein, and protein to DNA
 category: Biopolymer
 maximumOutputColumns: !!int 1
 maximumOutputTables: !!int 0
+demoURL: https://www.youtube.com/watch?v=2MgcH7W_NgE
 tags:
 - color: '#337abc'
   text: sequence

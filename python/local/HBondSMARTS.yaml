@@ -315,7 +315,7 @@ ironPython: |
 
     page = Document.ActivePageReference
     for visual in page.Visuals:
-        if visual.TypeId.Name == 'Lead Discovery ChemCharts':
+        if visual.TypeId.Name == 'Lead Discovery ChemCharts' or visual.TypeId.Name == 'ChemCharts':
             ccvis = visual.As[ChartsModel]()
             if ccvis.GetKeyValue('visualization') == 'table-visualization' and ccvis.DataTable.Columns.Contains(ResultColumns[0].Name):
                 ccvis.SetColumnRenderer(ResultColumns[0],'RDKit')

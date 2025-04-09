@@ -194,6 +194,7 @@ ironPython: |
   page.AutoConfigure()
 maximumOutputColumns: !!int 0
 maximumOutputTables: !!int 1
+demoURL: https://www.youtube.com/watch?v=2MgcH7W_NgE
 tags:
 - color: '#337abc'
   text: sequence

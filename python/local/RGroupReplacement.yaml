@@ -11,7 +11,7 @@ inputFields:
     id: structureColumn
     label: Select structure column
     type: columnselect
-    tooltip: Select column of strutures that the R Group Decomposition was performed on.
+    tooltip: Select column of structures that the R Group Decomposition was performed on.
     filters:
     - dataType: string
       contentType:
@@ -132,51 +132,89 @@ allowedClients:
 demoUrl: 
 limitBy: none
 ironPython: |
-    ####################################################
-    #  Copyright 2022 Glysade LLC, All Rights Reserved #
-    ####################################################
+  ####################################################
+  #  Copyright 2024 Glysade LLC, All Rights Reserved #
+  ####################################################
 
-    import sys,clr
-    from Spotfire.Dxp.Data import DataTable, DataManager
-    from Spotfire.Dxp.Application import PanelTypeIdentifiers
-    from Spotfire.Dxp.Application import Panel
-    import Spotfire.Dxp.Application.PanelCollection
-    from Spotfire.Dxp.Application.Visuals import BarChart, TrellisMode, IndividualScalingMode
+  import sys, clr, json
+  from System import Guid, String
+  from Spotfire.Dxp.Data import DataTable, DataManager
+  from Spotfire.Dxp.Application import PanelTypeIdentifiers
+  from Spotfire.Dxp.Application import Panel
+  from Spotfire.Dxp.Application.Layout import LayoutDefinition
+  import Spotfire.Dxp.Application.PanelCollection
 
-    from System import AppDomain
-    for asm in AppDomain.CurrentDomain.GetAssemblies():
-        if asm.GetName().Name == 'Charts':
-            clr.AddReference(asm.FullName)
+  from System import AppDomain
+  for asm in AppDomain.CurrentDomain.GetAssemblies():
+      if asm.GetName().Name == 'Charts' or asm.GetName().Name == 'Common':
+          clr.AddReference(asm.FullName)
 
-    from Charts import ChartsModel
-    model_type = ChartsModel
+  from Common import ColumnIdService
+  from Charts import ChartsModel
 
-    #tableId pass in args
-    dataTable = ResultTables[0]
+  dataTable = ResultTables[0]
+  tableId = dataTable.Id.ToString()
 
-    if not dataTable:
+  if not dataTable:
       raise Exception('target table not found')
 
-    page = Document.Pages.AddNew(dataTable.Name)
-    filteringScheme = Document.FilteringSchemes[0]
-    filterPanel = page.FilterPanel
-    filterPanel.FilteringSchemeReference = filteringScheme
-    if not filterPanel.Visible:
-        filterPanel.Visible = True
-    page.DetailsOnDemandPanel.Visible = False
+  idService = Application.GetService(ColumnIdService)
 
-    for tblGrp in filterPanel.TableGroups:
-        if tblGrp.Name != dataTable.Name:
-            tblGrp.Visible = False
+  page = Document.Pages.AddNew('R-Group Replacement Results')
 
-    tableVis = page.Visuals.AddNew[model_type]()
-    tableVis.SetKeyValue('visualization','table-visualization')
-    key = dataTable.Id.ToString()+".table-visualization.table.transposed"
-    tableVis.SetKeyValue(key, 'false')
-    tableVis.DataTable = dataTable
-    tableVis.ConfigureColumns()
-    tableVis.Marking = Document.Data.Markings.DefaultMarkingReference
-        
-    tableVis.SetColumnRenderer(dataTable.Columns['Analog'], 'RDKit')
-    
-    tableVis.SetActiveVisual()
+  tableVis = page.Visuals.AddNew[ChartsModel]()
+  tableVis.SetKeyValue('visualization','table-visualization')
+  tableVis.DataTable = dataTable
+  tableVis.ConfigureColumns()
+  tableVis.Title = 'Directed MMP Results'
+  tableVis.Marking = Document.Data.Markings.DefaultMarkingReference
+  tableVis.SetKeyValue(tableId+".table-visualization.table.transposed","true")
+  if dataTable.Columns.Contains('Analog'):
+      tableVis.SetColumnRenderer(dataTable.Columns['Analog'], 'RDKit')
+  if dataTable.Columns.Contains('Core'):
+      tableVis.SetColumnRenderer(dataTable.Columns['Core'], 'RDKit')
+  if dataTable.Columns.Contains('Replaced'):
+      tableVis.SetColumnRenderer(dataTable.Columns['Replaced'], 'RDKit')
+  if dataTable.Columns.Contains('Replacement'):
+      tableVis.SetColumnRenderer(dataTable.Columns['Replacement'], 'RDKit')
+  removed = []
+  unfixed = []
+
+  tableVis.SetKeyValue(tableId+".table-visualization.table.removedColumnIds", json.dumps(removed))
+  tableVis.SetKeyValue(tableId+".table-visualization.table.unfixedColumnIds", json.dumps(unfixed))
+
+  #add SarMap Visual
+  sarMapVis = page.Visuals.AddNew[ChartsModel]()
+  sarMapVis.SetKeyValue('visualization','sar-map-visualization')
+  sarMapVis.DataTable = dataTable
+  sarMapVis.ConfigureColumns()
+  if dataTable.Columns.Contains('Replaced'):
+      replacedColumn = dataTable.Columns['Replaced']
+      sarMapVis.ValueGroup1Column = replacedColumn
+      sarMapVis.SetColumnRenderer(replacedColumn, 'RDKit')
+      
+  if dataTable.Columns.Contains('Replacement'):
+      replacementColumn = dataTable.Columns['Replacement']
+      sarMapVis.ValueGroup2Column = replacementColumn
+      sarMapVis.SetColumnRenderer(replacementColumn, 'RDKit')
+   
+  sarMapVis.Marking = Document.Data.Markings.DefaultMarkingReference
+  sarMapVis.Title = "RGroup Replacements"
+
+  tableVis.SetActiveVisual()
+  page.AutoConfigure()
+
+  page.FilterPanel.Visible = True
+  page.DetailsOnDemandPanel.Visible = False
+
+  filterPanel = page.FilterPanel
+  for group in filterPanel.TableGroups:
+      if group.Name != dataTable.Name:
+          group.Visible = False
+
+  layout = LayoutDefinition()
+  layout.BeginStackedSection()
+  layout.Add(sarMapVis.Visual,50.0)
+  layout.Add(tableVis.Visual, 50.0)
+  layout.EndSection()
+  page.ApplyLayout(layout)

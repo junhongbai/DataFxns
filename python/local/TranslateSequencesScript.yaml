@@ -196,6 +196,7 @@ allowedClients:
 demoUrl: 
 limitBy: none
 minimumChartsVersion: 
+demoURL: https://www.youtube.com/watch?v=2MgcH7W_NgE
 ironPython: ''
 # to generate all codon table names
 # from Bio.Data import CodonTable

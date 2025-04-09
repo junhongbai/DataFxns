@@ -1,6 +1,6 @@
 id: fa95f9fa-27b8-67cc-9b3d-583f7ee9c82f
 name: Extract Genbank Regions
-description: Extracts all regions matching a feature key and qualifier from a column of Genbank sequences into new columns.
+description: Extracts all regions matching a feature key and qualifier from a column of Genbank sequences into new columns or a new table.  See additional details below and in the Data Function     User's Guide.
 category: Biopolymer
 version: 1.1.0
 serviceName: ExtractGenbankRegions
@@ -32,8 +32,13 @@ inputFields:
     dataType: string
     selectorType: column
 - control:
+    id: uiIDDescription
+    label: A unique identifier per row is required when a new table is generated to enable comparisons between the original table and the new table.
+    type: description
+  request: []
+- control:
     id: featureKey
-    label: Feature key
+    label: Feature key (required)
     type: text
     tooltip: Regions with this feature key will be extracted into new columns
     validationRules:
@@ -53,6 +58,32 @@ inputFields:
     id: featureQualifier
     dataType: string
     data: region_name
+- control:
+    id: uiQualifierDescription
+    label: If a Feature Qualifier is not supplied, regions will be extracted based only on the Feature Key.  This will generate a new table which may have multiple rows of output for each row of input.  See the Data Function User's Guide for more details.
+    type: description
+  request: []
+- control:
+    id: uiOutputOption
+    label: Output column options
+    type: radiogroup
+    radios:
+    - text: Sequence columns
+      value: OutputSequence
+    - text: Genbank columns
+      value: OutputGenbank
+    - text: Both
+      value: OutputBoth
+    tooltip: Select what types of columns are created
+  request:
+    id: uiOutputOption
+    dataType: string
+    data: OutputSequence
+- control:
+    id: uiOutputDescription
+    label: Selecting Both will lead to twice as many columns as either Sequence or Genbank output options.  Depending on the content of the Genbank record, this could lead to a large number of new columns.
+    type: description
+  request: []
 - control:
     id: maximumNumberRegions
     label: Maximum number of regions
@@ -127,5 +158,5 @@ allowedClients:
 - WebPlayer
 demoUrl: 
 limitBy: none
-minimumChartsVersion: 
+minimumChartsVersion: 4.4.0.0
 confirmSubmit: 

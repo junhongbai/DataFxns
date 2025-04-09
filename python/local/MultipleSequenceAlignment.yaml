@@ -40,7 +40,7 @@ description: Performs multiple sequence alignment using a variety of algorithms
 category: Biopolymer
 maximumOutputColumns: !!int 3
 maximumOutputTables: !!int 0
-demoUrl: https://youtu.be/rKS5HO36bvc
+demoUrl: https://youtu.be/mMeIc81uujM?si=2-BeD-KFIKHFf_Aa
 tags:
   - color : '#337abc'
     text  : sequence

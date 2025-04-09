@@ -64,7 +64,7 @@ script: |
   
       scores = []
       for m in mols:
-          if m is None:
+          if m is None or not m.GetNumAtoms():
               scores.append(None)
           else:
               sm = standardize_mol(m, normer, uncharger, metal_disconnector,

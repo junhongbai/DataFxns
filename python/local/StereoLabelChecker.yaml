@@ -1,0 +1,195 @@
+id: 4dfdd76e-1bd5-4e39-a15a-dcd629c00b0a
+name: Stereo Label Checker
+description: Check Stereo Labels
+category: Chemistry
+version: 1.0.0
+serviceName: Script
+serviceUri: glysade.python
+executorId: Glysade.CPythonDataFxn
+inputFields:
+- control:
+    id: structureColumn
+    label: Select structure column
+    type: columnselect
+    filters:
+    - dataType: string
+      contentType:
+      - chemical/x-mdl-molfile
+      - chemical/x-mdl-molfile-v3000
+      - chemical/x-cdxml
+      - chemical/x-cdx
+    - dataType: binary
+      contentType:
+      - chemical/x-mdl-molfile
+      - chemical/x-mdl-molfile-v3000
+      - chemical/x-cdx
+      - chemical/x-chemdraw-cdx
+    validationRules:
+    - type: required
+      message: Must select structure column
+  request:
+    id: structureColumn
+    dataType: string
+    selectorType: column
+tags:
+- color: '#50AF28'
+  text: chemistry
+- color: '#e2f062'
+  text: tform
+updateBehavior: automatic
+maximumOutputColumns: !!int 4
+maximumOutputTables: !!int 0
+chemistryFunction: !!bool false
+script: |
+  from rdkit import Chem
+  from rdkit.Chem import EnumerateStereoisomers as ES
+  from rdkit.Chem import rdMolDescriptors as rmd
+  from df.chem_helper import column_to_molecules
+  from df.data_transfer import (ColumnData, DataFunctionRequest,
+       DataFunctionResponse, DataType, string_input_field)
+  RACEMIC = "RACEMIC"
+  OK = "ALL STEREO ATOMS LABELED"
+  BAD = "SOME STEREO ATOMS UNLABELED"
+
+  # annotate the flippers with exactly what they are doing
+  #  bond,atom, STEREO_OR etc.
+  class _BondFlipper(object):
+      def __init__(self, bond):
+        self.bond = bond
+        self.type = "bond"
+
+      def flip(self, flag):
+        if flag:
+          self.bond.SetStereo(Chem.BondStereo.STEREOCIS)
+        else:
+          self.bond.SetStereo(Chem.BondStereo.STEREOTRANS)
+
+
+  class _AtomFlipper(object):
+      def __init__(self, atom):
+        self.atom = atom
+        self.type = "atom"
+
+      def flip(self, flag):
+        if flag:
+          self.atom.SetChiralTag(Chem.ChiralType.CHI_TETRAHEDRAL_CW)
+        else:
+          self.atom.SetChiralTag(Chem.ChiralType.CHI_TETRAHEDRAL_CCW)
+
+
+  class _StereoGroupFlipper(object):
+      def __init__(self, group):
+        self._original_parities = [(a, a.GetChiralTag()) for a in group.GetAtoms()]
+        self.type = group.GetGroupType()
+
+      def flip(self, flag):
+        if flag:
+          for a, original_parity in self._original_parities:
+            a.SetChiralTag(original_parity)
+        else:
+          for a, original_parity in self._original_parities:
+            if original_parity == Chem.ChiralType.CHI_TETRAHEDRAL_CW:
+              a.SetChiralTag(Chem.ChiralType.CHI_TETRAHEDRAL_CCW)
+            elif original_parity == Chem.ChiralType.CHI_TETRAHEDRAL_CCW:
+              a.SetChiralTag(Chem.ChiralType.CHI_TETRAHEDRAL_CW)
+  # rebind the tagged flippers
+  ES._BondFlipper = _BondFlipper
+  ES._AtomFlipper = _AtomFlipper
+  ES._StereoGroupFlipper = _StereoGroupFlipper
+
+  from dataclasses import dataclass
+  @dataclass
+  class IsomerCount:
+      num_isomers_in_set: int
+      num_isomer_sets: int
+      num_isomers: int
+
+  def GetStereoisomerCount(m, options=ES.StereoEnumerationOptions()):
+    """Counts the number of isomers, but also indicates how many
+    sets of isomers we are describing.
+    A set is caused by an OR enhanced stereo chemistry.  This happens
+    when one isolates a racemic mixture but can't assign absolute stereo.
+
+    For instance, imagine a single racemic chiral center seperated
+    into two vials.  This would be reported as:
+      num_isomers_in_set == 1
+      num_isomer_sets == 2
+      num_isomers = 2
+    """
+    if m is None:
+       return 0
+    
+    tm = Chem.Mol(m)
+    flippers = ES._getFlippers(tm, options)
+    or_flippers = [sg for sg in flippers if sg.type == Chem.StereoGroupType.STEREO_OR]
+    other_flippers = [sg for sg in flippers if sg.type != Chem.StereoGroupType.STEREO_OR]
+
+    return IsomerCount(2**len(other_flippers), 2**len(or_flippers), 2**len(flippers))
+  
+  def check_stereo_labels(m):
+    if not m:
+       return ""
+    # check undefined stereo
+    #  forcing assignment check is unecessary in rdkit 2024
+    m2 = m # need to assign stereo for racemic checks so don't copy - Chem.Mol(m)
+
+    Chem.AssignStereochemistry(m2, True, True, True)
+    num_centers = rmd.CalcNumAtomStereoCenters(m2)
+    
+    chiral_tags = []
+    for atom in m.GetAtoms():
+        if atom.GetChiralTag() != Chem.CHI_UNSPECIFIED:
+            chiral_tags.append( atom.GetChiralTag())
+    
+    sgs = m.GetStereoGroups()
+    atoms = set()
+    for sg in sgs:
+        for atom in sg.GetAtoms():
+            atoms.add(atom.GetIdx())
+    errors = []
+    if num_centers != len(chiral_tags):
+        errors.append(RACEMIC)
+    elif len(atoms) == len(chiral_tags):
+        return OK
+    errors.append(BAD)
+    return "\n".join(sorted(errors))
+
+  def execute(request: DataFunctionRequest) -> DataFunctionResponse:
+      column_id = string_input_field(request, 'structureColumn')
+      input_column = request.inputColumns[column_id]
+      mols = column_to_molecules(input_column)
+      labels = [check_stereo_labels(m) for m in mols]
+      counts = [GetStereoisomerCount(m) for m in mols]
+      num_isomers_in_set = ColumnData(name="Num Isomers in Set",
+                                      dataType=DataType.INTEGER,
+                                      values=[c.num_isomers_in_set for c in counts])
+      num_isomer_sets = ColumnData(name="Num Sets",
+                                   dataType=DataType.INTEGER,
+                                   values=[c.num_isomer_sets for c in counts])
+      num_isomers = ColumnData(name="Num Isomers",
+                               dataType=DataType.INTEGER,
+                               values=[c.num_isomers for c in counts])
+      
+      output_column = ColumnData(name="Stereo Label Checker",
+                                 dataType=DataType.STRING,
+                                 values=labels)
+      response = DataFunctionResponse(outputColumns=[output_column,
+                                                     num_isomers_in_set,
+                                                     num_isomer_sets,
+                                                     num_isomers])
+      return response
+outputFields:
+- id: structureColumn
+  source: inputField
+  type: default
+  name: Structure column
+- id: column1
+  source: column
+  type: default
+  name: Output SMILES column
+allowedClients:
+- Analyst
+- WebPlayer
+demoUrl: 
+limitBy: none
+minimumChartsVersion: 4.6.0.0

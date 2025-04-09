@@ -1,0 +1,65 @@
+id: efd86604-c55a-173e-13b4-e775b9e6ff37
+name: Antibody Developability Metrics
+description: Compute developability metrics based on Raybould, et al., PNAS 116(10):2019.
+category: Biopolymer
+version: 1.0.0
+serviceName: AntibodyDevelopability
+serviceUri: glysade.python.mab
+executorId: Glysade.CPythonDataFxn
+inputFields:
+- control:
+    id: uiSequenceColumn
+    label: Antibody sequence column (with IMGT(Lefranc) numbering and RASA)
+    type: columnselect
+    multi: !!bool false
+    tooltip: Select an antibody sequence column with IMGT numbering and with RASA annotations.
+    validationRules:
+    - type: required
+      message: A sequence column is required.
+    filters:
+    - dataType:
+      - string
+      - binary
+      contentType:
+      - chemical/x-genbank
+  request:
+    id: uiSequenceColumn
+    dataType: string
+    selectorType: column
+- control:
+    id: uiStructureColumn
+    label: 'Antibody structure column '
+    type: columnselect
+    multi: !!bool false
+    tooltip: Select a column containing antibody structures corresponding to the selected antibody sequence column
+    validationRules:
+    - type: required
+      message: A structure column is required.
+    filters:
+    - dataType:
+      - binary
+      - string
+      contentType:
+      - chemical/x-pdb
+  request:
+    id: uiStructureColumn
+    dataType: string
+    selectorType: column
+tags:
+- color: '#dddddd'
+  text: MAB
+- color: '#AFC9E1'
+  text: annotation
+- color: '#D22A2A'
+  text: structure
+updateBehavior: automatic
+maximumOutputColumns: !!int 13
+maximumOutputTables: !!int 1
+chemistryFunction: !!bool false
+allowedClients:
+- Analyst
+- WebPlayer
+demoUrl: 
+limitBy: none
+minimumChartsVersion: 4.5.0.0 
+confirmSubmit: 
