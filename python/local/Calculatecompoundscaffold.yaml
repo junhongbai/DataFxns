@@ -1,0 +1,55 @@
+id: 79837e84-a7f9-6984-34c5-0d0ebf8539aa
+name: Calculate compound scaffold
+description: Calculate compound scaffold
+category: Chemistry
+version: 1.0.0
+serviceName: Script
+serviceUri: glysade.python
+executorId: Glysade.CPythonDataFxn
+inputFields:
+- control:
+    id: structureColumn
+    label: Select structure column
+    type: columnselect
+    multi: !!bool false
+    validationRules:
+    - type: required
+      message: ''
+    filters:
+    - dataType:
+      - string
+      - binary
+      contentType:
+      - chemical/x-daylight-smiles
+      - chemical/x-mdl-molfile
+  request:
+    id: structureColumn
+    dataType: string
+    selectorType: column
+tags:
+- color: '#D22A2A'
+  text: structure
+updateBehavior: automatic
+maximumOutputColumns: !!int 10
+maximumOutputTables: !!int 1
+chemistryFunction: !!bool false
+script: |-
+    from rdkit.Chem.Scaffolds.MurckoScaffold import GetScaffoldForMol,MakeScaffoldGeneric
+    from df.chem_helper import column_to_molecules,molecules_to_column
+    from df.data_transfer import DataFunctionRequest, DataFunctionResponse, DataType, ColumnData, string_input_field
+
+    def execute(request: DataFunctionRequest) -> DataFunctionResponse:
+        column_id = string_input_field(request, 'structureColumn')
+        input_column = request.inputColumns[column_id]
+        mols = column_to_molecules(input_column)
+        scaffold = [None if m is None else GetScaffoldForMol(m) for m in mols]
+        scaffoldColumn=molecules_to_column(scaffold,column_name="Scaffolds", data_type=DataType.STRING,content_type="chemical/x-daylight-smiles")
+        response = DataFunctionResponse(outputColumns=[scaffoldColumn])
+        return response
+allowedClients:
+- Analyst
+- WebPlayer
+demoUrl: 
+limitBy: none
+minimumChartsVersion: 
+confirmSubmit: 
